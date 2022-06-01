@@ -8,20 +8,18 @@ import 'package:account_book/widget/menu.dart';
 import 'package:account_book/config/config.dart';
 import 'package:account_book/utils/date_utils.dart';
 
-
 class Account extends StatelessWidget {
   const Account({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : true,
-      appBar: MenuBar(),
-      drawer: Menu(),
-      body: SingleChildScrollView(
-        child: AccountBody(),
-      )
-    );
+        resizeToAvoidBottomInset: true,
+        appBar: MenuBar(),
+        drawer: Menu(),
+        body: SingleChildScrollView(
+          child: AccountBody(),
+        ));
   }
 }
 
@@ -42,6 +40,7 @@ class _AccountBodyState extends State<AccountBody> {
   String inputCategoryId = '';
   String inputCategorySeq = '';
   String accountId = '';
+  String inputPointYn = '';
   late Future<List<dynamic>> _divisionList;
   late Future<List<dynamic>> _memberList;
   final priceController = TextEditingController();
@@ -63,10 +62,12 @@ class _AccountBodyState extends State<AccountBody> {
     inputMemberId = inputMemberId == '' ? args.memberId : inputMemberId;
     inputPaymentId = inputPaymentId == '' ? args.paymentId : inputPaymentId;
     inputCategoryId = inputCategoryId == '' ? args.categoryId : inputCategoryId;
-    inputCategorySeq = inputCategorySeq == '' ? args.categorySeq : inputCategorySeq;
+    inputCategorySeq =
+        inputCategorySeq == '' ? args.categorySeq : inputCategorySeq;
     inputImpulseYn = inputImpulseYn == '' ? args.impulseYn : inputImpulseYn;
+    inputPointYn = inputPointYn == '' ? args.pointYn : inputPointYn;
     accountId = args.accountId;
-    
+
     if (isInit) {
       priceController.text = (args.price != 0 ? args.price.toString() : '');
       remarkController.text = args.remark;
@@ -74,51 +75,44 @@ class _AccountBodyState extends State<AccountBody> {
     }
 
     return Padding(
-      padding: EdgeInsets.all(20),
-      child: Column(
-        children: [
+        padding: EdgeInsets.all(20),
+        child: Column(children: [
           ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
+              title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
                 Icon(Icons.calendar_month_rounded),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Text('날짜')
-                ),
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Text('날짜')),
                 Expanded(
-                  child: Padding( 
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: TextButton(
-                        onPressed: () {
-                          _selectDate(context);
-                        },
-                      child: Text(dateUtils.yyyymmddToHangeul(inputAccountDt))
-                    ),
-                  )
-                ),
-              ]
-            )
+                    child: Padding(
+                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: TextButton(
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                      child: Text(dateUtils.yyyymmddToHangeul(inputAccountDt))),
+                )),
+              ])),
+          Divider(
+            thickness: 1,
+            color: Colors.grey,
           ),
-          Divider( thickness: 1, color: Colors.grey, ),
           ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(Icons.check_box_outline_blank_rounded),
-                Padding(
+              title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.check_box_outline_blank_rounded),
+              Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Text('구분')
-                ),
-                Expanded(
+                  child: Text('구분')),
+              Expanded(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: _getDivisionSelectBox(args.divisionId)
-                  )
-                ),
-              ],
-            )
-          ),
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: _getDivisionSelectBox(args.divisionId))),
+            ],
+          )),
           ListTile(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -129,166 +123,159 @@ class _AccountBodyState extends State<AccountBody> {
                   child: Text('주체'),
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: _getMemberSelectBox()
-                  )
-                ),
+                    child: Padding(
+                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: _getMemberSelectBox())),
               ],
             ),
           ),
           ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(Icons.payment_rounded),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Text('결제수단'),
-                ),
-                Expanded(
+              title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.payment_rounded),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Text('결제수단'),
+              ),
+              Expanded(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: _getPaymentSelectBox(inputMemberId)
-                  )
-                ),
-              ],
-            )
-          ),
-          Divider( thickness: 1, color: Colors.grey, ),
-          ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(Icons.category_rounded),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Text('대분류'),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: _getCategorySelectBox(inputDivisionId)
-                  )
-                ),
-              ],
-            )
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: _getPaymentSelectBox(inputMemberId))),
+            ],
+          )),
+          Divider(
+            thickness: 1,
+            color: Colors.grey,
           ),
           ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(Icons.category_rounded),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Text('소분류'),
-                ),
-                Expanded(
+              title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.category_rounded),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Text('대분류'),
+              ),
+              Expanded(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: _getCategorySeqSelectBox(inputCategoryId),
-                  )
-                ),
-              ],
-            )
-          ),
-          Divider( thickness: 1, color: Colors.grey, ),
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: _getCategorySelectBox(inputDivisionId))),
+            ],
+          )),
           ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(Icons.attach_money_rounded),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Text('가격'),
-                ),
-                Expanded(
+              title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.category_rounded),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Text('소분류'),
+              ),
+              Expanded(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: TextField(
-                      controller: priceController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      )
-                    ),
-                  )
-                ),
-              ],
-            )
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: _getCategorySeqSelectBox(inputCategoryId),
+              )),
+            ],
+          )),
+          Divider(
+            thickness: 1,
+            color: Colors.grey,
           ),
           ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(Icons.edit_note_rounded),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Text('비고')
-                ),
-                Expanded(
+              title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.attach_money_rounded),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                child: Text('가격'),
+              ),
+              Expanded(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: TextField(
-                      controller: remarkController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      )
-                    ),
-                  )
-                ),
-              ],
-            )
-          ),
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: TextField(
+                    controller: priceController,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                    )),
+              )),
+            ],
+          )),
           ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(Icons.dangerous_rounded),
-                Padding(
+              title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.edit_note_rounded),
+              Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Text('충동지출')
-                ),
-                Expanded(
+                  child: Text('비고')),
+              Expanded(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: _getImpulseYnSelectBox()
-                  )
-                ),
-              ],
-            )
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: TextField(
+                    controller: remarkController,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                    )),
+              )),
+            ],
+          )),
+          ListTile(
+              title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.dangerous_rounded),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: Text('충동지출')),
+              Expanded(
+                  child: Padding(
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: _getImpulseYnSelectBox())),
+            ],
+          )),
+          ListTile(
+              title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.dangerous_rounded),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: Text('포인트 처리')),
+              Expanded(
+                  child: Padding(
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: _getPointYnSelectBox())),
+            ],
+          )),
+          Divider(
+            thickness: 1,
+            color: Colors.grey,
           ),
-          Divider( thickness: 1, color: Colors.grey, ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: ElevatedButton(
-                  onPressed: () => _update(args.isInsert), 
-                  child: args.isInsert ? Text('등록') : Text('수정'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue
-                  )
-                ),
+                    onPressed: () => _update(args.isInsert),
+                    child: args.isInsert ? Text('등록') : Text('수정'),
+                    style: ElevatedButton.styleFrom(primary: Colors.blue)),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                child: Visibility(
-                  visible: !args.isInsert,
-                  child: ElevatedButton(
-                    onPressed: () => _delete(), 
-                    child: Text('삭제'),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.red
-                    )
-                  )
-                )
-              )
+                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: Visibility(
+                      visible: !args.isInsert,
+                      child: ElevatedButton(
+                          onPressed: () => _delete(),
+                          child: Text('삭제'),
+                          style:
+                              ElevatedButton.styleFrom(primary: Colors.red))))
             ],
           )
-        ]
-      )
-    );
+        ]));
   }
 
   void _selectDate(BuildContext contexet) async {
@@ -300,7 +287,7 @@ class _AccountBodyState extends State<AccountBody> {
       firstDate: DateTime(2010),
       lastDate: DateTime(2025),
     );
-    
+
     if (selected != null && selected != inputDate) {
       setState(() {
         inputAccountDt = dateUtils.DateToYYYYMMDD(selected);
@@ -328,8 +315,8 @@ class _AccountBodyState extends State<AccountBody> {
 
   Widget _getDivisionSelectBox(String divisionId) {
     return FutureBuilder(
-      future: _divisionList,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        future: _divisionList,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
           if (snapshot.hasData == false) {
             return CircularProgressIndicator();
@@ -343,26 +330,24 @@ class _AccountBodyState extends State<AccountBody> {
                 style: TextStyle(fontSize: 15),
               ),
             );
-          }
-          else {
+          } else {
             return DropdownButton(
-              value: inputDivisionId,
-              elevation: 16,
-              onChanged: (String? newValue) {
-                setState(() {
-                  inputDivisionId = newValue!;
-                });
-              },
-              items: snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
-                return DropdownMenuItem<String>(
-                  value: obj['division_id'],
-                  child: Text(obj['division_nm']),
-                );
-              }).toList()
-            );
+                value: inputDivisionId,
+                elevation: 16,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    inputDivisionId = newValue!;
+                  });
+                },
+                items:
+                    snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
+                  return DropdownMenuItem<String>(
+                    value: obj['division_id'],
+                    child: Text(obj['division_nm']),
+                  );
+                }).toList());
           }
-      }
-    );
+        });
   }
 
   Future<List<dynamic>> _getMemberList() async {
@@ -385,8 +370,8 @@ class _AccountBodyState extends State<AccountBody> {
 
   Widget _getMemberSelectBox() {
     return FutureBuilder(
-      future: _memberList,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        future: _memberList,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
           if (snapshot.hasData == false) {
             return CircularProgressIndicator();
@@ -400,26 +385,24 @@ class _AccountBodyState extends State<AccountBody> {
                 style: TextStyle(fontSize: 15),
               ),
             );
-          }
-          else {
+          } else {
             return DropdownButton(
-              value: inputMemberId,
-              elevation: 16,
-              onChanged: (String? newValue) {
-                setState(() {
-                  inputMemberId = newValue!;
-                });
-              },
-              items: snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
-                return DropdownMenuItem<String>(
-                  value: obj['member_id'],
-                  child: Text(obj['member_nm']),
-                );
-              }).toList()
-            );
+                value: inputMemberId,
+                elevation: 16,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    inputMemberId = newValue!;
+                  });
+                },
+                items:
+                    snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
+                  return DropdownMenuItem<String>(
+                    value: obj['member_id'],
+                    child: Text(obj['member_nm']),
+                  );
+                }).toList());
           }
-      }
-    );
+        });
   }
 
   Future<List<dynamic>> _getPaymentList(String memberId) async {
@@ -431,10 +414,10 @@ class _AccountBodyState extends State<AccountBody> {
         http.Response response = await http.get(url);
         if (response.statusCode == 200) {
           var result = json.decode(utf8.decode(response.bodyBytes));
-          
+
           resultData = result['result_data'];
-      }
-      resultData.insert(0, {'payment_id': '', 'payment_nm': ''});
+        }
+        resultData.insert(0, {'payment_id': '', 'payment_nm': ''});
       }
     } catch (e) {
       print(e);
@@ -444,8 +427,8 @@ class _AccountBodyState extends State<AccountBody> {
 
   Widget _getPaymentSelectBox(String memberId) {
     return FutureBuilder(
-      future: _getPaymentList(memberId),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        future: _getPaymentList(memberId),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
           if (snapshot.hasData == false) {
             return CircularProgressIndicator();
@@ -459,8 +442,7 @@ class _AccountBodyState extends State<AccountBody> {
                 style: TextStyle(fontSize: 15),
               ),
             );
-          }
-          else {
+          } else {
             bool isCotain = false;
 
             for (var i = 1; i < snapshot.data.length; i++) {
@@ -472,23 +454,22 @@ class _AccountBodyState extends State<AccountBody> {
             inputPaymentId = isCotain ? inputPaymentId : '';
 
             return DropdownButton(
-              value: inputPaymentId,
-              elevation: 16,
-              onChanged: (String? newValue) {
-                setState(() {
-                  inputPaymentId = newValue!;
-                });
-              },
-              items: snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
-                return DropdownMenuItem<String>(
-                  value: obj['payment_id'],
-                  child: Text(obj['payment_nm']),
-                );
-              }).toList()
-            );
+                value: inputPaymentId,
+                elevation: 16,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    inputPaymentId = newValue!;
+                  });
+                },
+                items:
+                    snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
+                  return DropdownMenuItem<String>(
+                    value: obj['payment_id'],
+                    child: Text(obj['payment_nm']),
+                  );
+                }).toList());
           }
-      }
-    );
+        });
   }
 
   Future<List<dynamic>> _getCategoryList(String divisionId) async {
@@ -500,7 +481,7 @@ class _AccountBodyState extends State<AccountBody> {
         http.Response response = await http.get(url);
         if (response.statusCode == 200) {
           var result = json.decode(utf8.decode(response.bodyBytes));
-          
+
           resultData = result['result_data'];
         }
       }
@@ -513,8 +494,8 @@ class _AccountBodyState extends State<AccountBody> {
 
   Widget _getCategorySelectBox(String divisionid) {
     return FutureBuilder(
-      future: _getCategoryList(divisionid),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        future: _getCategoryList(divisionid),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
           if (snapshot.hasData == false) {
             return CircularProgressIndicator();
@@ -528,8 +509,7 @@ class _AccountBodyState extends State<AccountBody> {
                 style: TextStyle(fontSize: 15),
               ),
             );
-          }
-          else {
+          } else {
             bool isCotain = false;
 
             for (var i = 1; i < snapshot.data.length; i++) {
@@ -541,23 +521,22 @@ class _AccountBodyState extends State<AccountBody> {
             inputCategoryId = isCotain ? inputCategoryId : '';
 
             return DropdownButton(
-              value: inputCategoryId,
-              elevation: 16,
-              onChanged: (String? newValue) {
-                setState(() {
-                  inputCategoryId = newValue!;
-                });
-              },
-              items: snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
-                return DropdownMenuItem<String>(
-                  value: obj['category_id'],
-                  child: Text(obj['category_nm']),
-                );
-              }).toList()
-            );
+                value: inputCategoryId,
+                elevation: 16,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    inputCategoryId = newValue!;
+                  });
+                },
+                items:
+                    snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
+                  return DropdownMenuItem<String>(
+                    value: obj['category_id'],
+                    child: Text(obj['category_nm']),
+                  );
+                }).toList());
           }
-      }
-    );
+        });
   }
 
   Future<List<dynamic>> _getCategorySeqList(String categoryId) async {
@@ -569,7 +548,7 @@ class _AccountBodyState extends State<AccountBody> {
         http.Response response = await http.get(url);
         if (response.statusCode == 200) {
           var result = json.decode(utf8.decode(response.bodyBytes));
-          
+
           resultData = result['result_data'];
         }
       }
@@ -582,8 +561,8 @@ class _AccountBodyState extends State<AccountBody> {
 
   Widget _getCategorySeqSelectBox(String categoryId) {
     return FutureBuilder(
-      future: _getCategorySeqList(categoryId),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        future: _getCategorySeqList(categoryId),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
           //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
           if (snapshot.hasData == false) {
             return CircularProgressIndicator();
@@ -597,8 +576,7 @@ class _AccountBodyState extends State<AccountBody> {
                 style: TextStyle(fontSize: 15),
               ),
             );
-          }
-          else {
+          } else {
             bool isCotain = false;
 
             for (var i = 1; i < snapshot.data.length; i++) {
@@ -610,44 +588,59 @@ class _AccountBodyState extends State<AccountBody> {
             inputCategorySeq = isCotain ? inputCategorySeq : '';
 
             return DropdownButton(
-              value: inputCategorySeq,
-              elevation: 16,
-              onChanged: (String? newValue) {
-                setState(() {
-                  inputCategorySeq = newValue!;
-                });
-              },
-              items: snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
-                return DropdownMenuItem<String>(
-                  value: obj['category_seq'],
-                  child: Text(obj['category_seq_nm']),
-                );
-              }).toList()
-            );
+                value: inputCategorySeq,
+                elevation: 16,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    inputCategorySeq = newValue!;
+                  });
+                },
+                items:
+                    snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
+                  return DropdownMenuItem<String>(
+                    value: obj['category_seq'],
+                    child: Text(obj['category_seq_nm']),
+                  );
+                }).toList());
           }
-      }
-    );
+        });
   }
 
   Widget _getImpulseYnSelectBox() {
     return DropdownButton(
-      value: inputImpulseYn,
-      elevation: 16,
-      onChanged: (String? newValue) {
-        setState(() {
-          inputImpulseYn = newValue!;
-        });
-      },
-      items: ['N', 'Y'].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList()
-    );
+        value: inputImpulseYn,
+        elevation: 16,
+        onChanged: (String? newValue) {
+          setState(() {
+            inputImpulseYn = newValue!;
+          });
+        },
+        items: ['N', 'Y'].map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList());
   }
 
-  void _showDialog(String title, String content) { 
+  Widget _getPointYnSelectBox() {
+    return DropdownButton(
+        value: inputPointYn,
+        elevation: 16,
+        onChanged: (String? newValue) {
+          setState(() {
+            inputPointYn = newValue!;
+          });
+        },
+        items: ['N', 'Y'].map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList());
+  }
+
+  void _showDialog(String title, String content) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -655,7 +648,7 @@ class _AccountBodyState extends State<AccountBody> {
         return AlertDialog(
           title: Text(title),
           content: Text(content),
-          actions: <Widget>[ 
+          actions: <Widget>[
             TextButton(
               child: Text("닫기"),
               onPressed: () {
@@ -673,7 +666,7 @@ class _AccountBodyState extends State<AccountBody> {
     if (isInsert) {
       title = '등록';
     }
-    if (inputImpulseYn == '') {
+    if (inputAccountDt == '') {
       _showDialog(title, '날짜를 입력해주세요');
       return;
     }
@@ -712,9 +705,10 @@ class _AccountBodyState extends State<AccountBody> {
       'category_seq': inputCategorySeq,
       'price': int.parse(priceController.text),
       'remark': remarkController.text,
-      'impulse_yn': inputImpulseYn
+      'impulse_yn': inputImpulseYn,
+      'point_yn': inputPointYn,
     };
-    
+
     if (isInsert) {
       _insertAccount(requestParam);
     } else {
@@ -765,9 +759,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   void _delete() {
-    var requestParam = {
-      'account_id': accountId
-    };
+    var requestParam = {'account_id': accountId};
     _deleteAccount(requestParam);
   }
 
@@ -808,12 +800,26 @@ class AccountParameter {
   int price;
   String remark;
   String impulseYn;
+  String pointYn;
   String accountId;
   bool isInsert;
 
-  AccountParameter({
-    this.accountDt = '', this.divisionId = '', this.divisionNm = '', this.memberId = '', this.memberNm= '', this.paymentId = '', this.paymentNm = '',
-    this.categoryId = '', this.categoryNm = '', this.categorySeq = '', this.categorySeqNm = '', this.price = 0, this.remark = '', this.impulseYn = 'N',
-    this.accountId = '', this.isInsert = true
-});
+  AccountParameter(
+      {this.accountDt = '',
+      this.divisionId = '',
+      this.divisionNm = '',
+      this.memberId = '',
+      this.memberNm = '',
+      this.paymentId = '',
+      this.paymentNm = '',
+      this.categoryId = '',
+      this.categoryNm = '',
+      this.categorySeq = '',
+      this.categorySeqNm = '',
+      this.price = 0,
+      this.remark = '',
+      this.impulseYn = 'N',
+      this.pointYn = 'N',
+      this.accountId = '',
+      this.isInsert = true});
 }

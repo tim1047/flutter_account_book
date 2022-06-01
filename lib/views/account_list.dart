@@ -289,6 +289,7 @@ class _AccountListBodyState extends State<AccountListBody> {
                 price: element['price'],
                 remark: element['remark'],
                 impulseYn: element['impulse_yn'],
+                pointYn: element['point_yn'],
                 accountId: element['account_id'].toString(),
                 isInsert: false))
         .then((value) {
