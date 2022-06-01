@@ -16,7 +16,6 @@ import 'package:account_book/provider/date.dart';
 import 'package:account_book/widget/dropdown.dart';
 import 'package:account_book/views/account.dart';
 
-
 class AccountList extends StatefulWidget {
   const AccountList({Key? key}) : super(key: key);
 
@@ -34,6 +33,7 @@ class _AccountListState extends State<AccountList> {
     fToast.init(context);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,20 +49,15 @@ class _AccountListState extends State<AccountList> {
         crossAxisAlignment: CrossAxisAlignment.center,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _navigateAndToast(context),
-        child: Icon(Icons.add)
-      ),
+          onPressed: () => _navigateAndToast(context), child: Icon(Icons.add)),
     );
   }
 
   void _navigateAndToast(BuildContext context) async {
-    final result = await Navigator.pushNamed(
-      context, 
-      '/account',
-      arguments: AccountParameter(
-        accountDt: dateUtils.DateToYYYYMMDD(DateTime.now())
-      )
-    ).then((value) {
+    final result = await Navigator.pushNamed(context, '/account',
+            arguments: AccountParameter(
+                accountDt: dateUtils.DateToYYYYMMDD(DateTime.now())))
+        .then((value) {
       setState(() {});
 
       if (value != null) {
@@ -75,25 +70,25 @@ class _AccountListState extends State<AccountList> {
     Widget toast = Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(25.0),
-      color: Colors.lightBlue,
+        borderRadius: BorderRadius.circular(25.0),
+        color: Colors.lightBlue,
       ),
       child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
+        mainAxisSize: MainAxisSize.min,
+        children: [
           Icon(Icons.check),
           SizedBox(
-          width: 12.0,
+            width: 12.0,
           ),
           Text(value),
-      ],
+        ],
       ),
     );
 
     fToast.showToast(
-        child: toast,
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: Duration(seconds: 2),
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: Duration(seconds: 2),
     );
   }
 }
@@ -121,145 +116,182 @@ class _AccountListBodyState extends State<AccountListBody> {
   Widget build(BuildContext context) {
     String strtDt = context.read<Date>().getStrtDt();
     String endDt = context.read<Date>().getEndDt();
-    final args = ModalRoute.of(context)!.settings.arguments != null ? ModalRoute.of(context)!.settings.arguments as AccountListParameter : null;
+    final args = ModalRoute.of(context)!.settings.arguments != null
+        ? ModalRoute.of(context)!.settings.arguments as AccountListParameter
+        : null;
 
     return FutureBuilder(
-      future: _getAccountList(strtDt, endDt, args),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
-        if (snapshot.hasData == false) {
-          return CircularProgressIndicator();
-        }
-        //error가 발생하게 될 경우 반환하게 되는 부분
-        else if (snapshot.hasError) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Error: ${snapshot.error}',
-              style: TextStyle(fontSize: 15),
-            ),
-          );
-        }
-        // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
-        else {
-          return Expanded(
-            child: GroupedListView<dynamic, String>(
-              elements: snapshot.data, // 리스트에 사용할 데이터 리스트
-              groupBy: (element) => element['account_dt'], // 데이터 리스트 중 그룹을 지정할 항목
-              order: GroupedListOrder.DESC, //정렬(오름차순)
-              useStickyGroupSeparators: false, //가장 위에 그룹 이름을 고정시킬 것인지
-              groupSeparatorBuilder: (String value) => Padding(
-                //그룹 타이틀 모양
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  dateUtils.yyyymmddToHangeul(value),
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
+        future: _getAccountList(strtDt, endDt, args),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
+          if (snapshot.hasData == false) {
+            return CircularProgressIndicator();
+          }
+          //error가 발생하게 될 경우 반환하게 되는 부분
+          else if (snapshot.hasError) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(fontSize: 15),
               ),
-              indexedItemBuilder: (c, element, index) {
-                Color badgeColor;
-                if (element['division_id'] == '1') {
-                  badgeColor = Colors.green;
-                } else if (element['division_id'] == '2') {
-                  badgeColor = Colors.blue;
-                } else {
-                  badgeColor = Colors.red;
-                }
-
-                //항목들 모양 처리
-                return Card(
-                  margin: EdgeInsets.all(10),
-                  shadowColor: Colors.blue,
-                  elevation: 8,
-                  shape:  OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10), 
-                      borderSide: BorderSide(color: Colors.white)
+            );
+          }
+          // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
+          else {
+            return Expanded(
+              child: GroupedListView<dynamic, String>(
+                elements: snapshot.data, // 리스트에 사용할 데이터 리스트
+                groupBy: (element) =>
+                    element['account_dt'], // 데이터 리스트 중 그룹을 지정할 항목
+                order: GroupedListOrder.DESC, //정렬(오름차순)
+                useStickyGroupSeparators: false, //가장 위에 그룹 이름을 고정시킬 것인지
+                groupSeparatorBuilder: (String value) => Padding(
+                  //그룹 타이틀 모양
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    dateUtils.yyyymmddToHangeul(value),
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Flexible(
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Color.fromARGB(255, 199, 218, 251),
-                                child: SizedBox(
-                                  width: 60,
-                                  height: 60,
-                                  child: ClipOval(
-                                    child: Image.asset(Config.AVATAR_INFO[element['member_id']]),
-                                  ),
-                                )
-                              ),
-                              title: Text(
-                                numberUtils.comma(element['price']),
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
-                              ),
-                              subtitle: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    element['category_nm'] + (element['category_seq_nm'] != null ? (' | ' + element['category_seq_nm']) : ''),
-                                    style: TextStyle(fontSize: 12)
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.all(3),
-                                        child: Badge(
-                                          toAnimate: false,
-                                          shape: BadgeShape.square,
-                                          badgeColor: Colors.purple,
-                                          borderRadius: BorderRadius.circular(8),
-                                          badgeContent: Text('충동', style: TextStyle(color: Colors.white, fontSize: 12)),
-                                          showBadge: element['impulse_yn'] == 'N' ? false : true,
-                                        ),
+                ),
+                indexedItemBuilder: (c, element, index) {
+                  //항목들 모양 처리
+                  return Card(
+                    margin: EdgeInsets.all(10),
+                    shadowColor: Colors.blue,
+                    elevation: 8,
+                    shape: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(color: Colors.white)),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 199, 218, 251),
+                                    child: SizedBox(
+                                      width: 60,
+                                      height: 60,
+                                      child: ClipOval(
+                                        child: Image.asset(Config
+                                            .AVATAR_INFO[element['member_id']]),
                                       ),
-                                      Container(
-                                        margin: EdgeInsets.all(3),
-                                        child: Badge(
-                                          toAnimate: false,
-                                          shape: BadgeShape.square,
-                                          badgeColor: badgeColor,
-                                          borderRadius: BorderRadius.circular(8),
-                                          badgeContent: Text(element['division_nm'], style: TextStyle(color: Colors.white, fontSize: 12)),
-                                        ),
-                                      ),
-                                    ]
-                                  )
-                                ],
+                                    )),
+                                title: Text(numberUtils.comma(element['price']),
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16)),
+                                subtitle: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                        element['category_nm'] +
+                                            (element['category_seq_nm'] != null
+                                                ? (' | ' +
+                                                    element['category_seq_nm'])
+                                                : ''),
+                                        style: TextStyle(fontSize: 12)),
+                                    Row(children: getBadgeList(element))
+                                  ],
+                                ),
+                                onTap: () =>
+                                    _navigateAndToast(context, element),
                               ),
-                              onTap: () => _navigateAndToast(context, element),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
-        }
-      }
-    );
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            );
+          }
+        });
+  }
+
+  List<Widget> getBadgeList(dynamic element) {
+    List<Widget> badgeList = [];
+
+    if (element['point_yn'] == 'Y') {
+      badgeList.add(Container(
+        margin: EdgeInsets.all(3),
+        child: Badge(
+            toAnimate: false,
+            shape: BadgeShape.square,
+            badgeColor: Colors.orangeAccent,
+            borderRadius: BorderRadius.circular(8),
+            badgeContent: Text('포인트',
+                style: TextStyle(color: Colors.white, fontSize: 12)),
+            showBadge: true),
+      ));
+    }
+
+    if (element['impulse_yn'] == 'Y') {
+      badgeList.add(Container(
+        margin: EdgeInsets.all(3),
+        child: Badge(
+          toAnimate: false,
+          shape: BadgeShape.square,
+          badgeColor: Colors.purple,
+          borderRadius: BorderRadius.circular(8),
+          badgeContent:
+              Text('충동', style: TextStyle(color: Colors.white, fontSize: 12)),
+          showBadge: element['impulse_yn'] == 'N' ? false : true,
+        ),
+      ));
+    }
+
+    Color badgeColor;
+    if (element['division_id'] == '1') {
+      badgeColor = Colors.green;
+    } else if (element['division_id'] == '2') {
+      badgeColor = Colors.blue;
+    } else {
+      badgeColor = Colors.red;
+    }
+
+    badgeList.add(Container(
+      margin: EdgeInsets.all(3),
+      child: Badge(
+        toAnimate: false,
+        shape: BadgeShape.square,
+        badgeColor: badgeColor,
+        borderRadius: BorderRadius.circular(8),
+        badgeContent: Text(element['division_nm'],
+            style: TextStyle(color: Colors.white, fontSize: 12)),
+      ),
+    ));
+    return badgeList;
   }
 
   void _navigateAndToast(BuildContext context, var element) async {
-    final result = await Navigator.pushNamed(
-        context, 
-        '/account',
-        arguments: AccountParameter(
-          accountDt: element['account_dt'], divisionId: element['division_id'], divisionNm: element['division_nm'],
-          paymentId: element['payment_id'], paymentNm: element['payment_nm'], memberId: element['member_id'],
-          memberNm: element['member_nm'], categoryId: element['category_id'], categoryNm: element['category_nm'],
-          categorySeq: element['category_seq'], categorySeqNm: (element['category_seq_nm'] ?? ''), price: element['price'],
-          remark: element['remark'], impulseYn: element['impulse_yn'], accountId: element['account_id'].toString(), isInsert: false
-        )
-    ).then((value) {
+    final result = await Navigator.pushNamed(context, '/account',
+            arguments: AccountParameter(
+                accountDt: element['account_dt'],
+                divisionId: element['division_id'],
+                divisionNm: element['division_nm'],
+                paymentId: element['payment_id'],
+                paymentNm: element['payment_nm'],
+                memberId: element['member_id'],
+                memberNm: element['member_nm'],
+                categoryId: element['category_id'],
+                categoryNm: element['category_nm'],
+                categorySeq: element['category_seq'],
+                categorySeqNm: (element['category_seq_nm'] ?? ''),
+                price: element['price'],
+                remark: element['remark'],
+                impulseYn: element['impulse_yn'],
+                accountId: element['account_id'].toString(),
+                isInsert: false))
+        .then((value) {
       setState(() {});
 
       if (value != null) {
@@ -270,31 +302,32 @@ class _AccountListBodyState extends State<AccountListBody> {
 
   _showToast(String value) {
     Widget toast = Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-        decoration: BoxDecoration(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25.0),
         color: Colors.lightBlue,
-        ),
-        child: Row(
+      ),
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-            Icon(Icons.check),
-            SizedBox(
+          Icon(Icons.check),
+          SizedBox(
             width: 12.0,
-            ),
-            Text(value),
+          ),
+          Text(value),
         ],
-        ),
+      ),
     );
 
     fToast.showToast(
-        child: toast,
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: Duration(seconds: 2),
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: Duration(seconds: 2),
     );
   }
 
-  Future<List<dynamic>> _getAccountList(String strtDt, String endDt, dynamic args) async {
+  Future<List<dynamic>> _getAccountList(
+      String strtDt, String endDt, dynamic args) async {
     String searchDivisionId = '';
     String searchCategoryId = '';
     String searchCategorySeq = '';
@@ -307,13 +340,19 @@ class _AccountListBodyState extends State<AccountListBody> {
       searchMemberId = args.searchMemberId;
     }
 
-    var url = Uri.parse(
-      Config.API_URL + 'account?strtDt=' + strtDt + '&endDt=' + endDt
-      + '&searchDivisionId=' + searchDivisionId
-      + '&searchCategoryId=' + searchCategoryId
-      + '&searchCategorySeq=' + searchCategorySeq
-      + '&searchMemberId=' + searchMemberId
-    );
+    var url = Uri.parse(Config.API_URL +
+        'account?strtDt=' +
+        strtDt +
+        '&endDt=' +
+        endDt +
+        '&searchDivisionId=' +
+        searchDivisionId +
+        '&searchCategoryId=' +
+        searchCategoryId +
+        '&searchCategorySeq=' +
+        searchCategorySeq +
+        '&searchMemberId=' +
+        searchMemberId);
 
     List<dynamic> resultData = [];
 
@@ -337,7 +376,9 @@ class AccountListParameter {
   String searchCategorySeq;
   String searchMemberId;
 
-  AccountListParameter({
-    this.searchDivisionId = '', this.searchCategoryId = '', this.searchCategorySeq = '', this.searchMemberId = ''}
-  );
+  AccountListParameter(
+      {this.searchDivisionId = '',
+      this.searchCategoryId = '',
+      this.searchCategorySeq = '',
+      this.searchMemberId = ''});
 }
