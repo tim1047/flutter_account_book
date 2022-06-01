@@ -242,7 +242,7 @@ class _AccountBodyState extends State<AccountBody> {
               title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Icon(Icons.dangerous_rounded),
+              Icon(Icons.card_membership_rounded),
               Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Text('포인트 처리')),
