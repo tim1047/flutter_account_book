@@ -46,6 +46,7 @@ class _AccountBodyState extends State<AccountBody> {
   final priceController = TextEditingController();
   final remarkController = TextEditingController();
   bool isInit = true;
+  bool isExpense = true;
 
   @override
   void initState() {
@@ -72,6 +73,7 @@ class _AccountBodyState extends State<AccountBody> {
       priceController.text = (args.price != 0 ? args.price.toString() : '');
       remarkController.text = args.remark;
       isInit = false;
+      isExpense = args.divisionId == '3' ? true : false;
     }
 
     return Padding(
@@ -336,6 +338,13 @@ class _AccountBodyState extends State<AccountBody> {
                 elevation: 16,
                 onChanged: (String? newValue) {
                   setState(() {
+                    if (newValue == '3') {
+                      isExpense = true;
+                    } else {
+                      isExpense = false;
+                      inputImpulseYn = 'N';
+                      inputPointYn = 'N';
+                    }
                     inputDivisionId = newValue!;
                   });
                 },
@@ -610,11 +619,11 @@ class _AccountBodyState extends State<AccountBody> {
     return DropdownButton(
         value: inputImpulseYn,
         elevation: 16,
-        onChanged: (String? newValue) {
+        onChanged: isExpense ? (String? newValue) {
           setState(() {
             inputImpulseYn = newValue!;
           });
-        },
+        } : null,
         items: ['N', 'Y'].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -627,11 +636,11 @@ class _AccountBodyState extends State<AccountBody> {
     return DropdownButton(
         value: inputPointYn,
         elevation: 16,
-        onChanged: (String? newValue) {
+        onChanged: isExpense ? (String? newValue) {
           setState(() {
             inputPointYn = newValue!;
           });
-        },
+        } : null,
         items: ['N', 'Y'].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
