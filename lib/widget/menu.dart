@@ -139,6 +139,13 @@ class Menu extends StatelessWidget {
               ),
             ]
           ),
+          ListTile(
+            leading: Icon(Icons.calendar_view_day_rounded),
+            title: Text('CALENDAR 보기'),
+            onTap: () {
+              Navigator.pushNamed(context, '/expense/calendar');
+            },
+          ),
           ExpansionTile(
             leading: Icon(LineIcons.building),
             title: Text('자산'),
