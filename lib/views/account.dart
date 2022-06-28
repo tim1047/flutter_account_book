@@ -260,13 +260,6 @@ class _AccountBodyState extends State<AccountBody> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                child: ElevatedButton(
-                    onPressed: () => _update(args.isInsert),
-                    child: args.isInsert ? Text('등록') : Text('수정'),
-                    style: ElevatedButton.styleFrom(primary: Colors.blue)),
-              ),
-              Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: Visibility(
                       visible: !args.isInsert,
@@ -274,7 +267,14 @@ class _AccountBodyState extends State<AccountBody> {
                           onPressed: () => _delete(),
                           child: Text('삭제'),
                           style:
-                              ElevatedButton.styleFrom(primary: Colors.red))))
+                              ElevatedButton.styleFrom(primary: Colors.red)))),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: ElevatedButton(
+                    onPressed: () => _update(args.isInsert),
+                    child: args.isInsert ? Text('등록') : Text('수정'),
+                    style: ElevatedButton.styleFrom(primary: Colors.blue)),
+              )
             ],
           )
         ]));

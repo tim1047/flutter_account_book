@@ -231,16 +231,6 @@ class _MyAssetBodyState extends State<MyAssetBody> {
             children: [
               Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                child: ElevatedButton(
-                  onPressed: () => _update(args.isInsert), 
-                  child: args.isInsert ? Text('등록') : Text('수정'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue
-                  )
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: Visibility(
                   visible: !args.isInsert,
                   child: ElevatedButton(
@@ -251,6 +241,16 @@ class _MyAssetBodyState extends State<MyAssetBody> {
                     )
                   )
                 )
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: ElevatedButton(
+                  onPressed: () => _update(args.isInsert), 
+                  child: args.isInsert ? Text('등록') : Text('수정'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue
+                  )
+                ),
               )
             ],
           )
