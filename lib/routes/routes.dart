@@ -15,7 +15,6 @@ import 'package:account_book/views/income_chart.dart';
 import 'package:account_book/views/invest_chart.dart';
 import 'package:account_book/views/my_asset_accum.dart';
 import 'package:account_book/views/expense_daily_chart.dart';
-import 'package:account_book/views/expense_calendar.dart';
 
 
 class Routes {
@@ -39,7 +38,6 @@ class Routes {
       '/invest/chart': (context) => InvestChart(),
       '/asset/accum': (context) => MyAssetAccum(),
       '/expense/dailyChart': (context) => ExpenseDailyChart(),
-      '/expense/calendar': (context) => ExpenseCalendar(),
     };
     return _routes;
   }
