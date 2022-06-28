@@ -196,7 +196,11 @@ class _AccountListBodyState extends State<AccountListBody> {
                                             (element['category_seq_nm'] != null
                                                 ? (' | ' +
                                                     element['category_seq_nm'])
-                                                : ''),
+                                                : '') +
+                                            (element['remark'] != '' 
+                                              ? ' ( ' + element['remark'] + ' )'
+                                              : ''
+                                            ),
                                         style: TextStyle(fontSize: 12)),
                                     Row(children: getBadgeList(element))
                                   ],
