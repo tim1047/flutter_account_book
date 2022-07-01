@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
+import 'package:account_book/utils/number_formatter.dart';
 import 'package:account_book/widget/menubar.dart';
 import 'package:account_book/widget/menu.dart';
 import 'package:account_book/config/config.dart';
 import 'package:account_book/utils/date_utils.dart';
+import 'package:account_book/utils/number_utils.dart';
 
 
 class MyAsset extends StatelessWidget {
@@ -34,7 +36,8 @@ class MyAssetBody extends StatefulWidget {
 
 class _MyAssetBodyState extends State<MyAssetBody> {
   DateUtils2 dateUtils = DateUtils2();
-  
+  NumberUtils numberUtils = NumberUtils();
+
   String inputMyAssetId = '';
   String inputAssetId = '';
   final myAssetNmController = TextEditingController();
@@ -65,7 +68,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
     if (isInit) {
       myAssetNmController.text = (args.myAssetNm != '' ? args.myAssetNm : '');
       tickerController.text = args.ticker != '' ? args.ticker : '';
-      priceController.text = (args.price >= 0 ? args.price.toString() : '');
+      priceController.text = (args.price >= 0 ? numberUtils.comma(args.price.toInt()) : '');
       qtyController.text = args.qty >= 0 ? args.qty.toString() : '';
       isEnablePrice = args.priceDivCd == 'AUTO' ? false : true;
       isInit = false;
@@ -177,7 +180,8 @@ class _MyAssetBodyState extends State<MyAssetBody> {
                         fillColor: Colors.grey,
                         filled: isEnablePrice ? false : true
                       ),
-                      enabled: isEnablePrice
+                      enabled: isEnablePrice,
+                      inputFormatters: [ThousandsSeparatorInputFormatter()]
                     ),
                   )
                 ),
@@ -419,7 +423,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
       'asset_id': inputAssetId,
       'ticker': tickerController.text,
       'price_div_cd': inputPriceDivCd,
-      'price': double.parse(priceController.text),
+      'price': double.parse(numberUtils.uncomma(priceController.text)),
       'qty': double.parse(qtyController.text),
       'exchange_rate_yn': inputExchangeRateYn,
     };

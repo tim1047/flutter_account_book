@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:account_book/utils/number_formatter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,8 @@ import 'package:account_book/widget/menubar.dart';
 import 'package:account_book/widget/menu.dart';
 import 'package:account_book/config/config.dart';
 import 'package:account_book/utils/date_utils.dart';
+import 'package:account_book/utils/number_utils.dart';
+
 
 class Account extends StatelessWidget {
   const Account({Key? key}) : super(key: key);
@@ -32,6 +35,7 @@ class AccountBody extends StatefulWidget {
 
 class _AccountBodyState extends State<AccountBody> {
   DateUtils2 dateUtils = DateUtils2();
+  NumberUtils numberUtils = NumberUtils();
   String inputAccountDt = '';
   String inputDivisionId = '';
   String inputMemberId = '';
@@ -70,7 +74,7 @@ class _AccountBodyState extends State<AccountBody> {
     accountId = args.accountId;
 
     if (isInit) {
-      priceController.text = (args.price != 0 ? args.price.toString() : '');
+      priceController.text = (args.price != 0 ? numberUtils.comma(args.price) : '');
       remarkController.text = args.remark;
       isInit = false;
       isExpense = args.divisionId == '3' ? true : false;
@@ -201,7 +205,9 @@ class _AccountBodyState extends State<AccountBody> {
                     controller: priceController,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                    )),
+                    ),
+                    inputFormatters: [ThousandsSeparatorInputFormatter()],
+                ),
               )),
             ],
           )),
@@ -712,7 +718,7 @@ class _AccountBodyState extends State<AccountBody> {
       'payment_id': inputPaymentId,
       'category_id': inputCategoryId,
       'category_seq': inputCategorySeq,
-      'price': int.parse(priceController.text),
+      'price': int.parse(numberUtils.uncomma(priceController.text)),
       'remark': remarkController.text,
       'impulse_yn': inputImpulseYn,
       'point_yn': inputPointYn,

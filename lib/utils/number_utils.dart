@@ -11,4 +11,8 @@ class NumberUtils {
     }
     return numberFormat + NumberFormat('###,###,###,###').format(val).toString().replaceAll(' ', '');
   }
+
+  String uncomma(String val) {
+    return val.replaceAll(',', '');
+  }
 }
