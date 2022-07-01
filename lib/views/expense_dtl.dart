@@ -99,7 +99,7 @@ class _ExpenseDtlBodyState extends State<ExpenseDtlBody> {
   }
 
   Widget _makeCard(dynamic element) {
-    double pricePercent = element['sum_price'] / element['total_sum_price']; 
+    double pricePercent = element['sum_price'] == 0 ? 0 : element['sum_price'] / element['total_sum_price'];
 
     return Column(
       children: [
