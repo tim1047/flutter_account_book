@@ -106,6 +106,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
   NumberUtils numberUtils = NumberUtils();
   DateUtils2 dateUtils = DateUtils2();
   late FToast fToast;
+  bool isDelayed = true;
 
   @override
   void initState() {
@@ -123,6 +124,9 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
         if (snapshot.hasData == false) {
+          return CircularProgressIndicator();
+        }
+        else if (snapshot.connectionState != ConnectionState.done) {
           return CircularProgressIndicator();
         }
         //error가 발생하게 될 경우 반환하게 되는 부분
@@ -155,6 +159,14 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                       Text(
                         '환율: ' + numberUtils.comma(snapshot.data['usd_krw_rate']),
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
+                      ),
+                      IconButton(
+                        onPressed: () => {
+                          setState(() {
+                            isDelayed = false;
+                          })
+                        }, 
+                        icon: Icon(Icons.refresh_rounded)
                       )
                     ]
                   ),
@@ -279,9 +291,13 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
   }
 
   Future<Map<String, dynamic>> _getMyAssetList(String strtDt, String endDt) async {
-    var url = Uri.parse(
-      Config.API_URL + 'my_asset_list?strtDt=' + strtDt + '&endDt=' + endDt
-    );
+    var urlString = Config.API_URL + 'my_asset_list?strtDt=' + strtDt + '&endDt=' + endDt;
+    if(!isDelayed){
+      urlString = urlString + '&type=realtime';
+      isDelayed = true;
+    }
+
+    var url = Uri.parse(urlString);
 
     Map<String, dynamic> resultData = {};
 
