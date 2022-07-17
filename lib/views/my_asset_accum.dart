@@ -66,13 +66,13 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
     double toY = 0;
     int debt = 0;
 
-    for (var i = 0; i < resultList.length; i++) {
+    for (var i = 1; i < resultList.length; i++) {
       if (resultList[i]['asset_id'] == '6') {
         debt = resultList[i]['total_sum_price'];
       }
     }
 
-    for (var i = 0; i < resultList.length; i++) {
+    for (var i = 1; i < resultList.length; i++) {
       if (resultList[i]['asset_id'] == '5') {
         toY = toY + resultList[i]['total_sum_price'] - debt;
       } else if (resultList[i]['asset_id'] == '6') {
@@ -150,8 +150,8 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
           _accumDtList = [];
           Map<String, dynamic> assetInfo = {};
 
-          for (var i = 0; i < snapshot.data[snapshot.data.length - 1]['data'].length - 1; i++) {
-            _legendList.add(_getLengend(snapshot.data[snapshot.data.length - 1]['data'][i], i));
+          for (var i = 1; i < snapshot.data[snapshot.data.length - 1]['data'].length - 1; i++) {
+            _legendList.add(_getLengend(snapshot.data[snapshot.data.length - 1]['data'][i], i - 1));
           }
 
           for(var i = 0; i < snapshot.data.length; i++) {
