@@ -49,6 +49,7 @@ class Config {
     '32': Icon(LineIcons.wavyMoneyBill),
     '33': Icon(LineIcons.moneyCheck),
     '34': Icon(LineIcons.moneyCheck),
+    '35': Icon(LineIcons.creditCard),
     '41': Icon(Icons.food_bank_rounded),
     '42': Icon(LineIcons.cookieBite),
     '43': Icon(LineIcons.shoppingCart),
