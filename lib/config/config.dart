@@ -38,6 +38,7 @@ class Config {
     '23': Icon(LineIcons.alternateMoneyBill),
     '24': Icon(LineIcons.gem),
     '25': Icon(LineIcons.moneyBill),
+    '26': Icon(LineIcons.moneyBill),
   };
   static const Map<String, Widget> CATEGORY_SEQ_ICON_INFO = {
     '11': Icon(LineIcons.home),
