@@ -216,35 +216,93 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Flexible(
-                      child: ListTile(
-                        title: Text(
-                          numberUtils.comma(element['sum_price']),
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
-                        ),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              element['my_asset_nm'] + ' | ' + element['qty'].toString() + '개',
-                              style: TextStyle(fontSize: 12)
-                            ),
-                          ],
-                        ),
-                        onTap: () => _navigateAndToast(context, element),
-                      ),
-                    ),
-                  ],
-                ),
+                _makeTile(element)
               ],
             ),
           );
         },
       ),
     );
+  }
+
+  Widget _makeTile(dynamic element) {
+    Widget tile;
+    print(element['data']);
+
+    if (element['data'] == null) {
+      tile = Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: ListTile(
+              title: Text(
+                numberUtils.comma(element['sum_price']),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
+              ),
+              subtitle: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    element['my_asset_nm'] + ' | ' + element['qty'].toString() + '개',
+                    style: TextStyle(fontSize: 12)
+                  ),
+                ],
+              ),
+              onTap: () => _navigateAndToast(context, element),
+            ),
+          ),
+        ],
+      );
+    } else {
+      List<Widget> _listTiles = [];
+
+      for (var i = 0; i < element['data'].length; i++) {
+        dynamic e = element['data'][i];
+        _listTiles.add(
+          ListTile(
+            title: Text(
+              numberUtils.comma(e['sum_price']),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
+            ),
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  e['my_asset_nm'] + ' | ' + e['qty'].toString() + '개',
+                  style: TextStyle(fontSize: 12)
+                ),
+              ],
+            ),
+            onTap: () => _navigateAndToast(context, e),
+          )
+        );
+      }
+
+      tile = Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: ExpansionTile(
+              title: Text(
+                numberUtils.comma(element['sum_price']),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
+              ),
+              subtitle: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    element['my_asset_group_nm'],
+                    style: TextStyle(fontSize: 12)
+                  ),
+                ],
+              ),
+              children: _listTiles,
+            ),
+          ),
+        ],
+      );
+    }
+    return tile;
   }
 
   void _navigateAndToast(BuildContext context, var element) async {
