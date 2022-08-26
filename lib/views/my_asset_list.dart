@@ -194,6 +194,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
         groupBy: (element) => element['asset_nm'], // 데이터 리스트 중 그룹을 지정할 항목
         //order: GroupedListOrder.DESC, //정렬(오름차순)
         useStickyGroupSeparators: false, //가장 위에 그룹 이름을 고정시킬 것인지
+        itemComparator: (item1, item2) => item1['sum_price'] < item2['sum_price'] ? 1 : -1,
         groupHeaderBuilder: (dynamic element) => Padding(
           //그룹 타이틀 모양
           padding: const EdgeInsets.all(8.0),
@@ -227,7 +228,6 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
 
   Widget _makeTile(dynamic element) {
     Widget tile;
-    print(element['data']);
 
     if (element['data'] == null) {
       tile = Row(
