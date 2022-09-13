@@ -382,6 +382,7 @@ Widget _getPrice(dynamic element, numberUtils) {
             fontWeight: FontWeight.bold,
             fontSize: 14,
             decoration: TextDecoration.lineThrough,
+            decorationThickness: 1,
             color: Colors.grey)),
       Text('  '),
       Text(numberUtils.comma(element['price'] - element['point_price']),
