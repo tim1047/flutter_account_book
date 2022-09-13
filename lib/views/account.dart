@@ -44,11 +44,11 @@ class _AccountBodyState extends State<AccountBody> {
   String inputCategoryId = '';
   String inputCategorySeq = '';
   String accountId = '';
-  String inputPointYn = '';
   late Future<List<dynamic>> _divisionList;
   late Future<List<dynamic>> _memberList;
   final priceController = TextEditingController();
   final remarkController = TextEditingController();
+  final pointPriceController = TextEditingController();
   bool isInit = true;
   bool isExpense = true;
 
@@ -70,12 +70,12 @@ class _AccountBodyState extends State<AccountBody> {
     inputCategorySeq =
         inputCategorySeq == '' ? args.categorySeq : inputCategorySeq;
     inputImpulseYn = inputImpulseYn == '' ? args.impulseYn : inputImpulseYn;
-    inputPointYn = inputPointYn == '' ? args.pointYn : inputPointYn;
     accountId = args.accountId;
 
     if (isInit) {
       priceController.text = (args.price != 0 ? numberUtils.comma(args.price) : '');
       remarkController.text = args.remark;
+      pointPriceController.text = (args.pointPrice != 0 ? numberUtils.comma(args.pointPrice) : '');
       isInit = false;
       isExpense = args.divisionId == '3' ? true : false;
     }
@@ -251,11 +251,18 @@ class _AccountBodyState extends State<AccountBody> {
               Icon(Icons.card_membership_rounded),
               Padding(
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Text('포인트 처리')),
+                  child: Text('포인트 처리 금액')),
               Expanded(
                   child: Padding(
-                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      child: _getPointYnSelectBox())),
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: TextField(
+                    controller: pointPriceController,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                    inputFormatters: [ThousandsSeparatorInputFormatter()],
+                ),
+              )),
             ],
           )),
           Divider(
@@ -349,7 +356,6 @@ class _AccountBodyState extends State<AccountBody> {
                     } else {
                       isExpense = false;
                       inputImpulseYn = 'N';
-                      inputPointYn = 'N';
                     }
                     inputDivisionId = newValue!;
                   });
@@ -638,23 +644,6 @@ class _AccountBodyState extends State<AccountBody> {
         }).toList());
   }
 
-  Widget _getPointYnSelectBox() {
-    return DropdownButton(
-        value: inputPointYn,
-        elevation: 16,
-        onChanged: isExpense ? (String? newValue) {
-          setState(() {
-            inputPointYn = newValue!;
-          });
-        } : null,
-        items: ['N', 'Y'].map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList());
-  }
-
   void _showDialog(String title, String content) {
     showDialog(
       context: context,
@@ -721,7 +710,7 @@ class _AccountBodyState extends State<AccountBody> {
       'price': int.parse(numberUtils.uncomma(priceController.text)),
       'remark': remarkController.text,
       'impulse_yn': inputImpulseYn,
-      'point_yn': inputPointYn,
+      'point_price': int.parse(numberUtils.uncomma(pointPriceController.text)),
     };
 
     if (isInsert) {
@@ -815,7 +804,7 @@ class AccountParameter {
   int price;
   String remark;
   String impulseYn;
-  String pointYn;
+  int pointPrice;
   String accountId;
   bool isInsert;
 
@@ -834,7 +823,7 @@ class AccountParameter {
       this.price = 0,
       this.remark = '',
       this.impulseYn = 'N',
-      this.pointYn = 'N',
+      this.pointPrice = 0,
       this.accountId = '',
       this.isInsert = true});
 }

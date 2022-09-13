@@ -183,10 +183,7 @@ class _AccountListBodyState extends State<AccountListBody> {
                                             .AVATAR_INFO[element['member_id']]),
                                       ),
                                     )),
-                                title: Text(numberUtils.comma(element['price']),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16)),
+                                title: _getPrice(element, numberUtils),
                                 subtitle: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -224,7 +221,7 @@ class _AccountListBodyState extends State<AccountListBody> {
   List<Widget> getBadgeList(dynamic element) {
     List<Widget> badgeList = [];
 
-    if (element['point_yn'] == 'Y') {
+    if (element['point_price'] > 0) {
       badgeList.add(Container(
         margin: EdgeInsets.all(3),
         child: Badge(
@@ -293,7 +290,7 @@ class _AccountListBodyState extends State<AccountListBody> {
                 price: element['price'],
                 remark: element['remark'],
                 impulseYn: element['impulse_yn'],
-                pointYn: element['point_yn'],
+                pointPrice: element['point_price'],
                 accountId: element['account_id'].toString(),
                 isInsert: false))
         .then((value) {
@@ -373,6 +370,32 @@ class _AccountListBodyState extends State<AccountListBody> {
     }
     return resultData;
   }
+}
+
+Widget _getPrice(dynamic element, numberUtils) {
+  Widget price;
+
+  if (element['point_price'] > 0) {
+    price = Row(children: [
+      Text(numberUtils.comma(element['price']),
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            decoration: TextDecoration.lineThrough,
+            color: Colors.grey)),
+      Text('  '),
+      Text(numberUtils.comma(element['price'] - element['point_price']),
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16))
+    ]);
+  } else {
+    price = Text(numberUtils.comma(element['price']),
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16));
+  }
+  return price;
 }
 
 class AccountListParameter {
