@@ -710,7 +710,7 @@ class _AccountBodyState extends State<AccountBody> {
       'price': int.parse(numberUtils.uncomma(priceController.text)),
       'remark': remarkController.text,
       'impulse_yn': inputImpulseYn,
-      'point_price': int.parse(numberUtils.uncomma(pointPriceController.text)),
+      'point_price': pointPriceController.text == '' ? 0 : int.parse(numberUtils.uncomma(pointPriceController.text)),
     };
 
     if (isInsert) {
