@@ -377,7 +377,7 @@ Widget _getPrice(dynamic element, numberUtils) {
 
   if (element['point_price'] > 0) {
     price = Row(children: [
-      Text(numberUtils.comma(element['price']),
+      Text(numberUtils.comma(element['price']) + ' (' + numberUtils.comma(element['point_price'] * -1) + ')',
         style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 14,
