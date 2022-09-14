@@ -53,6 +53,8 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
     Color(0xff578eff),
     Color.fromARGB(255, 175, 227, 54),
     Color.fromARGB(255, 221, 10, 10),
+    Color.fromARGB(255, 255, 255, 255),
+    Color.fromARGB(255, 255, 108, 3)
   ];
   static const betweenSpace = 1000000;
   DateUtils2 dateUtils = DateUtils2();
@@ -150,9 +152,11 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
           _accumDtList = [];
           Map<String, dynamic> assetInfo = {};
 
-          for (var i = 1; i < snapshot.data[snapshot.data.length - 1]['data'].length - 1; i++) {
-            _legendList.add(_getLengend(snapshot.data[snapshot.data.length - 1]['data'][i], i - 1));
-          }
+          for (var i = 1; i < snapshot.data[snapshot.data.length - 1]['data'].length; i++) {
+            if(i != 6) {
+              _legendList.add(_getLengend(snapshot.data[snapshot.data.length - 1]['data'][i], i - 1));
+            }
+          } 
 
           for(var i = 0; i < snapshot.data.length; i++) {
             _accumDtList.add(snapshot.data[i]['accum_dt']);
