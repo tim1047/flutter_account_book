@@ -83,4 +83,5 @@ class Config {
     '124': Icon(LineIcons.wavyMoneyBill),
     '125': Icon(LineIcons.wallet),
   };
+  static const double BARCHART_PADDING = 1.05;
 }

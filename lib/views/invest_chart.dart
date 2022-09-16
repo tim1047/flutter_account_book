@@ -46,6 +46,7 @@ class InvestChartBody extends StatefulWidget {
 
 class _InvestChartBodyState extends State<InvestChartBody> {
   NumberUtils numberUtils = NumberUtils();
+  double maxY = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +138,7 @@ class _InvestChartBodyState extends State<InvestChartBody> {
                       barGroups: barGroups(snapshot.data),
                       gridData: FlGridData(show: false),
                       alignment: BarChartAlignment.spaceAround,
-                      maxY: 20000000
+                      maxY: maxY
                     ),
                   ),
                 ),
@@ -271,6 +272,11 @@ class _InvestChartBodyState extends State<InvestChartBody> {
           ),
         );
       }
+
+      if (element['data'][i]['total_sum_price'] >= maxY) {
+        maxY = element['data'][i]['total_sum_price'];
+      }
+      maxY *= Config.BARCHART_PADDING;
     }
     
     barGroups.add(

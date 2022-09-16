@@ -46,6 +46,7 @@ class IncomeChartBody extends StatefulWidget {
 
 class _IncomeChartBodyState extends State<IncomeChartBody> {
   NumberUtils numberUtils = NumberUtils();
+  double maxY = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +111,7 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
                       barGroups: barGroups(snapshot.data),
                       gridData: FlGridData(show: false),
                       alignment: BarChartAlignment.spaceAround,
-                      maxY: 25000000
+                      maxY: maxY
                     ),
                   ),
                 ),
@@ -244,6 +245,11 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
           ),
         );
       }
+
+      if (element['data'][i]['total_sum_price'] >= maxY) {
+        maxY = element['data'][i]['total_sum_price'];
+      }
+      maxY *= Config.BARCHART_PADDING;
     }
     
     barGroups.add(
