@@ -254,15 +254,28 @@ class _AccountBodyState extends State<AccountBody> {
                   child: Text('포인트 처리 금액')),
               Expanded(
                   child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                child: TextField(
-                    controller: pointPriceController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
+                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    child: TextField(
+                        controller: pointPriceController,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        inputFormatters: [ThousandsSeparatorInputFormatter()],
                     ),
-                    inputFormatters: [ThousandsSeparatorInputFormatter()],
+                  )
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(	//모서리를 둥글게
+                  borderRadius: BorderRadius.circular(20)),
                 ),
-              )),
+                child: Text('전액'),
+                onPressed: () => {
+                  setState(() {
+                    pointPriceController.text = priceController.text == '' ? numberUtils.comma(0) : priceController.text;
+                  })
+                }
+              )
             ],
           )),
           Divider(
@@ -280,13 +293,13 @@ class _AccountBodyState extends State<AccountBody> {
                           onPressed: () => _delete(),
                           child: Text('삭제'),
                           style:
-                              ElevatedButton.styleFrom(primary: Colors.red)))),
+                              ElevatedButton.styleFrom(backgroundColor: Colors.red)))),
               Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: ElevatedButton(
                     onPressed: () => _update(args.isInsert),
                     child: args.isInsert ? Text('등록') : Text('수정'),
-                    style: ElevatedButton.styleFrom(primary: Colors.blue)),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blue)),
               )
             ],
           )
