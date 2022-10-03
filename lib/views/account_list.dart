@@ -214,7 +214,6 @@ class _AccountListBodyState extends State<AccountListBody> {
 
   Widget _groupSeparator(String value) {
     SizedBox sortButton = SizedBox(
-      width: 50,
       child: ElevatedButton(
         onPressed: () => {
           setState(() {
