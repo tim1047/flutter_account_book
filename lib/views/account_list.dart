@@ -180,10 +180,9 @@ class _AccountListBodyState extends State<AccountListBody> {
                                     )),
                                 title: _getPrice(element, numberUtils),
                                 subtitle: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
+                                    Expanded(child: Text(
                                         element['category_nm'] +
                                             (element['category_seq_nm'] != null
                                                 ? (' | ' +
@@ -193,7 +192,7 @@ class _AccountListBodyState extends State<AccountListBody> {
                                               ? ' ( ' + element['remark'] + ' )'
                                               : ''
                                             ),
-                                        style: TextStyle(fontSize: 12)),
+                                        style: TextStyle(fontSize: 12))),
                                     Row(children: getBadgeList(element))
                                   ],
                                 ),
@@ -214,17 +213,20 @@ class _AccountListBodyState extends State<AccountListBody> {
   }
 
   Widget _groupSeparator(String value) {
-    ElevatedButton sortButton = ElevatedButton(
-      onPressed: () => {
-        setState(() {
-          if (groupListOrder == GroupedListOrder.DESC) {
-            groupListOrder = GroupedListOrder.ASC;
-          } else {
-            groupListOrder = GroupedListOrder.DESC;
-          }
-        })
-      },
-      child: Icon(Icons.sort_rounded),
+    SizedBox sortButton = SizedBox(
+      width: 50,
+      child: ElevatedButton(
+        onPressed: () => {
+          setState(() {
+            if (groupListOrder == GroupedListOrder.DESC) {
+              groupListOrder = GroupedListOrder.ASC;
+            } else {
+              groupListOrder = GroupedListOrder.DESC;
+            }
+          })
+        },
+        child: Icon(Icons.sort_rounded),
+      )
     );
 
     if (groupListOrder == GroupedListOrder.ASC) {
