@@ -104,6 +104,9 @@ class _AccountListBodyState extends State<AccountListBody> {
   NumberUtils numberUtils = NumberUtils();
   DateUtils2 dateUtils = DateUtils2();
   late FToast fToast;
+  GroupedListOrder groupListOrder = GroupedListOrder.DESC;
+  String firstDate = '';
+  String lastDate = '';
 
   @override
   void initState() {
@@ -144,17 +147,9 @@ class _AccountListBodyState extends State<AccountListBody> {
                 elements: snapshot.data, // 리스트에 사용할 데이터 리스트
                 groupBy: (element) =>
                     element['account_dt'], // 데이터 리스트 중 그룹을 지정할 항목
-                order: GroupedListOrder.DESC, //정렬(오름차순)
+                order: groupListOrder, //정렬(오름차순)
                 useStickyGroupSeparators: false, //가장 위에 그룹 이름을 고정시킬 것인지
-                groupSeparatorBuilder: (String value) => Padding(
-                  //그룹 타이틀 모양
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    dateUtils.yyyymmddToHangeul(value),
-                    textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                groupSeparatorBuilder: (String value) => _groupSeparator(value),
                 indexedItemBuilder: (c, element, index) {
                   //항목들 모양 처리
                   return Card(
@@ -216,6 +211,65 @@ class _AccountListBodyState extends State<AccountListBody> {
             );
           }
         });
+  }
+
+  Widget _groupSeparator(String value) {
+    ElevatedButton sortButton = ElevatedButton(
+      onPressed: () => {
+        setState(() {
+          if (groupListOrder == GroupedListOrder.DESC) {
+            groupListOrder = GroupedListOrder.ASC;
+          } else {
+            groupListOrder = GroupedListOrder.DESC;
+          }
+        })
+      },
+      child: Icon(Icons.sort_rounded),
+    );
+
+    if (groupListOrder == GroupedListOrder.ASC) {
+      if (value == firstDate) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                dateUtils.yyyymmddToHangeul(value),
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              sortButton
+            ],
+          )
+        );
+      }
+    } else {
+      if (value == lastDate) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                dateUtils.yyyymmddToHangeul(value),
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              sortButton
+            ],
+          )
+        );
+      }
+    }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        dateUtils.yyyymmddToHangeul(value),
+        textAlign: TextAlign.left,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      )
+    );
   }
 
   List<Widget> getBadgeList(dynamic element) {
@@ -364,6 +418,8 @@ class _AccountListBodyState extends State<AccountListBody> {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
         resultData = result['result_data'];
+        firstDate = resultData[resultData.length - 1]['account_dt'];
+        lastDate = resultData[0]['account_dt'];
       }
     } catch (e) {
       print(e);
