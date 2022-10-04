@@ -157,7 +157,15 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                         child: Text('|', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
                       ),
                       Text(
-                        '환율: ' + numberUtils.comma(snapshot.data['usd_krw_rate']),
+                        '환율(\$): ' + numberUtils.comma(snapshot.data['usd_krw_rate']),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Text('|', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
+                      ),
+                      Text(
+                        '환율(￥): ' + numberUtils.comma((snapshot.data['jpy_krw_rate'] * 100).toInt()),
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
                       ),
                       IconButton(
