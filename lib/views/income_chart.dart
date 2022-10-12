@@ -216,7 +216,8 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
 
   List<BarChartGroupData> barGroups(dynamic element) {
     List<BarChartGroupData> barGroups = [];
-
+    maxY = 0;
+    
     for (var i = 0; i < element['data'].length; i++) {
       if (i == element['data'].length - 1) {
         barGroups.add(
