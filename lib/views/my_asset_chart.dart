@@ -54,7 +54,7 @@ class _MyAssetChartBodyState extends State {
   List<Widget> _indicators = [];
   List<Widget> _indicatorsNetWorth = [];
   final List<Color> _indicatorColors = [
-    Colors.blue, Colors.red, Colors.yellow, Colors.green, Colors.black, Colors.orange
+    Colors.blue, Colors.red, Colors.yellow, Colors.green, Colors.black, Colors.orange, Colors.purple
   ];
 
   @override
@@ -272,6 +272,17 @@ class _MyAssetChartBodyState extends State {
                 fontWeight: FontWeight.bold,
                 color: const Color(0xffffffff)),
           );
+        case 6:
+          return PieChartSectionData(
+            color: _indicatorColors[i],
+            value: myAssetList[i]['asset_tot_sum_price'].abs() / totSumPrice,
+            title: (myAssetList[i]['asset_tot_sum_price'].abs() / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
         default:
           throw Error();
       }
@@ -354,6 +365,17 @@ class _MyAssetChartBodyState extends State {
                 color: const Color(0xffffffff)),
           );
         case 4:
+          return PieChartSectionData(
+            color: _indicatorColors[i],
+            value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            radius: radius,
+            titleStyle: TextStyle(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xffffffff)),
+          );
+        case 5:
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
