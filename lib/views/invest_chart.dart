@@ -152,7 +152,7 @@ class _InvestChartBodyState extends State<InvestChartBody> {
 
   Future<Map<String, dynamic>> _getDivisionSum(String procDt) async {
     var url = Uri.parse(
-      Config.API_URL + 'division_sum/2?procDt=' + procDt
+      Config.API_URL + 'division/2/sum?procDt=' + procDt
     );
 
     Map<String, dynamic> resultData = {};

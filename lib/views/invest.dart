@@ -203,7 +203,7 @@ class _InvestBodyState extends State<InvestBody> {
   }
 
   Future<List<dynamic>> _getInvestList(String strtDt, String endDt) async {
-    var url = Uri.parse(Config.API_URL + 'category_sum/2?strtDt=' + strtDt + '&endDt=' + endDt);
+    var url = Uri.parse(Config.API_URL + 'division/2/category/sum?strtDt=' + strtDt + '&endDt=' + endDt);
     List<dynamic> resultData = [];
 
     try {

@@ -88,7 +88,7 @@ class _AccountMainBodyState extends State<AccountMainBody> {
   }
 
   Future<Map<String, dynamic>> _getDivsionSum(String strtDt, String endDt) async {
-    var url = Uri.parse(Config.API_URL + 'division_sum?strtDt=' + strtDt + '&endDt=' + endDt);
+    var url = Uri.parse(Config.API_URL + 'division/sum?strtDt=' + strtDt + '&endDt=' + endDt);
     Map<String, dynamic> resultData = {};
 
     try {

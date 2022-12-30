@@ -161,7 +161,7 @@ class _ExpenseByMemberBodyState extends State<ExpenseByMemberBody> {
   }
 
   Future<List<dynamic>> _getExpenseByMemberList(String strtDt, String endDt) async {
-    var url = Uri.parse(Config.API_URL + 'member_sum?strtDt=' + strtDt + '&endDt=' + endDt);
+    var url = Uri.parse(Config.API_URL + 'member/sum?strtDt=' + strtDt + '&endDt=' + endDt);
     List<dynamic> resultData = [];
     totalSumPrice = 0;
 

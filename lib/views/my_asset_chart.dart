@@ -184,7 +184,7 @@ class _MyAssetChartBodyState extends State {
       }
 
       if (r == '5') {
-        resultList['data'][r]['asset_tot_sum_price'] += resultList['data']['6']['asset_tot_sum_price'];
+        resultList['data'][r]['asset_tot_sum_price'] -= resultList['data']['6']['asset_tot_sum_price'];
       }
 
       _indicators.add(
@@ -394,7 +394,7 @@ class _MyAssetChartBodyState extends State {
 
   Future<Map<String, dynamic>> _getMyAssetList(String strtDt, String endDt) async {
     var url = Uri.parse(
-      Config.API_URL + 'my_asset_list?strtDt=' + strtDt + '&endDt=' + endDt
+      Config.API_URL + 'my_asset?strtDt=' + strtDt + '&endDt=' + endDt
     );
 
     Map<String, dynamic> resultData = {};

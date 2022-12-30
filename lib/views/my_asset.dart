@@ -264,7 +264,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
   }
 
   Future<List<dynamic>> _getAssetList() async {
-    var url = Uri.parse(Config.API_URL + 'asset_list');
+    var url = Uri.parse(Config.API_URL + 'asset');
     List<dynamic> resultData = [];
 
     try {

@@ -145,7 +145,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                   child: Row(
                     children: [
                       Text(
@@ -157,6 +157,25 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                         child: Text('|', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
                       ),
                       Text(
+                        '순자산 : ' + numberUtils.comma(snapshot.data['tot_net_worth_sum_price']),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
+                      ),
+                      IconButton(
+                        onPressed: () => {
+                          setState(() {
+                            isDelayed = false;
+                          })
+                        }, 
+                        icon: Icon(Icons.refresh_rounded)
+                      )
+                    ]
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                  child: Row(
+                    children: [
+                      Text(
                         '환율(\$): ' + numberUtils.comma(snapshot.data['usd_krw_rate']),
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
                       ),
@@ -167,14 +186,6 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                       Text(
                         '환율(￥): ' + numberUtils.comma((snapshot.data['jpy_krw_rate'] * 100).toInt()),
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
-                      ),
-                      IconButton(
-                        onPressed: () => {
-                          setState(() {
-                            isDelayed = false;
-                          })
-                        }, 
-                        icon: Icon(Icons.refresh_rounded)
                       )
                     ]
                   ),
@@ -357,7 +368,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
   }
 
   Future<Map<String, dynamic>> _getMyAssetList(String strtDt, String endDt) async {
-    var urlString = Config.API_URL + 'my_asset_list?strtDt=' + strtDt + '&endDt=' + endDt;
+    var urlString = Config.API_URL + 'my_asset?strtDt=' + strtDt + '&endDt=' + endDt;
     if(!isDelayed){
       urlString = urlString + '&type=realtime';
       isDelayed = true;

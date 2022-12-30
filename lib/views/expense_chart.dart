@@ -152,7 +152,7 @@ class _ExpenseChartBodyState extends State<ExpenseChartBody> {
 
   Future<Map<String, dynamic>> _getDivisionSum(String procDt) async {
     var url = Uri.parse(
-      Config.API_URL + 'division_sum/3?procDt=' + procDt
+      Config.API_URL + 'division/3/sum?procDt=' + procDt
     );
 
     Map<String, dynamic> resultData = {};

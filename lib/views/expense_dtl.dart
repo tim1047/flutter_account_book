@@ -176,7 +176,7 @@ class _ExpenseDtlBodyState extends State<ExpenseDtlBody> {
   }
 
   Future<List<dynamic>> _getExpenseDtlList(String strtDt, String endDt) async {
-    var url = Uri.parse(Config.API_URL + 'category_seq_sum/3?strtDt=' + strtDt + '&endDt=' + endDt);
+    var url = Uri.parse(Config.API_URL + 'division/3/category_seq/sum?strtDt=' + strtDt + '&endDt=' + endDt);
     List<dynamic> resultData = [];
 
     try {

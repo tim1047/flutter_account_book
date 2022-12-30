@@ -239,7 +239,7 @@ class ExpenseDailyChartBodyState extends State<ExpenseDailyChartBody> {
     String endDt = context.read<Date>().getEndDt();
 
     var url = Uri.parse(Config.API_URL +
-        'expense_sum_daily?strtDt=' +
+        'expense/sum/daily?strtDt=' +
         prevStrtDt +
         '&endDt=' +
         endDt);

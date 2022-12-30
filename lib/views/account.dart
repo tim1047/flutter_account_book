@@ -293,13 +293,13 @@ class _AccountBodyState extends State<AccountBody> {
                           onPressed: () => _delete(),
                           child: Text('삭제'),
                           style:
-                              ElevatedButton.styleFrom(backgroundColor: Colors.red)))),
+                              ElevatedButton.styleFrom(primary: Colors.red)))),
               Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: ElevatedButton(
                     onPressed: () => _update(args.isInsert),
                     child: args.isInsert ? Text('등록') : Text('수정'),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blue)),
+                    style: ElevatedButton.styleFrom(primary: Colors.blue)),
               )
             ],
           )
@@ -324,7 +324,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getDivisionList() async {
-    var url = Uri.parse(Config.API_URL + 'division_list');
+    var url = Uri.parse(Config.API_URL + 'division');
     List<dynamic> resultData = [];
 
     try {
@@ -385,7 +385,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getMemberList() async {
-    var url = Uri.parse(Config.API_URL + 'member_list');
+    var url = Uri.parse(Config.API_URL + 'member');
     List<dynamic> resultData = [];
 
     try {
@@ -440,7 +440,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getPaymentList(String memberId) async {
-    var url = Uri.parse(Config.API_URL + 'payment_list/' + memberId);
+    var url = Uri.parse(Config.API_URL + 'member/' + memberId + '/division');
     List<dynamic> resultData = [];
 
     try {
@@ -507,7 +507,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getCategoryList(String divisionId) async {
-    var url = Uri.parse(Config.API_URL + 'category_list/' + divisionId);
+    var url = Uri.parse(Config.API_URL + 'division/' + divisionId + '/category');
     List<dynamic> resultData = [];
 
     try {
@@ -574,7 +574,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getCategorySeqList(String categoryId) async {
-    var url = Uri.parse(Config.API_URL + 'category_seq_list/' + categoryId);
+    var url = Uri.parse(Config.API_URL + 'category/' + categoryId + '/category_seq');
     List<dynamic> resultData = [];
 
     try {

@@ -125,7 +125,7 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
 
   Future<Map<String, dynamic>> _getDivisionSum(String procDt) async {
     var url = Uri.parse(
-      Config.API_URL + 'division_sum/1?procDt=' + procDt
+      Config.API_URL + 'division/1/sum?procDt=' + procDt
     );
 
     Map<String, dynamic> resultData = {};

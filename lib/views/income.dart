@@ -203,7 +203,7 @@ class _IncomeBodyState extends State<IncomeBody> {
   }
 
   Future<List<dynamic>> _getIncomeList(String strtDt, String endDt) async {
-    var url = Uri.parse(Config.API_URL + 'category_sum/1?strtDt=' + strtDt + '&endDt=' + endDt);
+    var url = Uri.parse(Config.API_URL + 'division/1/category/sum?strtDt=' + strtDt + '&endDt=' + endDt);
     List<dynamic> resultData = [];
 
     try {

@@ -221,7 +221,7 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
 
   Future<List<dynamic>> _getMyAssetAccum(String strtDt, String endDt) async {
     var url = Uri.parse(
-      Config.API_URL + 'my_asset_accum?strtDt=' + strtDt + '&endDt=' + endDt
+      Config.API_URL + 'my_asset/accum?strtDt=' + strtDt + '&endDt=' + endDt
     );
 
     List<dynamic> resultData = [];
