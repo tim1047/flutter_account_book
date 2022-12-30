@@ -440,7 +440,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getPaymentList(String memberId) async {
-    var url = Uri.parse(Config.API_URL + 'member/' + memberId + '/division');
+    var url = Uri.parse(Config.API_URL + 'member/' + memberId + '/payment');
     List<dynamic> resultData = [];
 
     try {
