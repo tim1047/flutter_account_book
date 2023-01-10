@@ -75,6 +75,7 @@ class Config {
     '101': Icon(LineIcons.film),
     '102': Icon(LineIcons.planeDeparture),
     '103': Icon(Icons.luggage_rounded),
+    '104': Icon(Icons.book_rounded),
     '111': Icon(LineIcons.school),
     '112': Icon(LineIcons.book),
     '121': Icon(LineIcons.birthdayCake),
