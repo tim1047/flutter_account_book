@@ -13,8 +13,10 @@ class Dropdown extends StatefulWidget {
 }
 
 class _DropdownState extends State<Dropdown> {
-  List<String> _accountDtList = [];
-  String dropdownValue = '';
+  final List<String> _yearList = [];
+  final List<String> _monthList = [];
+  String dropdownYearValue = '';
+  String dropdownMonthValue = '';
   DateUtils2 dateUtils = DateUtils2();
 
   @override
@@ -26,47 +28,64 @@ class _DropdownState extends State<Dropdown> {
   
   @override
   Widget build(BuildContext context) {
-    return DropdownButton(
-      value: dropdownValue == '' ? context.read<Date>().getYYYYMM() : dropdownValue,
-      icon: const Icon(Icons.keyboard_arrow_down_rounded),
-      elevation: 16,
-      style: const TextStyle(color: Colors.black),
-      onChanged: (String? newValue) {
-        setState(() {
-          context.read<Date>().setDate(newValue!.substring(0, 4), newValue.substring(4, 6));
-          dropdownValue = newValue;
-        });
-      },
-      items: _accountDtList.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(dateUtils.yyyymmddToHangeul2(value)),
-        );
-      }).toList()
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        DropdownButton(
+          value: dropdownYearValue == '' ? context.read<Date>().getYear() : dropdownYearValue,
+          icon: const Icon(Icons.keyboard_arrow_down_rounded),
+          elevation: 16,
+          style: const TextStyle(color: Colors.black),
+          onChanged: (String? newValue) {
+            setState(() {
+              context.read<Date>().setDate(newValue!, '');
+              dropdownYearValue = newValue;
+            });
+          },
+          items: _yearList.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value + '년'),
+            );
+          }).toList()
+        ),
+        SizedBox(width: 10.0),
+        DropdownButton(
+          value: dropdownMonthValue == '' ? context.read<Date>().getMonth() : dropdownMonthValue,
+          icon: const Icon(Icons.keyboard_arrow_down_rounded),
+          elevation: 16,
+          style: const TextStyle(color: Colors.black),
+          onChanged: (String? newValue) {
+            setState(() {
+              context.read<Date>().setDate('', newValue!);
+              dropdownMonthValue = newValue;
+            });
+          },
+          items: _monthList.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value + '월'),
+            );
+          }).toList()
+        )
+      ]
     );
   }
 
   void _setAccountDtList() {
-    _accountDtList.clear();
+    _yearList.clear();
+    _monthList.clear();
     int year = Config.STRT_YEAR;
-    int month = Config.STRT_MONTH;
 
-    for (int i = DateTime.now().year; i >= year; i--){
-      int tempMonth = DateTime.now().month;
+    for (int i = DateTime.now().year; i >= year; i--) {
+      _yearList.add(i.toString());
+    }
 
-      if (i != DateTime.now().year) {
-        tempMonth = 12;
-      }
-
-      for (int j = tempMonth; j >= 1; j--){
-        if (j < 10) {
-          _accountDtList.add(i.toString() + '0' + j.toString());
-        } else {
-          _accountDtList.add(i.toString() + j.toString());
-        }
-        if (i == year && j == month) {
-          break;
-        }
+    for (int i = 12; i > 0; i--) {
+      if (i < 10) {
+        _monthList.add('0' + i.toString());
+      } else {
+        _monthList.add(i.toString());
       }
     }
   }

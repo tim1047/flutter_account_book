@@ -17,6 +17,14 @@ class Date with ChangeNotifier {
     return year + month;
   }
 
+  String getYear() {
+    return year;
+  }
+
+  String getMonth() {
+    return month;
+  }
+
   String getPrevStrtDt(int month) {
     int prevMonth = int.parse(this.month) - month;
     int prevYear = int.parse(this.year);
@@ -29,8 +37,13 @@ class Date with ChangeNotifier {
   }
 
   void setDate(String year, String month) {
-    this.year = year;
-    this.month = month;
+    if (year.isNotEmpty) {
+      this.year = year;
+    }
+
+    if (month.isNotEmpty) {
+      this.month = month;
+    }
     notifyListeners();
   }
 }
