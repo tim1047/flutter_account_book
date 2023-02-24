@@ -236,7 +236,7 @@ class _AccountListBodyState extends State<AccountListBody> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                dateUtils.yyyymmddToHangeul(value),
+                dateUtils.yyyymmddToHangeul(value) + ' (' + dateUtils.getDay(value) + ')',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -253,7 +253,7 @@ class _AccountListBodyState extends State<AccountListBody> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                dateUtils.yyyymmddToHangeul(value),
+                dateUtils.yyyymmddToHangeul(value) + ' (' + dateUtils.getDay(value) + ')',
                 textAlign: TextAlign.left,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -266,7 +266,7 @@ class _AccountListBodyState extends State<AccountListBody> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
-        dateUtils.yyyymmddToHangeul(value),
+        dateUtils.yyyymmddToHangeul(value) + ' (' + dateUtils.getDay(value) + ')',
         textAlign: TextAlign.left,
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       )

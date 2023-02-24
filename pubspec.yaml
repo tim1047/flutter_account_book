@@ -45,6 +45,8 @@ dependencies:
   fl_chart: ^0.50.1
   flutter_keyboard_size: ^1.0.0+4
   flutter_clean_calendar: ^1.1.0
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

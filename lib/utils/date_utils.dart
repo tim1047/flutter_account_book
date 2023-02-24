@@ -43,4 +43,8 @@ class DateUtils2 {
     } 
     return nextYear.toString() + (nextYear < 10 ? '0' + nextMonth.toString() : nextMonth.toString()) + '01';
   }
+
+  String getDay(String dt) {
+    return DateFormat('E', 'ko').format(stringToDateTime(dt));
+  }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:account_book/provider/date.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +41,15 @@ class MyApp extends StatelessWidget {
         },
         initialRoute: '/',
         routes: Routes().getRoutes(context),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        supportedLocales: const [
+          Locale('ko', 'KR')
+        ],
+        locale: const Locale('ko')
       )
     );
   }
