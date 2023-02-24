@@ -27,11 +27,11 @@ class Date with ChangeNotifier {
 
   String getPrevStrtDt(int month) {
     int prevMonth = int.parse(this.month) - month;
-    int prevYear = int.parse(this.year);
+    int prevYear = int.parse(year);
 
     if (prevMonth <= 0) {
       prevMonth = prevMonth + 12;
-      prevYear = int.parse(this.year) - 1; 
+      prevYear = int.parse(year) - 1; 
     } 
     return prevYear.toString() + (prevMonth < 10 ? '0' + prevMonth.toString() : prevMonth.toString()) + '01';
   }
