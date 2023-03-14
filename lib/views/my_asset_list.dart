@@ -186,6 +186,14 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                       Text(
                         '환율(￥): ' + numberUtils.comma((snapshot.data['jpy_krw_rate'] * 100).toInt()),
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Text('|', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
+                      ),
+                      Text(
+                        snapshot.data['my_asset_accum_dts'] + ' 기준',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
                       )
                     ]
                   ),
