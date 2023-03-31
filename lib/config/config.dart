@@ -6,9 +6,9 @@ class Config {
 
   static const String API_URL = 'http://146.56.159.174:8000/account_book/';
   static const Map<String, dynamic> AVATAR_INFO = {
-    '1': 'assets/boy.png',
-    '2': 'assets/girl.png',
-    '3': 'assets/couple.png'
+    '1': 'boy.png',
+    '2': 'girl.png',
+    '3': 'couple.png'
   };
   static const int STRT_YEAR = 2021;
   static const int STRT_MONTH = 7;
