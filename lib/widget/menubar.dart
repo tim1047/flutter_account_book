@@ -7,6 +7,7 @@ class MenuBar extends StatelessWidget with PreferredSizeWidget{
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text('강원 🧡 정윤 가계부'),
+      backgroundColor: Theme.of(context).primaryColor,
     );
   }
 

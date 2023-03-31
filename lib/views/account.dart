@@ -299,7 +299,7 @@ class _AccountBodyState extends State<AccountBody> {
                 child: ElevatedButton(
                     onPressed: () => _update(args.isInsert),
                     child: args.isInsert ? Text('등록') : Text('수정'),
-                    style: ElevatedButton.styleFrom(primary: Colors.blue)),
+                    style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor)),
               )
             ],
           )

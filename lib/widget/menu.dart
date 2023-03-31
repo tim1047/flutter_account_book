@@ -1,10 +1,17 @@
+import 'package:account_book/provider/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:provider/provider.dart';
 
 
-class Menu extends StatelessWidget {
+class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
 
+  @override
+  State<Menu> createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -12,9 +19,26 @@ class Menu extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            child: Text('강원_정윤 가계부'),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('강원 🧡 정윤 가계부', style: TextStyle(color: Colors.white)),
+                  Consumer<ThemeNotifier>(
+                    builder: (context, notifier, child) => Switch(
+                      value: notifier.darkTheme, 
+                      onChanged: (newValue) {
+                        notifier.changeTheme();
+                      }
+                    ),
+                  )
+                ],
+            ),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              // color: Theme.of(context).primaryColor,
+              image: DecorationImage(
+                image: AssetImage('dumbo.gif'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           ListTile(

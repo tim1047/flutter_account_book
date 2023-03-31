@@ -45,7 +45,7 @@ class _DropdownState extends State<Dropdown> {
           items: _yearList.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value + '년'),
+              child: Text(value + '년', style: TextStyle(color: Theme.of(context).textTheme.bodyText2?.color)),
             );
           }).toList()
         ),
@@ -64,7 +64,7 @@ class _DropdownState extends State<Dropdown> {
           items: _monthList.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value + '월'),
+              child: Text(value + '월', style: TextStyle(color: Theme.of(context).textTheme.bodyText2?.color)),
             );
           }).toList()
         )

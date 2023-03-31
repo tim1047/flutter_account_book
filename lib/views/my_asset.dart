@@ -252,7 +252,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
                   onPressed: () => _update(args.isInsert), 
                   child: args.isInsert ? Text('등록') : Text('수정'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue
+                    primary: Theme.of(context).primaryColor
                   )
                 ),
               )

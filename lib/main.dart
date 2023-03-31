@@ -1,3 +1,4 @@
+import 'package:account_book/provider/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'routes/routes.dart';
 import 'package:provider/provider.dart';
@@ -17,39 +18,45 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
           ChangeNotifierProvider(create: (context) => Date()),
+          ChangeNotifierProvider(create: (context) => ThemeNotifier()),
       ],
-      child: MaterialApp(
-        title: '강원_정윤_가계부',
-        theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.blue,
-          fontFamily: 'Melona',
-        ),
-        builder: (context, child) { 
-          return MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 0.9),
-            child: child!,
-          ); 
-        },
-        initialRoute: '/',
-        routes: Routes().getRoutes(context),
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate
-        ],
-        supportedLocales: const [
-          Locale('ko', 'KR')
-        ],
-        locale: const Locale('ko')
+      child: Consumer<ThemeNotifier>(
+        builder: (_, themeNotifier, __) => MaterialApp(
+          title: '강원 🧡 정윤 가계부',
+          // theme: ThemeData.dark(),
+          theme: ThemeData(
+            // This is the theme of your application.
+            //
+            // Try running your application with "flutter run". You'll see the
+            // application has a blue toolbar. Then, without quitting the app, try
+            // changing the primarySwatch below to Colors.green and then invoke
+            // "hot reload" (press "r" in the console where you ran "flutter run",
+            // or simply save your changes to "hot reload" in a Flutter IDE).
+            // Notice that the counter didn't reset back to zero; the application
+            // is not restarted.
+            primarySwatch: Colors.purple,
+            primaryColor: Colors.purple,
+            fontFamily: 'Melona',
+            brightness: themeNotifier.darkTheme ? Brightness.dark : Brightness.light
+          ),
+          builder: (context, child) { 
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 0.9),
+              child: child!,
+            ); 
+          },
+          initialRoute: '/',
+          routes: Routes().getRoutes(context),
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate
+          ],
+          supportedLocales: const [
+            Locale('ko', 'KR')
+          ],
+          locale: const Locale('ko')
+        )
       )
     );
   }
