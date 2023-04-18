@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
             // is not restarted.
             primarySwatch: Colors.purple,
             primaryColor: Colors.purple,
-            fontFamily: 'Melona',
+            // fontFamily: 'Melona',
             brightness: themeNotifier.darkTheme ? Brightness.dark : Brightness.light
           ),
           builder: (context, child) { 
