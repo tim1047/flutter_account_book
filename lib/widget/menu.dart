@@ -36,7 +36,7 @@ class _MenuState extends State<Menu> {
             decoration: BoxDecoration(
               // color: Theme.of(context).primaryColor,
               image: DecorationImage(
-                image: AssetImage('/assets/dumbo.gif'),
+                image: AssetImage('assets/dumbo.gif'),
                 fit: BoxFit.cover,
               ),
             ),
