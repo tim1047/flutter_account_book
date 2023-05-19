@@ -71,7 +71,6 @@ class _DropdownState extends State<Dropdown> {
                       color: Theme.of(context).textTheme.bodyText2?.color)),
             );
           }).toList()),
-      SizedBox(width: 10.0),
       IconButton(
           onPressed: () => {
                 setState(() {
