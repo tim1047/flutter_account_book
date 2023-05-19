@@ -4,7 +4,6 @@ import 'package:account_book/provider/date.dart';
 import 'package:account_book/utils/date_utils.dart';
 import 'package:account_book/config/config.dart';
 
-
 class Dropdown extends StatefulWidget {
   const Dropdown({Key? key}) : super(key: key);
 
@@ -25,14 +24,14 @@ class _DropdownState extends State<Dropdown> {
     super.initState();
     _setAccountDtList();
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        DropdownButton(
-          value: dropdownYearValue == '' ? context.read<Date>().getYear() : dropdownYearValue,
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      DropdownButton(
+          value: dropdownYearValue == ''
+              ? context.read<Date>().getYear()
+              : dropdownYearValue,
           icon: const Icon(Icons.keyboard_arrow_down_rounded),
           elevation: 16,
           style: const TextStyle(color: Colors.black),
@@ -45,13 +44,16 @@ class _DropdownState extends State<Dropdown> {
           items: _yearList.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value + '년', style: TextStyle(color: Theme.of(context).textTheme.bodyText2?.color)),
+              child: Text(value + '년',
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText2?.color)),
             );
-          }).toList()
-        ),
-        SizedBox(width: 10.0),
-        DropdownButton(
-          value: dropdownMonthValue == '' ? context.read<Date>().getMonth() : dropdownMonthValue,
+          }).toList()),
+      SizedBox(width: 10.0),
+      DropdownButton(
+          value: dropdownMonthValue == ''
+              ? context.read<Date>().getMonth()
+              : dropdownMonthValue,
           icon: const Icon(Icons.keyboard_arrow_down_rounded),
           elevation: 16,
           style: const TextStyle(color: Colors.black),
@@ -64,12 +66,25 @@ class _DropdownState extends State<Dropdown> {
           items: _monthList.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value + '월', style: TextStyle(color: Theme.of(context).textTheme.bodyText2?.color)),
+              child: Text(value + '월',
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText2?.color)),
             );
-          }).toList()
-        )
-      ]
-    );
+          }).toList()),
+      SizedBox(width: 10.0),
+      IconButton(
+          onPressed: () => {
+                setState(() {
+                  dropdownYearValue = context.read<Date>().getInitYear();
+                  dropdownMonthValue = context.read<Date>().getInitMonth();
+
+                  context
+                      .read<Date>()
+                      .setDate(dropdownYearValue, dropdownMonthValue);
+                })
+              },
+          icon: Icon(Icons.refresh_rounded))
+    ]);
   }
 
   void _setAccountDtList() {
