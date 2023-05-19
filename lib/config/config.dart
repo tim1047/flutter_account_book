@@ -63,6 +63,7 @@ class Config {
     '62': Icon(LineIcons.taxi),
     '63': Icon(LineIcons.train),
     '64': Icon(LineIcons.car),
+    '65': Icon(LineIcons.gasPump),
     '71': Icon(LineIcons.tShirt),
     '72': Icon(LineIcons.ring),
     '81': Icon(LineIcons.paintBrush),
