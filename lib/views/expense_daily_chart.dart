@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:account_book/config/config.dart';
 import 'package:account_book/utils/number_utils.dart';
-import 'package:account_book/widget/menubar.dart';
+import 'package:account_book/widget/menubar.dart' as menubar;
 import 'package:account_book/widget/menu.dart';
 import 'package:account_book/widget/dropdown.dart';
 import 'package:account_book/provider/date.dart';
@@ -26,7 +26,7 @@ class _ExpenseDailyChartState extends State<ExpenseDailyChart> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: MenuBar(),
+        appBar: menubar.MenuBar(),
         drawer: Menu(),
         body: SingleChildScrollView(
             child: Column(

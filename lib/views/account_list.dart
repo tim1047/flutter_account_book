@@ -4,10 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badge;
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:account_book/widget/menubar.dart';
+import 'package:account_book/widget/menubar.dart' as menubar;
 import 'package:account_book/widget/menu.dart';
 import 'package:account_book/utils/number_utils.dart';
 import 'package:account_book/config/config.dart';
@@ -37,7 +37,7 @@ class _AccountListState extends State<AccountList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MenuBar(),
+      appBar: menubar.MenuBar(),
       drawer: Menu(),
       body: Column(
         children: [
@@ -180,19 +180,24 @@ class _AccountListBodyState extends State<AccountListBody> {
                                     )),
                                 title: _getPrice(element, numberUtils),
                                 subtitle: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Expanded(child: Text(
-                                        element['category_nm'] +
-                                            (element['category_seq_nm'] != null
-                                                ? (' | ' +
-                                                    element['category_seq_nm'])
-                                                : '') +
-                                            (element['remark'] != '' 
-                                              ? ' ( ' + element['remark'] + ' )'
-                                              : ''
-                                            ),
-                                        style: TextStyle(fontSize: 12))),
+                                    Expanded(
+                                        child: Text(
+                                            element['category_nm'] +
+                                                (element['category_seq_nm'] !=
+                                                        null
+                                                    ? (' | ' +
+                                                        element[
+                                                            'category_seq_nm'])
+                                                    : '') +
+                                                (element['remark'] != ''
+                                                    ? ' ( ' +
+                                                        element['remark'] +
+                                                        ' )'
+                                                    : ''),
+                                            style: TextStyle(fontSize: 12))),
                                     Row(children: getBadgeList(element))
                                   ],
                                 ),
@@ -214,63 +219,68 @@ class _AccountListBodyState extends State<AccountListBody> {
 
   Widget _groupSeparator(String value) {
     SizedBox sortButton = SizedBox(
-      child: ElevatedButton(
-        onPressed: () => {
-          setState(() {
-            if (groupListOrder == GroupedListOrder.DESC) {
-              groupListOrder = GroupedListOrder.ASC;
-            } else {
-              groupListOrder = GroupedListOrder.DESC;
-            }
-          })
-        },
-        child: Icon(Icons.sort_rounded),
-      )
-    );
+        child: ElevatedButton(
+      onPressed: () => {
+        setState(() {
+          if (groupListOrder == GroupedListOrder.DESC) {
+            groupListOrder = GroupedListOrder.ASC;
+          } else {
+            groupListOrder = GroupedListOrder.DESC;
+          }
+        })
+      },
+      child: Icon(Icons.sort_rounded),
+    ));
 
     if (groupListOrder == GroupedListOrder.ASC) {
       if (value == firstDate) {
         return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                dateUtils.yyyymmddToHangeul(value) + ' (' + dateUtils.getDay(value) + ')',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              sortButton
-            ],
-          )
-        );
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  dateUtils.yyyymmddToHangeul(value) +
+                      ' (' +
+                      dateUtils.getDay(value) +
+                      ')',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                sortButton
+              ],
+            ));
       }
     } else {
       if (value == lastDate) {
         return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                dateUtils.yyyymmddToHangeul(value) + ' (' + dateUtils.getDay(value) + ')',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              sortButton
-            ],
-          )
-        );
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  dateUtils.yyyymmddToHangeul(value) +
+                      ' (' +
+                      dateUtils.getDay(value) +
+                      ')',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                sortButton
+              ],
+            ));
       }
     }
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        dateUtils.yyyymmddToHangeul(value) + ' (' + dateUtils.getDay(value) + ')',
-        textAlign: TextAlign.left,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      )
-    );
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          dateUtils.yyyymmddToHangeul(value) +
+              ' (' +
+              dateUtils.getDay(value) +
+              ')',
+          textAlign: TextAlign.left,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ));
   }
 
   List<Widget> getBadgeList(dynamic element) {
@@ -279,9 +289,9 @@ class _AccountListBodyState extends State<AccountListBody> {
     if (element['point_price'] > 0) {
       badgeList.add(Container(
         margin: EdgeInsets.all(3),
-        child: Badge(
+        child: badge.Badge(
             toAnimate: false,
-            shape: BadgeShape.square,
+            shape: badge.BadgeShape.square,
             badgeColor: Colors.orangeAccent,
             borderRadius: BorderRadius.circular(8),
             badgeContent: Text('포인트',
@@ -293,9 +303,9 @@ class _AccountListBodyState extends State<AccountListBody> {
     if (element['impulse_yn'] == 'Y') {
       badgeList.add(Container(
         margin: EdgeInsets.all(3),
-        child: Badge(
+        child: badge.Badge(
           toAnimate: false,
-          shape: BadgeShape.square,
+          shape: badge.BadgeShape.square,
           badgeColor: Colors.purple,
           borderRadius: BorderRadius.circular(8),
           badgeContent:
@@ -316,9 +326,9 @@ class _AccountListBodyState extends State<AccountListBody> {
 
     badgeList.add(Container(
       margin: EdgeInsets.all(3),
-      child: Badge(
+      child: badge.Badge(
         toAnimate: false,
-        shape: BadgeShape.square,
+        shape: badge.BadgeShape.square,
         badgeColor: badgeColor,
         borderRadius: BorderRadius.circular(8),
         badgeContent: Text(element['division_nm'],
@@ -434,24 +444,24 @@ Widget _getPrice(dynamic element, numberUtils) {
 
   if (element['point_price'] > 0) {
     price = Row(children: [
-      Text(numberUtils.comma(element['price']) + ' (' + numberUtils.comma(element['point_price'] * -1) + ')',
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
-            decoration: TextDecoration.lineThrough,
-            decorationThickness: 1,
-            color: Colors.grey)),
+      Text(
+          numberUtils.comma(element['price']) +
+              ' (' +
+              numberUtils.comma(element['point_price'] * -1) +
+              ')',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              decoration: TextDecoration.lineThrough,
+              decorationThickness: 1,
+              color: Colors.grey)),
       Text('  '),
       Text(numberUtils.comma(element['price'] - element['point_price']),
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16))
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
     ]);
   } else {
     price = Text(numberUtils.comma(element['price']),
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16));
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16));
   }
   return price;
 }

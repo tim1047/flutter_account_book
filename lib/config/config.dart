@@ -8,7 +8,8 @@ class Config {
   static const Map<String, dynamic> AVATAR_INFO = {
     '1': 'assets/boy.png',
     '2': 'assets/girl.png',
-    '3': 'assets/couple.png'
+    '3': 'assets/couple.png',
+    '4': 'assets/baby.png'
   };
   static const int STRT_YEAR = 2021;
   static const int STRT_MONTH = 7;

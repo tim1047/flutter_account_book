@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MenuBar extends StatelessWidget with PreferredSizeWidget{
+class MenuBar extends StatelessWidget implements PreferredSizeWidget {
   const MenuBar({Key? key}) : super(key: key);
 
   @override

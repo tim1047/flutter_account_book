@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import 'package:account_book/widget/menubar.dart';
+import 'package:account_book/widget/menubar.dart' as menubar;
 import 'package:account_book/widget/menu.dart';
 import 'package:account_book/utils/number_utils.dart';
 import 'package:account_book/config/config.dart';
@@ -25,7 +25,7 @@ class _ExpenseByMemberState extends State<ExpenseByMember> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MenuBar(),
+        appBar: menubar.MenuBar(),
         drawer: Menu(),
         body: Column(
           children: [
@@ -156,7 +156,8 @@ class _ExpenseByMemberBodyState extends State<ExpenseByMemberBody> {
                       progressColor: [
                         Colors.blue,
                         Colors.green,
-                        Colors.orange
+                        Colors.orange,
+                        Colors.pinkAccent
                       ][int.parse(element['member_id']) - 1],
                     ),
                   ),

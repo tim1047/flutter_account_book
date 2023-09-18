@@ -4,12 +4,11 @@ import 'package:account_book/utils/number_formatter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-import 'package:account_book/widget/menubar.dart';
+import 'package:account_book/widget/menubar.dart' as menubar;
 import 'package:account_book/widget/menu.dart';
 import 'package:account_book/config/config.dart';
 import 'package:account_book/utils/date_utils.dart';
 import 'package:account_book/utils/number_utils.dart';
-
 
 class Account extends StatelessWidget {
   const Account({Key? key}) : super(key: key);
@@ -18,7 +17,7 @@ class Account extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: MenuBar(),
+        appBar: menubar.MenuBar(),
         drawer: Menu(),
         body: SingleChildScrollView(
           child: AccountBody(),
@@ -73,9 +72,11 @@ class _AccountBodyState extends State<AccountBody> {
     accountId = args.accountId;
 
     if (isInit) {
-      priceController.text = (args.price != 0 ? numberUtils.comma(args.price) : '');
+      priceController.text =
+          (args.price != 0 ? numberUtils.comma(args.price) : '');
       remarkController.text = args.remark;
-      pointPriceController.text = (args.pointPrice != 0 ? numberUtils.comma(args.pointPrice) : '');
+      pointPriceController.text =
+          (args.pointPrice != 0 ? numberUtils.comma(args.pointPrice) : '');
       isInit = false;
       isExpense = args.divisionId == '3' ? true : false;
     }
@@ -202,11 +203,11 @@ class _AccountBodyState extends State<AccountBody> {
                   child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: TextField(
-                    controller: priceController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                    ),
-                    inputFormatters: [ThousandsSeparatorInputFormatter()],
+                  controller: priceController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  inputFormatters: [ThousandsSeparatorInputFormatter()],
                 ),
               )),
             ],
@@ -254,28 +255,29 @@ class _AccountBodyState extends State<AccountBody> {
                   child: Text('포인트 처리 금액')),
               Expanded(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: TextField(
-                        controller: pointPriceController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                        inputFormatters: [ThousandsSeparatorInputFormatter()],
-                    ),
-                  )
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(	//모서리를 둥글게
-                  borderRadius: BorderRadius.circular(20)),
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: TextField(
+                  controller: pointPriceController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  inputFormatters: [ThousandsSeparatorInputFormatter()],
                 ),
-                child: Text('전액'),
-                onPressed: () => {
-                  setState(() {
-                    pointPriceController.text = priceController.text == '' ? numberUtils.comma(0) : priceController.text;
-                  })
-                }
-              )
+              )),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        //모서리를 둥글게
+                        borderRadius: BorderRadius.circular(20)),
+                  ),
+                  child: Text('전액'),
+                  onPressed: () => {
+                        setState(() {
+                          pointPriceController.text = priceController.text == ''
+                              ? numberUtils.comma(0)
+                              : priceController.text;
+                        })
+                      })
             ],
           )),
           Divider(
@@ -299,7 +301,8 @@ class _AccountBodyState extends State<AccountBody> {
                 child: ElevatedButton(
                     onPressed: () => _update(args.isInsert),
                     child: args.isInsert ? Text('등록') : Text('수정'),
-                    style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor)),
+                    style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).primaryColor)),
               )
             ],
           )
@@ -507,7 +510,8 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getCategoryList(String divisionId) async {
-    var url = Uri.parse(Config.API_URL + 'division/' + divisionId + '/category');
+    var url =
+        Uri.parse(Config.API_URL + 'division/' + divisionId + '/category');
     List<dynamic> resultData = [];
 
     try {
@@ -574,7 +578,8 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getCategorySeqList(String categoryId) async {
-    var url = Uri.parse(Config.API_URL + 'category/' + categoryId + '/category_seq');
+    var url =
+        Uri.parse(Config.API_URL + 'category/' + categoryId + '/category_seq');
     List<dynamic> resultData = [];
 
     try {
@@ -644,11 +649,13 @@ class _AccountBodyState extends State<AccountBody> {
     return DropdownButton(
         value: inputImpulseYn,
         elevation: 16,
-        onChanged: isExpense ? (String? newValue) {
-          setState(() {
-            inputImpulseYn = newValue!;
-          });
-        } : null,
+        onChanged: isExpense
+            ? (String? newValue) {
+                setState(() {
+                  inputImpulseYn = newValue!;
+                });
+              }
+            : null,
         items: ['N', 'Y'].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -723,7 +730,9 @@ class _AccountBodyState extends State<AccountBody> {
       'price': int.parse(numberUtils.uncomma(priceController.text)),
       'remark': remarkController.text,
       'impulse_yn': inputImpulseYn,
-      'point_price': pointPriceController.text == '' ? 0 : int.parse(numberUtils.uncomma(pointPriceController.text)),
+      'point_price': pointPriceController.text == ''
+          ? 0
+          : int.parse(numberUtils.uncomma(pointPriceController.text)),
     };
 
     if (isInsert) {

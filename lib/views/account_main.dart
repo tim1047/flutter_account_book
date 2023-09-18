@@ -5,13 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:account_book/widget/menubar.dart';
+import 'package:account_book/widget/menubar.dart' as menubar;
 import 'package:account_book/widget/menu.dart';
 import 'package:account_book/utils/number_utils.dart';
 import 'package:account_book/config/config.dart';
 import 'package:account_book/provider/date.dart';
 import 'package:account_book/views/account_list.dart';
-
 
 class AccountMain extends StatelessWidget {
   const AccountMain({Key? key}) : super(key: key);
@@ -19,24 +18,21 @@ class AccountMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MenuBar(),
-      drawer: Menu(),
-      body: Column(
-        children: [
-          Dropdown(),
-          Expanded(
-            child: Consumer<Date>(
-              builder: (_, date, __) => AccountMainBody()
-            )
-          )
-        ],
-      )
-    );
+        appBar: menubar.MenuBar(),
+        drawer: Menu(),
+        body: Column(
+          children: [
+            Dropdown(),
+            Expanded(
+                child:
+                    Consumer<Date>(builder: (_, date, __) => AccountMainBody()))
+          ],
+        ));
   }
 }
 
 class AccountMainBody extends StatefulWidget {
-  const AccountMainBody ({ Key? key }) : super(key: key);
+  const AccountMainBody({Key? key}) : super(key: key);
 
   @override
   _AccountMainBodyState createState() => _AccountMainBodyState();
@@ -56,39 +52,40 @@ class _AccountMainBodyState extends State<AccountMainBody> {
     String endDt = context.watch<Date>().getEndDt();
 
     return FutureBuilder(
-      future: _getDivsionSum(strtDt, endDt),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
-        if (snapshot.hasData == false) {
-          return CircularProgressIndicator();
-        }
-        //error가 발생하게 될 경우 반환하게 되는 부분
-        else if (snapshot.hasError) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Error: ${snapshot.error}',
-              style: TextStyle(fontSize: 15),
-            ),
-          );
-        }
-        // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
-        else {
-          List <Widget> _result = <Widget>[];
-          for (var k in snapshot.data.keys) {
-            _result.add(_makeRow(k, snapshot.data[k]));
+        future: _getDivsionSum(strtDt, endDt),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
+          if (snapshot.hasData == false) {
+            return CircularProgressIndicator();
           }
-          return ListView(
-            padding: EdgeInsets.zero,
-            children: _result,
-          );
-        }
-      }
-    );
+          //error가 발생하게 될 경우 반환하게 되는 부분
+          else if (snapshot.hasError) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(fontSize: 15),
+              ),
+            );
+          }
+          // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
+          else {
+            List<Widget> _result = <Widget>[];
+            for (var k in snapshot.data.keys) {
+              _result.add(_makeRow(k, snapshot.data[k]));
+            }
+            return ListView(
+              padding: EdgeInsets.zero,
+              children: _result,
+            );
+          }
+        });
   }
 
-  Future<Map<String, dynamic>> _getDivsionSum(String strtDt, String endDt) async {
-    var url = Uri.parse(Config.API_URL + 'division/sum?strtDt=' + strtDt + '&endDt=' + endDt);
+  Future<Map<String, dynamic>> _getDivsionSum(
+      String strtDt, String endDt) async {
+    var url = Uri.parse(
+        Config.API_URL + 'division/sum?strtDt=' + strtDt + '&endDt=' + endDt);
     Map<String, dynamic> resultData = {};
 
     try {
@@ -102,7 +99,7 @@ class _AccountMainBodyState extends State<AccountMainBody> {
     } catch (e) {
       print(e);
     }
-    return resultData; 
+    return resultData;
   }
 
   Widget _makeRow(String divisionId, dynamic price) {
@@ -136,49 +133,43 @@ class _AccountMainBodyState extends State<AccountMainBody> {
         'name': '투자율',
         'color': Colors.yellow,
         'division_id': ''
-      }, 
+      },
     };
 
     return Card(
       margin: EdgeInsets.all(10),
       shadowColor: Colors.blue,
       elevation: 8,
-      shape:  OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10), 
-          borderSide: BorderSide(color: Colors.white)
-      ),
+      shape: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.white)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            leading: Icon(divisionIconInfo[divisionId]['icon'], size: 50, color: divisionIconInfo[divisionId]['color']),
+            leading: Icon(divisionIconInfo[divisionId]['icon'],
+                size: 50, color: divisionIconInfo[divisionId]['color']),
             title: Text(
               price is int ? numberUtils.comma(price) : price,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(
-              divisionIconInfo[divisionId]['name'],
-              style: TextStyle(fontSize: 12)
-            ),
-            onTap: () => _navigate(context, divisionIconInfo[divisionId]['division_id']),
+            subtitle: Text(divisionIconInfo[divisionId]['name'],
+                style: TextStyle(fontSize: 12)),
+            onTap: () =>
+                _navigate(context, divisionIconInfo[divisionId]['division_id']),
           ),
         ],
       ),
     );
   }
 
-  void _navigate (BuildContext context, String divisionId) async {
+  void _navigate(BuildContext context, String divisionId) async {
     if (divisionId != '') {
-      await Navigator.pushNamed(
-        context, 
-        '/accountList',
-        arguments: AccountListParameter(
-          searchDivisionId: divisionId
-        )
-      ).then((value) {
+      await Navigator.pushNamed(context, '/accountList',
+              arguments: AccountListParameter(searchDivisionId: divisionId))
+          .then((value) {
         setState(() {});
       });
     }
   }
 }
-

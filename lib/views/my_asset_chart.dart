@@ -7,12 +7,11 @@ import 'package:http/http.dart' as http;
 
 import 'package:account_book/utils/number_utils.dart';
 import 'package:account_book/widget/indicator.dart';
-import 'package:account_book/widget/menubar.dart';
+import 'package:account_book/widget/menubar.dart' as menubar;
 import 'package:account_book/widget/menu.dart';
 import 'package:account_book/config/config.dart';
 import 'package:account_book/utils/date_utils.dart';
 import 'package:account_book/widget/dropdown.dart';
-
 
 class MyAssetChart extends StatelessWidget {
   const MyAssetChart({Key? key}) : super(key: key);
@@ -20,19 +19,14 @@ class MyAssetChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
-      appBar: MenuBar(),
-      drawer: Menu(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Dropdown(),
-            MyAssetChartBody()
-          ],
+        resizeToAvoidBottomInset: false,
+        appBar: menubar.MenuBar(),
+        drawer: Menu(),
+        body: SingleChildScrollView(
+            child: Column(
+          children: [Dropdown(), MyAssetChartBody()],
           mainAxisAlignment: MainAxisAlignment.center,
-        )
-      )
-    );
+        )));
   }
 }
 
@@ -54,7 +48,13 @@ class _MyAssetChartBodyState extends State {
   List<Widget> _indicators = [];
   List<Widget> _indicatorsNetWorth = [];
   final List<Color> _indicatorColors = [
-    Colors.blue, Colors.red, Colors.yellow, Colors.green, Colors.black, Colors.orange, Colors.purple
+    Colors.blue,
+    Colors.red,
+    Colors.yellow,
+    Colors.green,
+    Colors.black,
+    Colors.orange,
+    Colors.purple
   ];
 
   @override
@@ -71,34 +71,39 @@ class _MyAssetChartBodyState extends State {
       aspectRatio: size.width / (size.height * 2),
       child: Column(
         children: <Widget>[
-          Divider( thickness: 1, color: Colors.grey, ),
-          Text('자산 비율', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+          Divider(
+            thickness: 1,
+            color: Colors.grey,
+          ),
+          Text(
+            '자산 비율',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
           SizedBox(
             height: size.height * 0.5,
             child: AspectRatio(
               aspectRatio: 1,
               child: PieChart(
                 PieChartData(
-                  pieTouchData: PieTouchData(touchCallback:
-                      (FlTouchEvent event, pieTouchResponse) {
-                    setState(() {
-                      if (!event.isInterestedForInteractions ||
-                          pieTouchResponse == null ||
-                          pieTouchResponse.touchedSection == null) {
-                        touchedIndex = -1;
-                        return;
-                      }
-                      touchedIndex = pieTouchResponse
-                          .touchedSection!.touchedSectionIndex;
-                    });
-                  }),
-                  borderData: FlBorderData(
-                    show: false,
-                  ),
-                  sectionsSpace: 0,
-                  centerSpaceRadius: 80,
-                  sections: _result
-                ),
+                    pieTouchData: PieTouchData(
+                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                      setState(() {
+                        if (!event.isInterestedForInteractions ||
+                            pieTouchResponse == null ||
+                            pieTouchResponse.touchedSection == null) {
+                          touchedIndex = -1;
+                          return;
+                        }
+                        touchedIndex = pieTouchResponse
+                            .touchedSection!.touchedSectionIndex;
+                      });
+                    }),
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 80,
+                    sections: _result),
               ),
             ),
           ),
@@ -113,34 +118,39 @@ class _MyAssetChartBodyState extends State {
               )
             ],
           ),
-          Divider( thickness: 1, color: Colors.grey, ),
-          Text('순자산 비율', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+          Divider(
+            thickness: 1,
+            color: Colors.grey,
+          ),
+          Text(
+            '순자산 비율',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
           SizedBox(
             height: size.height * 0.5,
             child: AspectRatio(
               aspectRatio: 1,
               child: PieChart(
                 PieChartData(
-                  pieTouchData: PieTouchData(touchCallback:
-                      (FlTouchEvent event, pieTouchResponse) {
-                    setState(() {
-                      if (!event.isInterestedForInteractions ||
-                          pieTouchResponse == null ||
-                          pieTouchResponse.touchedSection == null) {
-                        touchedIndex = -1;
-                        return;
-                      }
-                      touchedIndex = pieTouchResponse
-                          .touchedSection!.touchedSectionIndex;
-                    });
-                  }),
-                  borderData: FlBorderData(
-                    show: false,
-                  ),
-                  sectionsSpace: 0,
-                  centerSpaceRadius: 80,
-                  sections: _resultNetWorth
-                ),
+                    pieTouchData: PieTouchData(
+                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                      setState(() {
+                        if (!event.isInterestedForInteractions ||
+                            pieTouchResponse == null ||
+                            pieTouchResponse.touchedSection == null) {
+                          touchedIndex = -1;
+                          return;
+                        }
+                        touchedIndex = pieTouchResponse
+                            .touchedSection!.touchedSectionIndex;
+                      });
+                    }),
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 80,
+                    sections: _resultNetWorth),
               ),
             ),
           ),
@@ -163,12 +173,10 @@ class _MyAssetChartBodyState extends State {
   void showingSections() {
     String procDt = dateUtils.DateToYYYYMMDD(DateTime.now());
 
-    _getMyAssetList(procDt, procDt).then(
-      (resultList) => setState(() {
-        _result = _makeChart(resultList);
-        _resultNetWorth = _makeNetWorthChart(resultList);
-      })
-    );
+    _getMyAssetList(procDt, procDt).then((resultList) => setState(() {
+          _result = _makeChart(resultList);
+          _resultNetWorth = _makeNetWorthChart(resultList);
+        }));
   }
 
   List<PieChartSectionData> _makeChart(dynamic resultList) {
@@ -178,19 +186,24 @@ class _MyAssetChartBodyState extends State {
 
     for (var r in resultList['data'].keys) {
       myAssetList.add(resultList['data'][r]);
-     
+
       if (r != '6') {
         totSumPrice += (resultList['data'][r]['asset_tot_sum_price']).abs();
       }
 
       if (r == '5') {
-        resultList['data'][r]['asset_tot_sum_price'] -= resultList['data']['6']['asset_tot_sum_price'];
+        resultList['data'][r]['asset_tot_sum_price'] -=
+            resultList['data']['6']['asset_tot_sum_price'];
       }
 
       _indicators.add(
         Indicator(
           color: _indicatorColors[i++],
-          text: resultList['data'][r]['asset_nm'] + ' (' + numberUtils.comma((resultList['data'][r]['asset_tot_sum_price']).abs()) + ')',
+          text: resultList['data'][r]['asset_nm'] +
+              ' (' +
+              numberUtils
+                  .comma((resultList['data'][r]['asset_tot_sum_price']).abs()) +
+              ')',
           isSquare: true,
         ),
       );
@@ -210,7 +223,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -221,7 +237,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -232,7 +251,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -243,7 +265,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -254,7 +279,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -265,7 +293,12 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'].abs() / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'].abs() / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'].abs() /
+                        totSumPrice *
+                        100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -276,7 +309,12 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'].abs() / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'].abs() / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'].abs() /
+                        totSumPrice *
+                        100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -303,7 +341,11 @@ class _MyAssetChartBodyState extends State {
         _indicatorsNetWorth.add(
           Indicator(
             color: _indicatorColors[i++],
-            text: resultList['data'][r]['asset_nm'] + ' (' + numberUtils.comma((resultList['data'][r]['asset_tot_sum_price']).abs()) + ')',
+            text: resultList['data'][r]['asset_nm'] +
+                ' (' +
+                numberUtils.comma(
+                    (resultList['data'][r]['asset_tot_sum_price']).abs()) +
+                ')',
             isSquare: true,
           ),
         );
@@ -324,7 +366,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -335,7 +380,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -346,7 +394,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -357,7 +408,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -368,7 +422,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -379,7 +436,10 @@ class _MyAssetChartBodyState extends State {
           return PieChartSectionData(
             color: _indicatorColors[i],
             value: myAssetList[i]['asset_tot_sum_price'] / totSumPrice,
-            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100).toStringAsFixed(2).toString() + '%',
+            title: (myAssetList[i]['asset_tot_sum_price'] / totSumPrice * 100)
+                    .toStringAsFixed(2)
+                    .toString() +
+                '%',
             radius: radius,
             titleStyle: TextStyle(
                 fontSize: fontSize,
@@ -392,10 +452,10 @@ class _MyAssetChartBodyState extends State {
     });
   }
 
-  Future<Map<String, dynamic>> _getMyAssetList(String strtDt, String endDt) async {
+  Future<Map<String, dynamic>> _getMyAssetList(
+      String strtDt, String endDt) async {
     var url = Uri.parse(
-      Config.API_URL + 'my_asset?strtDt=' + strtDt + '&endDt=' + endDt
-    );
+        Config.API_URL + 'my_asset?strtDt=' + strtDt + '&endDt=' + endDt);
 
     Map<String, dynamic> resultData = {};
 
