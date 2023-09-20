@@ -286,7 +286,7 @@ class _AccountListBodyState extends State<AccountListBody> {
   List<Widget> getBadgeList(dynamic element) {
     List<Widget> badgeList = [];
 
-    if (element['payment_id'] == '8') {
+    if (element['payment_type'] == 'SEOUL') {
       badgeList.add(Container(
         margin: EdgeInsets.all(3),
         child: badge.Badge(
