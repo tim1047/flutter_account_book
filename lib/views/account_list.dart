@@ -286,6 +286,20 @@ class _AccountListBodyState extends State<AccountListBody> {
   List<Widget> getBadgeList(dynamic element) {
     List<Widget> badgeList = [];
 
+    if (element['payment_id'] == '8') {
+      badgeList.add(Container(
+        margin: EdgeInsets.all(3),
+        child: badge.Badge(
+            toAnimate: false,
+            shape: badge.BadgeShape.square,
+            badgeColor: Colors.black45,
+            borderRadius: BorderRadius.circular(8),
+            badgeContent: Text('서울사랑',
+                style: TextStyle(color: Colors.white, fontSize: 12)),
+            showBadge: true),
+      ));
+    }
+
     if (element['point_price'] > 0) {
       badgeList.add(Container(
         margin: EdgeInsets.all(3),
