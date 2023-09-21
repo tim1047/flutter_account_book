@@ -51,7 +51,8 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
     Color.fromARGB(255, 175, 227, 54),
     Color.fromARGB(255, 221, 10, 10),
     Color.fromARGB(255, 255, 255, 255),
-    Color.fromARGB(255, 255, 108, 3)
+    Color.fromARGB(255, 255, 108, 3),
+    Color.fromARGB(255, 15, 6, 0),
   ];
   static const betweenSpace = 1000000;
   DateUtils2 dateUtils = DateUtils2();
