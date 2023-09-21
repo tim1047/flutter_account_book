@@ -56,14 +56,14 @@ class _AccountListState extends State<AccountList> {
         Align(
           alignment:
               Alignment(Alignment.bottomRight.x, Alignment.bottomLeft.y - 0.15),
-          child: FloatingActionButton(
+          child: FloatingActionButton.small(
               heroTag: 'add',
               onPressed: () => _navigateAndToast(context),
               child: Icon(Icons.add)),
         ),
         Align(
             alignment: Alignment.bottomRight,
-            child: FloatingActionButton(
+            child: FloatingActionButton.small(
                 heroTag: 'goTop',
                 onPressed: () => {scrollController.jumpTo(0)},
                 child: Icon(Icons.arrow_upward_rounded)))

@@ -47,7 +47,7 @@ class _MyAssetListState extends State<MyAssetList> {
         ],
         crossAxisAlignment: CrossAxisAlignment.center,
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.small(
           onPressed: () => _navigateAndToast(context), child: Icon(Icons.add)),
     );
   }
