@@ -26,6 +26,7 @@ class AccountList extends StatefulWidget {
 class _AccountListState extends State<AccountList> {
   late FToast fToast;
   DateUtils2 dateUtils = DateUtils2();
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -43,13 +44,30 @@ class _AccountListState extends State<AccountList> {
         children: [
           Dropdown(),
           Consumer<Date>(
-            builder: (_, date, __) => AccountListBody(),
+            builder: (_, date, __) =>
+                AccountListBody(scrollController: scrollController),
           ),
         ],
         crossAxisAlignment: CrossAxisAlignment.center,
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () => _navigateAndToast(context), child: Icon(Icons.add)),
+      // floatingActionButton: FloatingActionButton(
+      //     onPressed: () => _navigateAndToast(context), child: Icon(Icons.add)),
+      floatingActionButton: Stack(children: <Widget>[
+        Align(
+          alignment:
+              Alignment(Alignment.bottomRight.x, Alignment.bottomLeft.y - 0.15),
+          child: FloatingActionButton(
+              heroTag: 'add',
+              onPressed: () => _navigateAndToast(context),
+              child: Icon(Icons.add)),
+        ),
+        Align(
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton(
+                heroTag: 'goTop',
+                onPressed: () => {scrollController.jumpTo(0)},
+                child: Icon(Icons.arrow_upward_rounded)))
+      ]),
     );
   }
 
@@ -94,10 +112,15 @@ class _AccountListState extends State<AccountList> {
 }
 
 class AccountListBody extends StatefulWidget {
-  const AccountListBody({Key? key}) : super(key: key);
+  AccountListBody({Key? key, required this.scrollController}) : super(key: key);
+  ScrollController scrollController;
 
   @override
   State<AccountListBody> createState() => _AccountListBodyState();
+
+  ScrollController getScrollController() {
+    return scrollController;
+  }
 }
 
 class _AccountListBodyState extends State<AccountListBody> {
@@ -144,6 +167,7 @@ class _AccountListBodyState extends State<AccountListBody> {
           else {
             return Expanded(
               child: GroupedListView<dynamic, String>(
+                controller: widget.scrollController,
                 elements: snapshot.data, // 리스트에 사용할 데이터 리스트
                 groupBy: (element) =>
                     element['account_dt'], // 데이터 리스트 중 그룹을 지정할 항목
