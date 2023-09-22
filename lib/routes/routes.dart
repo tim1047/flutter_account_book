@@ -16,7 +16,6 @@ import 'package:account_book/views/invest_chart.dart';
 import 'package:account_book/views/my_asset_accum.dart';
 import 'package:account_book/views/expense_daily_chart.dart';
 
-
 class Routes {
   Routes();
 

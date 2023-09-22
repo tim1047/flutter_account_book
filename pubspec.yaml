@@ -45,6 +45,7 @@ dependencies:
   flutter_keyboard_size: ^1.0.0+4
   flutter_localizations:
     sdk: flutter
+  syncfusion_flutter_charts: ^23.1.36
 
 dev_dependencies:
   flutter_test:
