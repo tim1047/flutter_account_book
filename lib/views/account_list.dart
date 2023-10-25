@@ -324,6 +324,20 @@ class _AccountListBodyState extends State<AccountListBody> {
       ));
     }
 
+    if (element['payment_type'] == 'FIRSTMEETING') {
+      badgeList.add(Container(
+        margin: EdgeInsets.all(3),
+        child: badge.Badge(
+            toAnimate: false,
+            shape: badge.BadgeShape.square,
+            badgeColor: Colors.indigoAccent,
+            borderRadius: BorderRadius.circular(8),
+            badgeContent: Text('첫만남',
+                style: TextStyle(color: Colors.white, fontSize: 12)),
+            showBadge: true),
+      ));
+    }
+
     if (element['point_price'] > 0) {
       badgeList.add(Container(
         margin: EdgeInsets.all(3),
