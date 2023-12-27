@@ -162,13 +162,15 @@ class _MyAssetBodyState extends State<MyAssetBody> {
                   child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: TextField(
-                    controller: priceController,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        fillColor: Colors.grey,
-                        filled: isEnablePrice ? false : true),
-                    enabled: isEnablePrice,
-                    inputFormatters: [ThousandsSeparatorInputFormatter()]),
+                  controller: priceController,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      fillColor: Colors.grey,
+                      filled: isEnablePrice ? false : true),
+                  enabled: isEnablePrice,
+                  inputFormatters: [ThousandsSeparatorInputFormatter()],
+                  keyboardType: TextInputType.number,
+                ),
               )),
             ],
           )),
@@ -185,10 +187,12 @@ class _MyAssetBodyState extends State<MyAssetBody> {
                   child: Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: TextField(
-                    controller: qtyController,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                    )),
+                  controller: qtyController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
               )),
             ],
           )),

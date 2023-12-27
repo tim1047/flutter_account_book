@@ -208,6 +208,7 @@ class _AccountBodyState extends State<AccountBody> {
                     border: InputBorder.none,
                   ),
                   inputFormatters: [ThousandsSeparatorInputFormatter()],
+                  keyboardType: TextInputType.number,
                 ),
               )),
             ],
@@ -262,6 +263,7 @@ class _AccountBodyState extends State<AccountBody> {
                     border: InputBorder.none,
                   ),
                   inputFormatters: [ThousandsSeparatorInputFormatter()],
+                  keyboardType: TextInputType.number,
                 ),
               )),
               ElevatedButton(
