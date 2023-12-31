@@ -140,7 +140,8 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                 child: Column(children: [
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: Row(children: [
+                child: Row(
+                  children: [
                   Text(
                       '총 자산 : ' +
                           numberUtils.comma(snapshot.data['tot_sum_price']),
@@ -164,11 +165,10 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                             })
                           },
                       icon: Icon(Icons.refresh_rounded))
-                ]),
-              ),
+                ])),
               Padding(
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                child: Row(children: [
+                child: Wrap(children: [
                   Text(
                       '환율(\$): ' +
                           numberUtils.comma(snapshot.data['usd_krw_rate']),
@@ -193,8 +193,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                   Text(snapshot.data['my_asset_accum_dts'] + ' 기준',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
-                ]),
-              ),
+                ])),
               Divider(
                 thickness: 1,
                 color: Colors.grey,
