@@ -230,7 +230,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: ElevatedButton(
                     onPressed: () => _update(args.isInsert),
-                    child: args.isInsert ? Text('등록') : Text('수정'),
+                    child: args.isInsert ? Text('등록', style: TextStyle(color: Colors.white)) : Text('수정', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                         primary: Theme.of(context).primaryColor)),
               )

@@ -6,7 +6,7 @@ class MenuBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('강원 🧡 정윤 가계부'),
+      title: const Text('강원 🧡 정윤 가계부', style: TextStyle(color: Colors.white)),
       backgroundColor: Theme.of(context).primaryColor,
     );
   }
