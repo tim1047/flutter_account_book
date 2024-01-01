@@ -28,6 +28,18 @@ class _DropdownState extends State<Dropdown> {
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      IconButton(
+          onPressed: () => {
+                setState(() {
+                  dropdownYearValue = context.read<Date>().getPrevYear(context.read<Date>().getYear(), context.read<Date>().getMonth());
+                  dropdownMonthValue = context.read<Date>().getPrevMonth(context.read<Date>().getYear(), context.read<Date>().getMonth());
+                  
+                  context 
+                      .read<Date>()
+                      .setDate(dropdownYearValue, dropdownMonthValue);
+                })
+              },
+          icon: Icon(Icons.keyboard_double_arrow_left_rounded)),
       DropdownButton(
           value: dropdownYearValue == ''
               ? context.read<Date>().getYear()
@@ -82,7 +94,19 @@ class _DropdownState extends State<Dropdown> {
                       .setDate(dropdownYearValue, dropdownMonthValue);
                 })
               },
-          icon: Icon(Icons.refresh_rounded))
+          icon: Icon(Icons.refresh_rounded)),
+      IconButton(
+          onPressed: () => {
+                setState(() {
+                  dropdownYearValue = context.read<Date>().getNextYear(context.read<Date>().getYear(), context.read<Date>().getMonth());
+                  dropdownMonthValue = context.read<Date>().getNextMonth(context.read<Date>().getYear(), context.read<Date>().getMonth());
+                  
+                  context 
+                      .read<Date>()
+                      .setDate(dropdownYearValue, dropdownMonthValue);
+                })
+              },
+          icon: Icon(Icons.keyboard_double_arrow_right_rounded))
     ]);
   }
 

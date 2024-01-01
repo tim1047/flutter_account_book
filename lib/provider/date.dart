@@ -29,6 +29,46 @@ class Date with ChangeNotifier {
     return month;
   }
 
+  String getPrevYear(String year, String month) {
+    String prevYear =  year;
+    if (int.parse(month) <= 1) {
+      prevYear = (int.parse(prevYear) - 1).toString();
+    }
+    return prevYear;
+  }
+
+  String getPrevMonth(String year, String month) {
+    String prevMonth = "";
+    if (int.parse(month) > 1) {
+      prevMonth = (int.parse(month) - 1).toString();
+    } else {
+      prevMonth = '12';
+    }
+    return int.parse(prevMonth) < 10
+      ? '0' + prevMonth
+      : prevMonth;
+  }
+
+  String getNextYear(String year, String month) {
+    String nextYear = year;
+    if (int.parse(month) >= 12) {
+      nextYear = (int.parse(nextYear) + 1).toString();
+    }
+    return nextYear;
+  }
+
+  String getNextMonth(String year, String month) {
+    String nextMonth = "";
+    if (int.parse(month) >= 12) {
+      nextMonth = "1"; 
+    } else {
+      nextMonth = (int.parse(month) + 1).toString();
+    }
+    return int.parse(nextMonth) < 10
+      ? '0' + nextMonth
+      : nextMonth;
+  }
+
   String getPrevStrtDt(int month) {
     int prevMonth = int.parse(this.month) - month;
     int prevYear = int.parse(year);
