@@ -295,7 +295,7 @@ class _AccountBodyState extends State<AccountBody> {
                       visible: !args.isInsert,
                       child: ElevatedButton(
                           onPressed: () => _delete(),
-                          child: Text('삭제'),
+                          child: Text('삭제', style: TextStyle(color: Colors.white)),
                           style:
                               ElevatedButton.styleFrom(primary: Colors.red)))),
               Padding(
