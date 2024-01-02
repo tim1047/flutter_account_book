@@ -31,10 +31,14 @@ class _DropdownState extends State<Dropdown> {
       IconButton(
           onPressed: () => {
                 setState(() {
-                  dropdownYearValue = context.read<Date>().getPrevYear(context.read<Date>().getYear(), context.read<Date>().getMonth());
-                  dropdownMonthValue = context.read<Date>().getPrevMonth(context.read<Date>().getYear(), context.read<Date>().getMonth());
-                  
-                  context 
+                  dropdownYearValue = context.read<Date>().getPrevYear(
+                      context.read<Date>().getYear(),
+                      context.read<Date>().getMonth());
+                  dropdownMonthValue = context.read<Date>().getPrevMonth(
+                      context.read<Date>().getYear(),
+                      context.read<Date>().getMonth());
+
+                  context
                       .read<Date>()
                       .setDate(dropdownYearValue, dropdownMonthValue);
                 })
@@ -86,6 +90,22 @@ class _DropdownState extends State<Dropdown> {
       IconButton(
           onPressed: () => {
                 setState(() {
+                  dropdownYearValue = context.read<Date>().getNextYear(
+                      context.read<Date>().getYear(),
+                      context.read<Date>().getMonth());
+                  dropdownMonthValue = context.read<Date>().getNextMonth(
+                      context.read<Date>().getYear(),
+                      context.read<Date>().getMonth());
+
+                  context
+                      .read<Date>()
+                      .setDate(dropdownYearValue, dropdownMonthValue);
+                })
+              },
+          icon: Icon(Icons.keyboard_double_arrow_right_rounded)),
+      IconButton(
+          onPressed: () => {
+                setState(() {
                   dropdownYearValue = context.read<Date>().getInitYear();
                   dropdownMonthValue = context.read<Date>().getInitMonth();
 
@@ -95,18 +115,6 @@ class _DropdownState extends State<Dropdown> {
                 })
               },
           icon: Icon(Icons.refresh_rounded)),
-      IconButton(
-          onPressed: () => {
-                setState(() {
-                  dropdownYearValue = context.read<Date>().getNextYear(context.read<Date>().getYear(), context.read<Date>().getMonth());
-                  dropdownMonthValue = context.read<Date>().getNextMonth(context.read<Date>().getYear(), context.read<Date>().getMonth());
-                  
-                  context 
-                      .read<Date>()
-                      .setDate(dropdownYearValue, dropdownMonthValue);
-                })
-              },
-          icon: Icon(Icons.keyboard_double_arrow_right_rounded))
     ]);
   }
 
