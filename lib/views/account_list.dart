@@ -174,6 +174,8 @@ class _AccountListBodyState extends State<AccountListBody> {
                 order: groupListOrder, //정렬(오름차순)
                 useStickyGroupSeparators: false, //가장 위에 그룹 이름을 고정시킬 것인지
                 groupSeparatorBuilder: (String value) => _groupSeparator(value),
+                itemComparator: (item1, item2) =>
+                    item1['account_id'].compareTo(item2['account_id']),
                 indexedItemBuilder: (c, element, index) {
                   //항목들 모양 처리
                   return Card(
