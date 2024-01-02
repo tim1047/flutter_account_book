@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:account_book/utils/number_utils.dart';
-import 'package:account_book/widget/indicator.dart';
 import 'package:account_book/widget/menubar.dart' as menubar;
 import 'package:account_book/widget/menu.dart';
 import 'package:account_book/config/config.dart';

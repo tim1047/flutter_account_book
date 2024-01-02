@@ -62,7 +62,7 @@ class _DropdownState extends State<Dropdown> {
               value: value,
               child: Text(value + '년',
                   style: TextStyle(
-                      color: Theme.of(context).textTheme.bodyText2?.color)),
+                      color: Theme.of(context).textTheme.bodyMedium?.color)),
             );
           }).toList()),
       SizedBox(width: 10.0),
@@ -84,7 +84,7 @@ class _DropdownState extends State<Dropdown> {
               value: value,
               child: Text(value + '월',
                   style: TextStyle(
-                      color: Theme.of(context).textTheme.bodyText2?.color)),
+                      color: Theme.of(context).textTheme.bodyMedium?.color)),
             );
           }).toList()),
       IconButton(
