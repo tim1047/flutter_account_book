@@ -43,7 +43,7 @@ class _DropdownState extends State<Dropdown> {
                       .setDate(dropdownYearValue, dropdownMonthValue);
                 })
               },
-          icon: Icon(Icons.keyboard_double_arrow_left_rounded)),
+          icon: Icon(Icons.navigate_before_rounded)),
       DropdownButton(
           value: dropdownYearValue == ''
               ? context.read<Date>().getYear()
@@ -102,7 +102,7 @@ class _DropdownState extends State<Dropdown> {
                       .setDate(dropdownYearValue, dropdownMonthValue);
                 })
               },
-          icon: Icon(Icons.keyboard_double_arrow_right_rounded)),
+          icon: Icon(Icons.navigate_next_rounded)),
       IconButton(
           onPressed: () => {
                 setState(() {
