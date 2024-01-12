@@ -139,61 +139,68 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
             return Expanded(
                 child: Column(children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: Row(
-                  children: [
-                  Text(
-                      '총 자산 : ' +
-                          numberUtils.comma(snapshot.data['tot_sum_price']),
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: Text('|',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16))),
-                  Text(
-                      '순자산 : ' +
-                          numberUtils
-                              .comma(snapshot.data['tot_net_worth_sum_price']),
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  IconButton(
-                      onPressed: () => {
-                            setState(() {
-                              isDelayed = false;
-                            })
-                          },
-                      icon: Icon(Icons.refresh_rounded))
-                ])),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: Row(children: [
+                    Flexible(
+                        child: Text(
+                            '총 자산 : ' +
+                                numberUtils
+                                    .comma(snapshot.data['tot_sum_price']),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Text('|',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16))),
+                    Flexible(
+                        child: Text(
+                            '순자산 : ' +
+                                numberUtils.comma(
+                                    snapshot.data['tot_net_worth_sum_price']),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16))),
+                    IconButton(
+                        onPressed: () => {
+                              setState(() {
+                                isDelayed = false;
+                              })
+                            },
+                        icon: Icon(Icons.refresh_rounded))
+                  ])),
               Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                child: Wrap(children: [
-                  Text(
-                      '환율(\$): ' +
-                          numberUtils.comma(snapshot.data['usd_krw_rate']),
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: Text('|',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16))),
-                  Text(
-                      '환율(￥): ' +
-                          numberUtils.comma(
-                              (snapshot.data['jpy_krw_rate'] * 100).toInt()),
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: Text('|',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16))),
-                  Text(snapshot.data['my_asset_accum_dts'] + ' 기준',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
-                ])),
+                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
+                  child: Row(children: [
+                    Flexible(
+                        child: Text(
+                            '환율(\$): ' +
+                                numberUtils
+                                    .comma(snapshot.data['usd_krw_rate']),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Text('|',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16))),
+                    Flexible(
+                        child: Text(
+                            '환율(￥): ' +
+                                numberUtils.comma(
+                                    (snapshot.data['jpy_krw_rate'] * 100)
+                                        .toInt()),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Text('|',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16))),
+                    Flexible(
+                        child: Text(snapshot.data['my_asset_accum_dts'] + ' 기준',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16)))
+                  ])),
               Divider(
                 thickness: 1,
                 color: Colors.grey,
