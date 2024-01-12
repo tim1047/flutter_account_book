@@ -730,7 +730,7 @@ class _AccountBodyState extends State<AccountBody> {
       'category_id': inputCategoryId,
       'category_seq': inputCategorySeq,
       'price': int.parse(numberUtils.uncomma(priceController.text)),
-      'remark': remarkController.text,
+      'remark': remarkController.text.trim(),
       'impulse_yn': inputImpulseYn,
       'point_price': pointPriceController.text == ''
           ? 0

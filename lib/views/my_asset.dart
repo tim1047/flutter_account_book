@@ -223,14 +223,17 @@ class _MyAssetBodyState extends State<MyAssetBody> {
                       visible: !args.isInsert,
                       child: ElevatedButton(
                           onPressed: () => _delete(),
-                          child: Text('삭제', style: TextStyle(color: Colors.white)),
+                          child:
+                              Text('삭제', style: TextStyle(color: Colors.white)),
                           style:
                               ElevatedButton.styleFrom(primary: Colors.red)))),
               Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: ElevatedButton(
                     onPressed: () => _update(args.isInsert),
-                    child: args.isInsert ? Text('등록', style: TextStyle(color: Colors.white)) : Text('수정', style: TextStyle(color: Colors.white)),
+                    child: args.isInsert
+                        ? Text('등록', style: TextStyle(color: Colors.white))
+                        : Text('수정', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                         primary: Theme.of(context).primaryColor)),
               )
@@ -392,9 +395,9 @@ class _MyAssetBodyState extends State<MyAssetBody> {
 
     var requestParam = {
       'my_asset_id': inputMyAssetId,
-      'my_asset_nm': myAssetNmController.text,
+      'my_asset_nm': myAssetNmController.text.trim(),
       'asset_id': inputAssetId,
-      'ticker': tickerController.text,
+      'ticker': tickerController.text.trim(),
       'price_div_cd': inputPriceDivCd,
       'price': double.parse(numberUtils.uncomma(priceController.text)),
       'qty': double.parse(qtyController.text),
