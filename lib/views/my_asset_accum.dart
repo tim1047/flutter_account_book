@@ -357,6 +357,8 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
           child: ListView(
               padding: EdgeInsets.all(10),
               shrinkWrap: true,
+              // physics: NeverScrollableScrollPhysics(),
+              primary: false,
               children: _makeListView(assetInfo[key]))));
     }
     return _listViewCardList;
