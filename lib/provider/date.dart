@@ -6,12 +6,19 @@ class Date with ChangeNotifier {
       ? '0' + DateTime.now().month.toString()
       : DateTime.now().month.toString();
   String day = DateTime.now().day.toString();
+  bool isAll = false;
 
   String getStrtDt() {
+    if (isAll) {
+      return year + '01' + '01';
+    }
     return year + month + '01';
   }
 
   String getEndDt() {
+    if (isAll) {
+      return year + '12' + '31';
+    }
     return year +
         month +
         (DateTime(int.parse(year), int.parse(month) + 1, 0).day).toString();
@@ -30,7 +37,7 @@ class Date with ChangeNotifier {
   }
 
   String getPrevYear(String year, String month) {
-    String prevYear =  year;
+    String prevYear = year;
     if (int.parse(month) <= 1) {
       prevYear = (int.parse(prevYear) - 1).toString();
     }
@@ -44,9 +51,7 @@ class Date with ChangeNotifier {
     } else {
       prevMonth = '12';
     }
-    return int.parse(prevMonth) < 10
-      ? '0' + prevMonth
-      : prevMonth;
+    return int.parse(prevMonth) < 10 ? '0' + prevMonth : prevMonth;
   }
 
   String getNextYear(String year, String month) {
@@ -60,13 +65,11 @@ class Date with ChangeNotifier {
   String getNextMonth(String year, String month) {
     String nextMonth = "";
     if (int.parse(month) >= 12) {
-      nextMonth = "1"; 
+      nextMonth = "1";
     } else {
       nextMonth = (int.parse(month) + 1).toString();
     }
-    return int.parse(nextMonth) < 10
-      ? '0' + nextMonth
-      : nextMonth;
+    return int.parse(nextMonth) < 10 ? '0' + nextMonth : nextMonth;
   }
 
   String getPrevStrtDt(int month) {
@@ -101,5 +104,9 @@ class Date with ChangeNotifier {
     return DateTime.now().month < 10
         ? '0' + DateTime.now().month.toString()
         : DateTime.now().month.toString();
+  }
+
+  void setIsAll(bool isAll) {
+    this.isAll = isAll;
   }
 }

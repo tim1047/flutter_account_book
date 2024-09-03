@@ -76,13 +76,14 @@ class _DropdownState extends State<Dropdown> {
           onChanged: (String? newValue) {
             setState(() {
               context.read<Date>().setDate('', newValue!);
+              context.read<Date>().setIsAll(newValue == 'all');
               dropdownMonthValue = newValue;
             });
           },
           items: _monthList.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value + '월',
+              child: Text(value == 'all' ? '전체' : value + '월',
                   style: TextStyle(
                       color: Theme.of(context).textTheme.bodyMedium?.color)),
             );
@@ -127,6 +128,7 @@ class _DropdownState extends State<Dropdown> {
       _yearList.add(i.toString());
     }
 
+    _monthList.add('all');
     for (int i = 12; i > 0; i--) {
       if (i < 10) {
         _monthList.add('0' + i.toString());
