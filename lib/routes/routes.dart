@@ -40,4 +40,26 @@ class Routes {
     };
     return _routes;
   }
+
+  Map<String, Widget> getRoutesWidget() {
+    Map<String, Widget> _routes = {
+      '/': AccountMain(),
+      '/accountList': AccountList(),
+      '/account': Account(),
+      '/expense': Expense(),
+      '/expenseDtl': ExpenseDtl(),
+      '/income': Income(),
+      '/invest': Invest(),
+      '/expense/member': ExpenseByMember(),
+      '/asset': MyAssetList(),
+      '/myAsset': MyAsset(),
+      '/asset/chart': MyAssetChart(),
+      '/expense/chart': ExpenseChart(),
+      '/income/chart': IncomeChart(),
+      '/invest/chart': InvestChart(),
+      '/asset/accum': MyAssetAccum(),
+      '/expense/dailyChart': ExpenseDailyChart(),
+    };
+    return _routes;
+  }
 }
