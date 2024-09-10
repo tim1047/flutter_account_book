@@ -45,6 +45,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
   final priceController = TextEditingController();
   final qtyController = TextEditingController();
   String inputExchangeRateYn = '';
+  String inputCashableYn = '';
 
   late Future<List<dynamic>> _assetList;
   bool isInit = true;
@@ -64,6 +65,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
     inputPriceDivCd = inputPriceDivCd == '' ? args.priceDivCd : inputPriceDivCd;
     inputExchangeRateYn =
         inputExchangeRateYn == '' ? args.exchangeRateYn : inputExchangeRateYn;
+    inputCashableYn = inputCashableYn == '' ? args.cashableYn : inputCashableYn;
 
     if (isInit) {
       myAssetNmController.text = (args.myAssetNm != '' ? args.myAssetNm : '');
@@ -210,6 +212,20 @@ class _MyAssetBodyState extends State<MyAssetBody> {
                       child: _getExchangeRateYnSelectBox())),
             ],
           )),
+          ListTile(
+              title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(Icons.dangerous_rounded),
+              Padding(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: Text('현금성 여부')),
+              Expanded(
+                  child: Padding(
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: _getCashableYnSelectBox())),
+            ],
+          )),
           Divider(
             thickness: 1,
             color: Colors.grey,
@@ -338,6 +354,23 @@ class _MyAssetBodyState extends State<MyAssetBody> {
         }).toList());
   }
 
+  Widget _getCashableYnSelectBox() {
+    return DropdownButton(
+        value: inputCashableYn,
+        elevation: 16,
+        onChanged: (String? newValue) {
+          setState(() {
+            inputCashableYn = newValue!;
+          });
+        },
+        items: ['N', 'Y'].map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList());
+  }
+
   void _showDialog(String title, String content) {
     showDialog(
       context: context,
@@ -402,6 +435,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
       'price': double.parse(numberUtils.uncomma(priceController.text)),
       'qty': double.parse(qtyController.text),
       'exchange_rate_yn': inputExchangeRateYn,
+      'cashable_yn': inputCashableYn
     };
 
     if (isInsert) {
@@ -489,6 +523,7 @@ class MyAssetParameter {
   double price;
   double qty;
   String exchangeRateYn;
+  String cashableYn;
   bool isInsert;
 
   MyAssetParameter(
@@ -500,5 +535,6 @@ class MyAssetParameter {
       this.price = -1,
       this.qty = -1.0,
       this.exchangeRateYn = 'N',
+      this.cashableYn = 'Y',
       this.isInsert = true});
 }
