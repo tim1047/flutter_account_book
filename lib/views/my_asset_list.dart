@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:badges/badges.dart' as badge;
 
 import 'package:account_book/widget/menubar.dart' as menubar;
 import 'package:account_book/widget/menu.dart';
@@ -160,6 +161,18 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                                     snapshot.data['tot_net_worth_sum_price']),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16))),
+                    Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Text('|',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16))),
+                    Flexible(
+                        child: Text(
+                            '현금성자산 : ' +
+                                numberUtils.comma(
+                                    snapshot.data['tot_cashable_sum_price']),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16))),
                     IconButton(
                         onPressed: () => {
                               setState(() {
@@ -271,14 +284,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                      element['my_asset_nm'] +
-                          ' | ' +
-                          element['qty'].toString() +
-                          '개',
-                      style: TextStyle(fontSize: 12)),
-                ],
+                children: _makeListTileChildren(element),
               ),
               onTap: () => _navigateAndToast(context, element),
             ),
@@ -294,12 +300,8 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
           title: Text(numberUtils.comma(e['sum_price']),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(e['my_asset_nm'] + ' | ' + e['qty'].toString() + '개',
-                  style: TextStyle(fontSize: 12)),
-            ],
-          ),
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: _makeListTileChildren(e)),
           onTap: () => _navigateAndToast(context, e),
         ));
       }
@@ -325,6 +327,31 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
       );
     }
     return tile;
+  }
+
+  List<Widget> _makeListTileChildren(var element) {
+    List<Widget> listTileChildren;
+
+    if (element['cashable_yn'] == 'Y') {
+      listTileChildren = [
+        Text(element['my_asset_nm'] + ' | ' + element['qty'].toString() + '개',
+            style: TextStyle(fontSize: 12)),
+        badge.Badge(
+            toAnimate: false,
+            shape: badge.BadgeShape.square,
+            badgeColor: Color.fromARGB(115, 101, 8, 231),
+            borderRadius: BorderRadius.circular(8),
+            badgeContent: Text('현금성',
+                style: TextStyle(color: Colors.white, fontSize: 12)),
+            showBadge: true)
+      ];
+    } else {
+      listTileChildren = [
+        Text(element['my_asset_nm'] + ' | ' + element['qty'].toString() + '개',
+            style: TextStyle(fontSize: 12)),
+      ];
+    }
+    return listTileChildren;
   }
 
   void _navigateAndToast(BuildContext context, var element) async {
