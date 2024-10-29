@@ -94,49 +94,12 @@ class _InvestBodyState extends State<InvestBody> {
   }
 
   Widget _makeCard(dynamic element) {
-    double pricePercent = 1;
-    double planPercent = 1;
-
-    if (element['sum_price'] >= element['plan_price']) {
-      planPercent = element['plan_price'] / element['sum_price'];
-    } else {
-      pricePercent = element['sum_price'] / element['plan_price'];
-    }
-
-    if (element['sum_price'] == 0) {
-      pricePercent = 0;
-    }
-    if (element['plan_price'] == 0) {
-      planPercent = 0;
-    }
+    double pricePercent = element['sum_price'] == 0
+        ? 0
+        : element['sum_price'] / element['total_sum_price'];
 
     return Column(
       children: [
-        Padding(
-            padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
-            child: Row(children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Config.CATEGORY_ICON_INFO[element['category_id']]!,
-              ),
-              Text(element['category_nm'],
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-              Container(
-                margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: badge.Badge(
-                  toAnimate: false,
-                  shape: badge.BadgeShape.square,
-                  badgeColor: Colors.green,
-                  borderRadius: BorderRadius.circular(8),
-                  badgeContent:
-                      Text('계획 달성', style: TextStyle(color: Colors.white)),
-                  showBadge: (element['sum_price'] >= element['plan_price']) &&
-                          element['sum_price'] > 0
-                      ? true
-                      : false,
-                ),
-              ),
-            ])),
         Card(
           margin: EdgeInsets.all(10),
           shadowColor: Colors.blue,
@@ -144,43 +107,61 @@ class _InvestBodyState extends State<InvestBody> {
           shape: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.white)),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                  title: Row(children: [
-                    Text('실제   '),
-                    Text(numberUtils.comma(element['sum_price']),
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold))
-                  ]),
-                  subtitle: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                    child: LinearPercentIndicator(
-                      lineHeight: 4.0,
-                      percent: pricePercent,
-                      progressColor: Colors.blue,
-                    ),
-                  ),
-                  onTap: () => _navigate(context, element)),
-              ListTile(
-                  title: Row(children: [
-                    Text('계획   '),
-                    Text(numberUtils.comma(element['plan_price']),
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold))
-                  ]),
-                  subtitle: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                    child: LinearPercentIndicator(
-                      lineHeight: 4.0,
-                      percent: planPercent,
-                      progressColor: Colors.red,
-                    ),
-                  ),
-                  onTap: () => _navigate(context, element)),
-            ],
-          ),
+          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: ListTile(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            Config.CATEGORY_ICON_INFO[element['category_id']]!,
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                              child: Text(
+                                element['category_nm'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ),
+                          ]),
+                          Row(
+                            children: [
+                              Text(
+                                numberUtils.comma(element['sum_price']),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              Text(
+                                ' (' +
+                                    (pricePercent * 100)
+                                        .toStringAsFixed(2)
+                                        .toString() +
+                                    '%)',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey,
+                                    fontSize: 12),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      subtitle: Padding(
+                        padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                        child: LinearPercentIndicator(
+                          lineHeight: 4.0,
+                          percent: pricePercent,
+                          progressColor: Colors.blue,
+                        ),
+                      ),
+                      onTap: () => _navigate(context, element)),
+                ),
+              ],
+            )
+          ]),
         )
       ],
       crossAxisAlignment: CrossAxisAlignment.start,

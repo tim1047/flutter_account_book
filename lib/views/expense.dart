@@ -95,56 +95,75 @@ class _ExpenseBodyState extends State<ExpenseBody> {
   }
 
   Widget _makeCard(dynamic element) {
-    double pricePercent = 1;
-    double planPercent = 1;
-    double saveOrWastePercent = element['sum_price'] / element['plan_price'];
-    String saveOrWasteStr = '';
-    String saveOrWasteEmoji = '';
+    double pricePercent = element['sum_price'] == 0
+        ? 0
+        : element['sum_price'] / element['total_sum_price'];
 
-    if (element['sum_price'] >= element['plan_price']) {
-      planPercent = element['plan_price'] / element['sum_price'];
-      saveOrWasteStr = '지출';
-      saveOrWasteEmoji = '😅';
-    } else {
-      pricePercent = element['sum_price'] / element['plan_price'];
-      saveOrWasteStr = '절약';
-      saveOrWasteEmoji = '🤗';
-    }
+    List<Widget> _listTiles = [];
 
-    if (element['sum_price'] == 0) {
-      pricePercent = 0;
-    }
-    if (element['plan_price'] == 0) {
-      planPercent = 0;
+    for (var i = 0; i < element['data'].length; i++) {
+      var e = element['data'][i];
+      double pricePercent =
+          e['sum_price'] == 0 ? 0 : e['sum_price'] / element['sum_price'];
+
+      _listTiles.add(Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(children: [
+                    Config.CATEGORY_SEQ_ICON_INFO[
+                        element['category_id'] + e['category_seq']]!,
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                      child: Text(
+                        e['category_seq_nm'],
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ),
+                  ]),
+                  Row(
+                    children: [
+                      Text(
+                        numberUtils.comma(e['sum_price']),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      Text(
+                        ' (' +
+                            (pricePercent * 100).toStringAsFixed(2).toString() +
+                            '%)',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            fontSize: 12),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              subtitle: Padding(
+                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                child: LinearPercentIndicator(
+                  lineHeight: 4.0,
+                  percent: pricePercent,
+                  progressColor: Colors.deepOrange.shade200,
+                ),
+              ),
+              onTap: () => _navigate(context, element['division_id'],
+                  element['category_id'], e['category_seq']),
+            ),
+          ),
+        ],
+      ));
     }
 
     return Column(
       children: [
-        Padding(
-            padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
-            child: Row(children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                child: Config.CATEGORY_ICON_INFO[element['category_id']]!,
-              ),
-              Text(element['category_nm'],
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              Container(
-                margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: badge.Badge(
-                  toAnimate: false,
-                  shape: badge.BadgeShape.square,
-                  badgeColor: Colors.red,
-                  borderRadius: BorderRadius.circular(8),
-                  badgeContent:
-                      Text('계획 초과', style: TextStyle(color: Colors.white)),
-                  showBadge: (element['sum_price'] > element['plan_price']) &&
-                          element['plan_price'] != 0
-                      ? true
-                      : false,
-                ),
-              ),
-            ])),
         Card(
           margin: EdgeInsets.all(10),
           shadowColor: Colors.blue,
@@ -152,98 +171,62 @@ class _ExpenseBodyState extends State<ExpenseBody> {
           shape: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.white)),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                title: Row(children: [
-                  Text('실제   '),
-                  Text(numberUtils.comma(element['sum_price']),
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
-                ]),
-                subtitle: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                  child: LinearPercentIndicator(
-                    lineHeight: 4.0,
-                    percent: pricePercent,
-                    progressColor: Colors.blue,
-                  ),
-                ),
-                onTap: () => _navigate(context, element['category_id']),
-              ),
-              ListTile(
-                title: Row(children: [
-                  Text('계획   '),
-                  Text(numberUtils.comma(element['plan_price']),
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
-                ]),
-                subtitle: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                  child: LinearPercentIndicator(
-                    lineHeight: 4.0,
-                    percent: planPercent,
-                    progressColor: Colors.red,
-                  ),
-                ),
-                onTap: () => _navigate(context, element['category_id']),
-              ),
-              Visibility(
-                visible: element['plan_price'] > 0,
-                child: Divider(
-                  thickness: 1,
-                  color: Colors.grey,
-                ),
-              ),
-              Visibility(
-                visible: element['plan_price'] > 0,
-                child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: ExpansionTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                          child: Text('계획 대비 '),
-                        ),
-                        Text(
-                            numberUtils.comma(
-                                (element['sum_price'] - element['plan_price'])
-                                    .abs()),
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        Text(
-                            ' (' +
-                                (saveOrWastePercent * 100)
-                                    .toStringAsFixed(2)
-                                    .toString() +
-                                '%) ',
-                            style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.bold)),
-                        Container(
-                          margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                          child: badge.Badge(
-                            toAnimate: false,
-                            shape: badge.BadgeShape.square,
-                            badgeColor: saveOrWastePercent > 1
-                                ? Colors.red
-                                : Colors.green,
-                            borderRadius: BorderRadius.circular(8),
-                            badgeContent: Text(saveOrWasteStr,
-                                style: TextStyle(color: Colors.white)),
+                        Row(children: [
+                          Config.CATEGORY_ICON_INFO[element['category_id']]!,
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                            child: Text(
+                              element['category_nm'],
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
                           ),
-                        ),
-                        Text(
-                          saveOrWasteEmoji,
-                          style: TextStyle(
-                              fontSize: 26, fontWeight: FontWeight.bold),
+                        ]),
+                        Row(
+                          children: [
+                            Text(
+                              numberUtils.comma(element['sum_price']),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            Text(
+                              ' (' +
+                                  (pricePercent * 100)
+                                      .toStringAsFixed(2)
+                                      .toString() +
+                                  '%)',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                  fontSize: 12),
+                            ),
+                          ],
                         )
                       ],
-                    )),
-              ),
-            ],
-          ),
+                    ),
+                    subtitle: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                      child: LinearPercentIndicator(
+                        lineHeight: 4.0,
+                        percent: pricePercent,
+                        progressColor: Colors.red,
+                      ),
+                    ),
+                    children: _listTiles,
+                  ),
+                ),
+              ],
+            )
+          ]),
         )
       ],
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,14 +255,15 @@ class _ExpenseBodyState extends State<ExpenseBody> {
     return resultData;
   }
 
-  void _navigate(BuildContext context, String categoryId) async {
-    if (categoryId != '') {
-      await Navigator.pushNamed(context, '/accountList',
-              arguments: AccountListParameter(
-                  searchCategoryId: categoryId, searchDivisionId: '3'))
-          .then((value) {
-        setState(() {});
-      });
-    }
+  void _navigate(BuildContext context, String divisionId, String categoryId,
+      String categorySeq) async {
+    await Navigator.pushNamed(context, '/accountList',
+            arguments: AccountListParameter(
+                searchDivisionId: divisionId,
+                searchCategoryId: categoryId,
+                searchCategorySeq: categorySeq))
+        .then((value) {
+      setState(() {});
+    });
   }
 }
