@@ -365,6 +365,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                 qty: element['qty'],
                 exchangeRateYn: element['exchange_rate_yn'],
                 isInsert: false,
+                cashableYn: element['cashable_yn'],
                 myAssetId: element['my_asset_id']))
         .then((value) {
       setState(() {});
