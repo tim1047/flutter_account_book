@@ -262,12 +262,19 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
         totalSumPriceDiff = element[i]['total_sum_price'] -
             assetInfo[element[i]['asset_id']]['data'][dataLength - 1]
                 ['total_sum_price'];
-        totalSumPriceDiffPercentage = (element[i]['total_sum_price'] -
-                assetInfo[element[i]['asset_id']]['data'][dataLength - 1]
-                    ['total_sum_price']) /
-            assetInfo[element[i]['asset_id']]['data'][dataLength - 1]
-                ['total_sum_price'] *
-            100;
+
+        if (assetInfo[element[i]['asset_id']]['data'][dataLength - 1]
+                ['total_sum_price'] ==
+            0) {
+          totalSumPriceDiffPercentage = 0;
+        } else {
+          totalSumPriceDiffPercentage = (element[i]['total_sum_price'] -
+                  assetInfo[element[i]['asset_id']]['data'][dataLength - 1]
+                      ['total_sum_price']) /
+              assetInfo[element[i]['asset_id']]['data'][dataLength - 1]
+                  ['total_sum_price'] *
+              100;
+        }
       }
       assetInfo[element[i]['asset_id']]['data'].add({
         'accum_dt': element[i]['accum_dt'],
