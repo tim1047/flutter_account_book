@@ -45,6 +45,7 @@ class Config {
     '11': Icon(LineIcons.home),
     '12': Icon(Icons.bolt_rounded),
     '13': Icon(LineIcons.tools),
+    '14': Icon(Icons.house_rounded),
     '21': Icon(LineIcons.mobilePhone),
     '22': Icon(LineIcons.wifi),
     '31': Icon(LineIcons.moneyBill),
