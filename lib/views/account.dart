@@ -295,14 +295,20 @@ class _AccountBodyState extends State<AccountBody> {
                       visible: !args.isInsert,
                       child: ElevatedButton(
                           onPressed: () => _delete(),
-                          child: Text('삭제', style: TextStyle(color: Colors.white)),
+                          child:
+                              Text('삭제', style: TextStyle(color: Colors.white)),
                           style:
                               ElevatedButton.styleFrom(primary: Colors.red)))),
               Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: ElevatedButton(
                     onPressed: () => _update(args.isInsert),
-                    child: args.isInsert ? Text('등록', style: TextStyle(color: Colors.white),) : Text('수정', style: TextStyle(color: Colors.white)),
+                    child: args.isInsert
+                        ? Text(
+                            '등록',
+                            style: TextStyle(color: Colors.white),
+                          )
+                        : Text('수정', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                         primary: Theme.of(context).primaryColor)),
               )
@@ -318,7 +324,7 @@ class _AccountBodyState extends State<AccountBody> {
       context: context,
       initialDate: inputDate,
       firstDate: DateTime(2010),
-      lastDate: DateTime(2025),
+      lastDate: DateTime(2100),
     );
 
     if (selected != null && selected != inputDate) {
