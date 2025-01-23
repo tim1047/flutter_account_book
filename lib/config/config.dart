@@ -82,6 +82,7 @@ class Config {
     '104': Icon(Icons.book_rounded),
     '111': Icon(LineIcons.school),
     '112': Icon(LineIcons.book),
+    '113': Icon(Icons.smart_toy_outlined),
     '121': Icon(LineIcons.birthdayCake),
     '122': Icon(LineIcons.gifts),
     '123': Icon(LineIcons.fileInvoiceWithUsDollar),
