@@ -19,22 +19,22 @@ class _MenuState extends State<Menu> {
         children: [
           DrawerHeader(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('강원 🧡 정윤 가계부', style: TextStyle(color: Colors.white)),
-                Consumer<ThemeNotifier>(
-                  builder: (context, notifier, child) => Switch(
-                      value: notifier.darkTheme,
-                      onChanged: (newValue) {
-                        notifier.changeTheme();
-                      }),
-                )
-              ],
-            ),
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // children: [
+                //   Text('강원 🧡 정윤 가계부', style: TextStyle(color: Colors.white)),
+                //   Consumer<ThemeNotifier>(
+                //     builder: (context, notifier, child) => Switch(
+                //         value: notifier.darkTheme,
+                //         onChanged: (newValue) {
+                //           notifier.changeTheme();
+                //         }),
+                //   )
+                // ],
+                ),
             decoration: BoxDecoration(
               // color: Theme.of(context).primaryColor,
               image: DecorationImage(
-                image: AssetImage('assets/dumbo.gif'),
+                image: AssetImage('assets/family.png'),
                 fit: BoxFit.cover,
               ),
             ),
