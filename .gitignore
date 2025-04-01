@@ -1,0 +1,45 @@
+# Flutter/Dart 관련 빌드 및 캐시 파일 제외
+**/.dart_tool/
+**/.idea/
+**/.vscode/
+**/build/
+**/build/**
+**/ios/Pods/
+**/android/.gradle/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/pubspec.lock
+
+# Xcode 관련 불필요한 파일 제외
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Runner.xcworkspace/
+**/ios/Runner/GeneratedPluginRegistrant.h
+**/ios/Runner/GeneratedPluginRegistrant.m
+
+# Android 관련 불필요한 파일 제외
+**/android/key.properties
+**/android/local.properties
+
+# macOS 관련 불필요한 파일 제외
+.DS_Store
+
+# Web 관련 불필요한 파일 제외
+**/web/.dart_tool/
+**/web/.firebase/
+**/web/firebase.json
+
+# Windows 및 Linux 관련 불필요한 파일 제외
+**/windows/.dart_tool/
+**/linux/.dart_tool/
+
+# 사용자 환경설정 파일 제외
+**/.metadata
+**/.gradle/
+**/.settings/
+**/bin/
+**/out/
