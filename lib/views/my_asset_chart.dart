@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:percent_indicator/percent_indicator.dart';
 
 import 'package:account_book/utils/number_utils.dart';
 import 'package:account_book/widget/menubar.dart' as menubar;
@@ -11,21 +12,30 @@ import 'package:account_book/widget/menu.dart';
 import 'package:account_book/config/config.dart';
 import 'package:account_book/utils/date_utils.dart';
 import 'package:account_book/widget/dropdown.dart';
+import 'package:account_book/provider/date.dart';
 
-class MyAssetChart extends StatelessWidget {
+class MyAssetChart extends StatefulWidget {
   const MyAssetChart({Key? key}) : super(key: key);
 
+  @override
+  State<MyAssetChart> createState() => _MyAssetChartState();
+}
+
+class _MyAssetChartState extends State<MyAssetChart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: menubar.MenuBar(),
         drawer: Menu(),
-        body: SingleChildScrollView(
-            child: Column(
-          children: [Dropdown(), MyAssetChartBody()],
-          mainAxisAlignment: MainAxisAlignment.center,
-        )));
+        body: Column(
+          children: [
+            Dropdown(),
+            Consumer<Date>(
+              builder: (_, date, __) => MyAssetChartBody(),
+            ),
+          ],
+        ));
   }
 }
 
@@ -41,76 +51,191 @@ class _MyAssetChartBodyState extends State {
   DateUtils2 dateUtils = DateUtils2();
   NumberUtils numberUtils = NumberUtils();
 
-  List<ChartData> chartDataList = [];
-  List<Color> colorList = [
-    Colors.blue,
-    Colors.indigo,
-    Colors.red,
-    Colors.green,
-    Colors.yellow,
-    Colors.purple,
-    Colors.brown,
-    Colors.orange
-  ];
-
   @override
   void initState() {
     super.initState();
-    showingSections();
   }
 
   @override
   Widget build(BuildContext context) {
-    NumberUtils numberUtils = NumberUtils();
-    final Size size = MediaQuery.of(context).size;
+    String strtDt = context.read<Date>().getStrtDt();
+    String endDt = context.read<Date>().getEndDt();
 
-    return Center(
-        child: Column(children: [
-      SizedBox(
-          width: size.width * 0.5,
-          height: size.height * 0.5,
-          child: SfCircularChart(series: <CircularSeries>[
-            // Render pie chart
-            PieSeries<ChartData, String>(
-                dataLabelMapper: (ChartData data, _) =>
-                    data.x + ' ( ' + numberUtils.comma(data.y) + ' )',
-                dataLabelSettings: DataLabelSettings(isVisible: true),
-                radius: '100%',
-                dataSource: chartDataList,
-                pointColorMapper: (ChartData data, _) => data.color,
-                xValueMapper: (ChartData data, _) => data.x,
-                yValueMapper: (ChartData data, _) => data.y),
-          ])),
-    ]));
+    return FutureBuilder(
+        future: _getMyAssetList(strtDt, endDt),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
+          if (snapshot.hasData == false) {
+            return CircularProgressIndicator();
+          }
+          //error가 발생하게 될 경우 반환하게 되는 부분
+          else if (snapshot.hasError) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(fontSize: 15),
+              ),
+            );
+          }
+          // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
+          else {
+            List<Widget> _result = <Widget>[];
+
+            for (var k in snapshot.data['data'].keys) {
+              _result.add(_makeCard(
+                  snapshot.data['data'][k], snapshot.data['tot_sum_price']));
+            }
+
+            return Expanded(
+                child: ListView(
+              padding: EdgeInsets.zero,
+              children: _result,
+            ));
+          }
+        });
   }
 
-  void showingSections() {
-    String procDt = dateUtils.DateToYYYYMMDD(DateTime.now());
+  Widget _makeCard(dynamic element, int totSumPrice) {
+    double pricePercent = element['asset_tot_sum_price'] == 0
+        ? 0
+        : element['asset_tot_sum_price'] / totSumPrice;
 
-    _getMyAssetList(procDt, procDt).then((resultList) => setState(() {
-          _makeChartData(resultList);
-        }));
-  }
+    List<Widget> _listTiles = [];
+    String assetId = element['data'][0]['asset_id'];
 
-  void _makeChartData(resultList) {
-    num totSumPrice = 0;
-    int i = 0;
+    for (var i = 0; i < element['data'].length; i++) {
+      var e = element['data'][i];
+      double pricePercent = e['sum_price'] == 0
+          ? 0
+          : e['sum_price'] / element['asset_tot_sum_price'];
 
-    for (var r in resultList['data'].keys) {
-      if (r != '6') {
-        totSumPrice += (resultList['data'][r]['asset_tot_sum_price']).abs();
-      }
-
-      if (r == '5') {
-        resultList['data'][r]['asset_tot_sum_price'] -=
-            resultList['data']['6']['asset_tot_sum_price'];
-      }
-
-      chartDataList.add(ChartData(
-          resultList['data'][r]['asset_nm'],
-          resultList['data'][r]['asset_tot_sum_price'],
-          colorList[int.parse(r) - 1]));
+      _listTiles.add(Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(children: [
+                      Config.ASSET_ICON_INFO[assetId]!,
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                        child: Text(
+                          e['my_asset_group_id'] == '0'
+                              ? e['my_asset_nm']
+                              : e['my_asset_group_nm'],
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                      ),
+                    ]),
+                    Row(
+                      children: [
+                        Text(
+                          numberUtils.comma(e['sum_price']),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          ' (' +
+                              (pricePercent * 100)
+                                  .toStringAsFixed(2)
+                                  .toString() +
+                              '%)',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                              fontSize: 12),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                subtitle: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                  child: LinearPercentIndicator(
+                    lineHeight: 4.0,
+                    percent: pricePercent,
+                    progressColor: Colors.deepOrange.shade200,
+                  ),
+                ),
+                onTap: () => {}),
+          ),
+        ],
+      ));
     }
+
+    return Column(
+      children: [
+        Card(
+          margin: EdgeInsets.all(10),
+          shadowColor: Colors.blue,
+          elevation: 8,
+          shape: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.white)),
+          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: ExpansionTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(children: [
+                          Config.ASSET_ICON_INFO[assetId]!,
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                            child: Text(
+                              element['asset_nm'],
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ),
+                        ]),
+                        Row(
+                          children: [
+                            Text(
+                              numberUtils.comma(element['asset_tot_sum_price']),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            Text(
+                              ' (' +
+                                  (pricePercent * 100)
+                                      .toStringAsFixed(2)
+                                      .toString() +
+                                  '%)',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                  fontSize: 12),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    subtitle: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                      child: LinearPercentIndicator(
+                        lineHeight: 4.0,
+                        percent: pricePercent,
+                        progressColor: Colors.red,
+                      ),
+                    ),
+                    children: _listTiles,
+                  ),
+                ),
+              ],
+            )
+          ]),
+        )
+      ],
+      crossAxisAlignment: CrossAxisAlignment.start,
+    );
   }
 
   Future<Map<String, dynamic>> _getMyAssetList(
@@ -132,11 +257,4 @@ class _MyAssetChartBodyState extends State {
     }
     return resultData;
   }
-}
-
-class ChartData {
-  ChartData(this.x, this.y, this.color);
-  final String x;
-  final int y;
-  final Color color;
 }

@@ -89,5 +89,16 @@ class Config {
     '124': Icon(LineIcons.wavyMoneyBill),
     '125': Icon(LineIcons.wallet),
   };
+
+  static const Map<String, Widget> ASSET_ICON_INFO = {
+    '1': Icon(LineIcons.lineChart),
+    '2': Icon(LineIcons.lineChart),
+    '3': Icon(LineIcons.bitcoin),
+    '4': Icon(LineIcons.moneyBill),
+    '5': Icon(LineIcons.building),
+    '6': Icon(Icons.account_balance_rounded),
+    '7': Icon(LineIcons.lineChart),
+    '8': Icon(LineIcons.wallet),
+  };
   static const double BARCHART_PADDING = 1.05;
 }
