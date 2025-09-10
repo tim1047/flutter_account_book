@@ -84,8 +84,11 @@ class _AccountMainBodyState extends State<AccountMainBody> {
 
   Future<Map<String, dynamic>> _getDivsionSum(
       String strtDt, String endDt) async {
-    var url = Uri.parse(
-        Config.API_URL + 'division/sum?strtDt=' + strtDt + '&endDt=' + endDt);
+    var url = Uri.parse(Config.V2_API_URL +
+        'division/sum?strtDt=' +
+        strtDt +
+        '&endDt=' +
+        endDt);
     Map<String, dynamic> resultData = {};
 
     try {
@@ -94,7 +97,7 @@ class _AccountMainBodyState extends State<AccountMainBody> {
         String body = response.body;
         var result = json.decode(body);
 
-        resultData = result['result_data'];
+        resultData = result['resultData'];
       }
     } catch (e) {
       print(e);
@@ -108,31 +111,31 @@ class _AccountMainBodyState extends State<AccountMainBody> {
         'icon': Icons.attach_money_rounded,
         'name': '수입',
         'color': Colors.blue,
-        'division_id': '1'
+        'divisionId': '1'
       },
       'interest': {
         'icon': Icons.account_balance_wallet_rounded,
         'name': '순수익(수입 - 지출)',
         'color': Colors.green,
-        'division_id': ''
+        'divisionId': ''
       },
       'expense': {
         'icon': Icons.add_shopping_cart_rounded,
         'name': '지출',
         'color': Colors.red,
-        'division_id': '3'
+        'divisionId': '3'
       },
       'invest': {
         'icon': Icons.currency_bitcoin_rounded,
         'name': '투자',
         'color': Colors.orange,
-        'division_id': '2'
+        'divisionId': '2'
       },
-      'invest_rate': {
+      'investRate': {
         'icon': Icons.percent_rounded,
         'name': '투자율',
         'color': Colors.yellow,
-        'division_id': ''
+        'divisionId': ''
       },
     };
 
@@ -156,7 +159,7 @@ class _AccountMainBodyState extends State<AccountMainBody> {
             subtitle: Text(divisionIconInfo[divisionId]['name'],
                 style: TextStyle(fontSize: 12)),
             onTap: () =>
-                _navigate(context, divisionIconInfo[divisionId]['division_id']),
+                _navigate(context, divisionIconInfo[divisionId]['divisionId']),
           ),
         ],
       ),

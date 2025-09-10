@@ -95,16 +95,16 @@ class _ExpenseBodyState extends State<ExpenseBody> {
   }
 
   Widget _makeCard(dynamic element) {
-    double pricePercent = element['sum_price'] == 0
+    double pricePercent = element['sumPrice'] == 0
         ? 0
-        : element['sum_price'] / element['total_sum_price'];
+        : element['sumPrice'] / element['totalSumPrice'];
 
     List<Widget> _listTiles = [];
 
     for (var i = 0; i < element['data'].length; i++) {
       var e = element['data'][i];
       double pricePercent =
-          e['sum_price'] == 0 ? 0 : e['sum_price'] / element['sum_price'];
+          e['sumPrice'] == 0 ? 0 : e['sumPrice'] / element['sumPrice'];
 
       _listTiles.add(Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,11 +116,11 @@ class _ExpenseBodyState extends State<ExpenseBody> {
                 children: [
                   Row(children: [
                     Config.CATEGORY_SEQ_ICON_INFO[
-                        element['category_id'] + e['category_seq']]!,
+                        element['categoryId'] + e['categorySeq']]!,
                     Padding(
                       padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                       child: Text(
-                        e['category_seq_nm'],
+                        e['categorySeqNm'],
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
@@ -129,7 +129,7 @@ class _ExpenseBodyState extends State<ExpenseBody> {
                   Row(
                     children: [
                       Text(
-                        numberUtils.comma(e['sum_price']),
+                        numberUtils.comma(e['sumPrice']),
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
@@ -154,8 +154,8 @@ class _ExpenseBodyState extends State<ExpenseBody> {
                   progressColor: Colors.deepOrange.shade200,
                 ),
               ),
-              onTap: () => _navigate(context, element['division_id'],
-                  element['category_id'], e['category_seq']),
+              onTap: () => _navigate(context, element['divisionId'],
+                  element['categoryId'], e['categorySeq']),
             ),
           ),
         ],
@@ -181,11 +181,11 @@ class _ExpenseBodyState extends State<ExpenseBody> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(children: [
-                          Config.CATEGORY_ICON_INFO[element['category_id']]!,
+                          Config.CATEGORY_ICON_INFO[element['categoryId']]!,
                           Padding(
                             padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                             child: Text(
-                              element['category_nm'],
+                              element['categoryNm'],
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -194,7 +194,7 @@ class _ExpenseBodyState extends State<ExpenseBody> {
                         Row(
                           children: [
                             Text(
-                              numberUtils.comma(element['sum_price']),
+                              numberUtils.comma(element['sumPrice']),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -234,8 +234,10 @@ class _ExpenseBodyState extends State<ExpenseBody> {
   }
 
   Future<List<dynamic>> _getExpenseList(String strtDt, String endDt) async {
-    var url = Uri.parse(Config.API_URL +
-        'division/3/category/sum?strtDt=' +
+    var url = Uri.parse(Config.V2_API_URL +
+        'category/sum' +
+        '?divisionId=3' +
+        '&strtDt=' +
         strtDt +
         '&endDt=' +
         endDt);
@@ -246,8 +248,8 @@ class _ExpenseBodyState extends State<ExpenseBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
-        resultData.sort((a, b) => b['sum_price'].compareTo(a['sum_price']));
+        resultData = result['resultData'];
+        resultData.sort((a, b) => b['sumPrice'].compareTo(a['sumPrice']));
       }
     } catch (e) {
       print(e);

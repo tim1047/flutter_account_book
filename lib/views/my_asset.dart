@@ -259,7 +259,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
   }
 
   Future<List<dynamic>> _getAssetList() async {
-    var url = Uri.parse(Config.API_URL + 'asset');
+    var url = Uri.parse(Config.V2_API_URL + 'asset');
     List<dynamic> resultData = [];
 
     try {
@@ -267,8 +267,8 @@ class _MyAssetBodyState extends State<MyAssetBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
-        resultData.insert(0, {'asset_id': '', 'asset_nm': ''});
+        resultData = result['resultData'];
+        resultData.insert(0, {'assetId': '', 'assetNm': ''});
       }
     } catch (e) {
       print(e);

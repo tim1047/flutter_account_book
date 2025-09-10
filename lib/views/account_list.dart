@@ -170,12 +170,12 @@ class _AccountListBodyState extends State<AccountListBody> {
                 controller: widget.scrollController,
                 elements: snapshot.data, // 리스트에 사용할 데이터 리스트
                 groupBy: (element) =>
-                    element['account_dt'], // 데이터 리스트 중 그룹을 지정할 항목
+                    element['accountDt'], // 데이터 리스트 중 그룹을 지정할 항목
                 order: groupListOrder, //정렬(오름차순)
                 useStickyGroupSeparators: false, //가장 위에 그룹 이름을 고정시킬 것인지
                 groupSeparatorBuilder: (String value) => _groupSeparator(value),
                 itemComparator: (item1, item2) =>
-                    item1['account_id'].compareTo(item2['account_id']),
+                    item1['accountId'].compareTo(item2['accountId']),
                 indexedItemBuilder: (c, element, index) {
                   //항목들 모양 처리
                   return Card(
@@ -201,7 +201,7 @@ class _AccountListBodyState extends State<AccountListBody> {
                                       height: 60,
                                       child: ClipOval(
                                         child: Image.asset(Config
-                                            .AVATAR_INFO[element['member_id']]),
+                                            .AVATAR_INFO[element['memberId']]),
                                       ),
                                     )),
                                 title: _getPrice(element, numberUtils),
@@ -211,12 +211,12 @@ class _AccountListBodyState extends State<AccountListBody> {
                                   children: [
                                     Expanded(
                                         child: Text(
-                                            element['category_nm'] +
-                                                (element['category_seq_nm'] !=
+                                            element['categoryNm'] +
+                                                (element['categorySeqNm'] !=
                                                         null
                                                     ? (' | ' +
                                                         element[
-                                                            'category_seq_nm'])
+                                                            'categorySeqNm'])
                                                     : '') +
                                                 (element['remark'] != ''
                                                     ? ' ( ' +
@@ -312,7 +312,7 @@ class _AccountListBodyState extends State<AccountListBody> {
   List<Widget> getBadgeList(dynamic element) {
     List<Widget> badgeList = [];
 
-    if (element['payment_type'] == 'SEOUL') {
+    if (element['paymentType'] == 'SEOUL') {
       badgeList.add(Container(
         margin: EdgeInsets.all(3),
         child: badge.Badge(
@@ -326,7 +326,7 @@ class _AccountListBodyState extends State<AccountListBody> {
       ));
     }
 
-    if (element['payment_type'] == 'FIRSTMEETING') {
+    if (element['paymentType'] == 'FIRSTMEETING') {
       badgeList.add(Container(
         margin: EdgeInsets.all(3),
         child: badge.Badge(
@@ -340,7 +340,7 @@ class _AccountListBodyState extends State<AccountListBody> {
       ));
     }
 
-    if (element['point_price'] > 0) {
+    if (element['pointPrice'] > 0) {
       badgeList.add(Container(
         margin: EdgeInsets.all(3),
         child: badge.Badge(
@@ -354,7 +354,7 @@ class _AccountListBodyState extends State<AccountListBody> {
       ));
     }
 
-    if (element['impulse_yn'] == 'Y') {
+    if (element['impulseYn'] == 'Y') {
       badgeList.add(Container(
         margin: EdgeInsets.all(3),
         child: badge.Badge(
@@ -364,15 +364,15 @@ class _AccountListBodyState extends State<AccountListBody> {
           borderRadius: BorderRadius.circular(8),
           badgeContent:
               Text('충동', style: TextStyle(color: Colors.white, fontSize: 12)),
-          showBadge: element['impulse_yn'] == 'N' ? false : true,
+          showBadge: element['impulseYn'] == 'N' ? false : true,
         ),
       ));
     }
 
     Color badgeColor;
-    if (element['division_id'] == '1') {
+    if (element['divisionId'] == '1') {
       badgeColor = Colors.green;
-    } else if (element['division_id'] == '2') {
+    } else if (element['divisionId'] == '2') {
       badgeColor = Colors.blue;
     } else {
       badgeColor = Colors.red;
@@ -385,7 +385,7 @@ class _AccountListBodyState extends State<AccountListBody> {
         shape: badge.BadgeShape.square,
         badgeColor: badgeColor,
         borderRadius: BorderRadius.circular(8),
-        badgeContent: Text(element['division_nm'],
+        badgeContent: Text(element['divisionNm'],
             style: TextStyle(color: Colors.white, fontSize: 12)),
       ),
     ));
@@ -395,22 +395,22 @@ class _AccountListBodyState extends State<AccountListBody> {
   void _navigateAndToast(BuildContext context, var element) async {
     final result = await Navigator.pushNamed(context, '/account',
             arguments: AccountParameter(
-                accountDt: element['account_dt'],
-                divisionId: element['division_id'],
-                divisionNm: element['division_nm'],
-                paymentId: element['payment_id'],
-                paymentNm: element['payment_nm'],
-                memberId: element['member_id'],
-                memberNm: element['member_nm'],
-                categoryId: element['category_id'],
-                categoryNm: element['category_nm'],
-                categorySeq: element['category_seq'],
-                categorySeqNm: (element['category_seq_nm'] ?? ''),
+                accountDt: element['accountDt'],
+                divisionId: element['divisionId'],
+                divisionNm: element['divisionNm'],
+                paymentId: element['paymentId'],
+                paymentNm: element['paymentNm'],
+                memberId: element['memberId'],
+                memberNm: element['memberNm'],
+                categoryId: element['categoryId'],
+                categoryNm: element['categoryNm'],
+                categorySeq: element['categorySeq'],
+                categorySeqNm: (element['categorySeqNm'] ?? ''),
                 price: element['price'],
                 remark: element['remark'],
-                impulseYn: element['impulse_yn'],
-                pointPrice: element['point_price'],
-                accountId: element['account_id'].toString(),
+                impulseYn: element['impulseYn'],
+                pointPrice: element['pointPrice'],
+                accountId: element['accountId'].toString(),
                 isInsert: false))
         .then((value) {
       setState(() {});
@@ -461,18 +461,18 @@ class _AccountListBodyState extends State<AccountListBody> {
       searchMemberId = args.searchMemberId;
     }
 
-    var url = Uri.parse(Config.API_URL +
+    var url = Uri.parse(Config.V2_API_URL +
         'account?strtDt=' +
         strtDt +
         '&endDt=' +
         endDt +
-        '&searchDivisionId=' +
+        '&divisionId=' +
         searchDivisionId +
-        '&searchCategoryId=' +
+        '&categoryId=' +
         searchCategoryId +
-        '&searchCategorySeq=' +
+        '&categorySeq=' +
         searchCategorySeq +
-        '&searchMemberId=' +
+        '&memberId=' +
         searchMemberId);
 
     List<dynamic> resultData = [];
@@ -482,9 +482,9 @@ class _AccountListBodyState extends State<AccountListBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
-        firstDate = resultData[resultData.length - 1]['account_dt'];
-        lastDate = resultData[0]['account_dt'];
+        resultData = result['resultData'];
+        firstDate = resultData[resultData.length - 1]['accountDt'];
+        lastDate = resultData[0]['accountDt'];
       }
     } catch (e) {
       print(e);
@@ -496,12 +496,12 @@ class _AccountListBodyState extends State<AccountListBody> {
 Widget _getPrice(dynamic element, numberUtils) {
   Widget price;
 
-  if (element['point_price'] > 0) {
+  if (element['pointPrice'] > 0) {
     price = Row(children: [
       Text(
           numberUtils.comma(element['price']) +
               ' (' +
-              numberUtils.comma(element['point_price'] * -1) +
+              numberUtils.comma(element['pointPrice'] * -1) +
               ')',
           style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -510,7 +510,7 @@ Widget _getPrice(dynamic element, numberUtils) {
               decorationThickness: 1,
               color: Colors.grey)),
       Text('  '),
-      Text(numberUtils.comma(element['price'] - element['point_price']),
+      Text(numberUtils.comma(element['price'] - element['pointPrice']),
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16))
     ]);
   } else {

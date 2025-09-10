@@ -70,9 +70,9 @@ class _InvestChartBodyState extends State<InvestChartBody> {
           // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
           else {
             var curExpensePrice = snapshot.data['data']
-                [snapshot.data['data'].length - 1]['total_sum_price'];
+                [snapshot.data['data'].length - 1]['sumPrice'];
             var prevExpensePrice = snapshot.data['data']
-                [snapshot.data['data'].length - 2]['total_sum_price'];
+                [snapshot.data['data'].length - 2]['sumPrice'];
 
             return Column(children: [
               Card(
@@ -102,8 +102,7 @@ class _InvestChartBodyState extends State<InvestChartBody> {
                       borderSide: BorderSide(color: Colors.white)),
                   child: Row(children: [
                     Text('  한달에 평균 '),
-                    Text(
-                        numberUtils.comma(snapshot.data['avg_total_sum_price']),
+                    Text(numberUtils.comma(snapshot.data['avgSumPrice']),
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16)),
                     Text(' 투자중이에요')
@@ -137,7 +136,8 @@ class _InvestChartBodyState extends State<InvestChartBody> {
   }
 
   Future<Map<String, dynamic>> _getDivisionSum(String procDt) async {
-    var url = Uri.parse(Config.API_URL + 'division/2/sum?procDt=' + procDt);
+    var url = Uri.parse(
+        Config.V2_API_URL + 'division/2/sum-group-by-month?procDt=' + procDt);
 
     Map<String, dynamic> resultData = {};
 
@@ -146,7 +146,7 @@ class _InvestChartBodyState extends State<InvestChartBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
+        resultData = result['resultData'];
       }
     } catch (e) {
       print(e);
@@ -235,8 +235,7 @@ class _InvestChartBodyState extends State<InvestChartBody> {
             x: element['data'][i]['month'],
             barRods: [
               BarChartRodData(
-                  toY: element['data'][i]['total_sum_price'],
-                  color: Colors.redAccent)
+                  toY: element['data'][i]['sumPrice'], color: Colors.redAccent)
             ],
             showingTooltipIndicators: [0],
           ),
@@ -247,7 +246,7 @@ class _InvestChartBodyState extends State<InvestChartBody> {
             x: element['data'][i]['month'],
             barRods: [
               BarChartRodData(
-                toY: element['data'][i]['total_sum_price'],
+                toY: element['data'][i]['sumPrice'],
                 gradient: _barsGradient,
               )
             ],
@@ -256,8 +255,8 @@ class _InvestChartBodyState extends State<InvestChartBody> {
         );
       }
 
-      if (element['data'][i]['total_sum_price'] >= maxY) {
-        maxY = element['data'][i]['total_sum_price'];
+      if (element['data'][i]['sumPrice'] >= maxY) {
+        maxY = element['data'][i]['sumPrice'];
       }
       maxY *= Config.BARCHART_PADDING;
     }
@@ -267,7 +266,7 @@ class _InvestChartBodyState extends State<InvestChartBody> {
         x: 0,
         barRods: [
           BarChartRodData(
-            toY: element['avg_total_sum_price'],
+            toY: element['avgSumPrice'],
             gradient: _barsGradient,
           )
         ],

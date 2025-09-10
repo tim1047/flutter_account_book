@@ -94,9 +94,9 @@ class _IncomeBodyState extends State<IncomeBody> {
   }
 
   Widget _makeCard(dynamic element) {
-    double pricePercent = element['sum_price'] == 0
+    double pricePercent = element['sumPrice'] == 0
         ? 0
-        : element['sum_price'] / element['total_sum_price'];
+        : element['sumPrice'] / element['totalSumPrice'];
 
     return Column(
       children: [
@@ -117,11 +117,11 @@ class _IncomeBodyState extends State<IncomeBody> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(children: [
-                            Config.CATEGORY_ICON_INFO[element['category_id']]!,
+                            Config.CATEGORY_ICON_INFO[element['categoryId']]!,
                             Padding(
                               padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                               child: Text(
-                                element['category_nm'],
+                                element['categoryNm'],
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
@@ -130,7 +130,7 @@ class _IncomeBodyState extends State<IncomeBody> {
                           Row(
                             children: [
                               Text(
-                                numberUtils.comma(element['sum_price']),
+                                numberUtils.comma(element['sumPrice']),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
@@ -169,8 +169,10 @@ class _IncomeBodyState extends State<IncomeBody> {
   }
 
   Future<List<dynamic>> _getIncomeList(String strtDt, String endDt) async {
-    var url = Uri.parse(Config.API_URL +
-        'division/1/category/sum?strtDt=' +
+    var url = Uri.parse(Config.V2_API_URL +
+        'category/sum' +
+        '?divisionId=1' +
+        '&strtDt=' +
         strtDt +
         '&endDt=' +
         endDt);
@@ -181,8 +183,8 @@ class _IncomeBodyState extends State<IncomeBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
-        resultData.sort((a, b) => b['sum_price'].compareTo(a['sum_price']));
+        resultData = result['resultData'];
+        resultData.sort((a, b) => b['sumPrice'].compareTo(a['sumPrice']));
       }
     } catch (e) {
       print(e);
@@ -194,8 +196,8 @@ class _IncomeBodyState extends State<IncomeBody> {
     if (element != null) {
       await Navigator.pushNamed(context, '/accountList',
               arguments: AccountListParameter(
-                  searchDivisionId: element['division_id'],
-                  searchCategoryId: element['category_id']))
+                  searchDivisionId: element['divisionId'],
+                  searchCategoryId: element['categoryId']))
           .then((value) {
         setState(() {});
       });

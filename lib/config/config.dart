@@ -5,6 +5,7 @@ class Config {
   Config();
 
   static const String API_URL = 'http://34.19.118.233:8000/account_book/';
+  static const String V2_API_URL = 'http://localhost:8080/account-book/';
   static const Map<String, dynamic> AVATAR_INFO = {
     '1': 'assets/boy.png',
     '2': 'assets/girl.png',

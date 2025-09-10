@@ -335,7 +335,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getDivisionList() async {
-    var url = Uri.parse(Config.API_URL + 'division');
+    var url = Uri.parse(Config.V2_API_URL + 'division');
     List<dynamic> resultData = [];
 
     try {
@@ -343,8 +343,8 @@ class _AccountBodyState extends State<AccountBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
-        resultData.insert(0, {'division_id': '', 'division_nm': ''});
+        resultData = result['resultData'];
+        resultData.insert(0, {'divisionId': '', 'divisionNm': ''});
       }
     } catch (e) {
       print(e);
@@ -387,8 +387,8 @@ class _AccountBodyState extends State<AccountBody> {
                 items:
                     snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
                   return DropdownMenuItem<String>(
-                    value: obj['division_id'],
-                    child: Text(obj['division_nm']),
+                    value: obj['divisionId'],
+                    child: Text(obj['divisionNm']),
                   );
                 }).toList());
           }
@@ -396,7 +396,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getMemberList() async {
-    var url = Uri.parse(Config.API_URL + 'member');
+    var url = Uri.parse(Config.V2_API_URL + 'member');
     List<dynamic> resultData = [];
 
     try {
@@ -404,8 +404,8 @@ class _AccountBodyState extends State<AccountBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
-        resultData.insert(0, {'member_id': '', 'member_nm': ''});
+        resultData = result['resultData'];
+        resultData.insert(0, {'memberId': '', 'memberNm': ''});
       }
     } catch (e) {
       print(e);
@@ -442,8 +442,8 @@ class _AccountBodyState extends State<AccountBody> {
                 items:
                     snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
                   return DropdownMenuItem<String>(
-                    value: obj['member_id'],
-                    child: Text(obj['member_nm']),
+                    value: obj['memberId'],
+                    child: Text(obj['memberNm']),
                   );
                 }).toList());
           }
@@ -451,7 +451,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getPaymentList(String memberId) async {
-    var url = Uri.parse(Config.API_URL + 'member/' + memberId + '/payment');
+    var url = Uri.parse(Config.V2_API_URL + 'payment?memberId=' + memberId);
     List<dynamic> resultData = [];
 
     try {
@@ -460,9 +460,9 @@ class _AccountBodyState extends State<AccountBody> {
         if (response.statusCode == 200) {
           var result = json.decode(utf8.decode(response.bodyBytes));
 
-          resultData = result['result_data'];
+          resultData = result['resultData'];
         }
-        resultData.insert(0, {'payment_id': '', 'payment_nm': ''});
+        resultData.insert(0, {'paymentId': '', 'paymentNm': ''});
       }
     } catch (e) {
       print(e);
@@ -491,7 +491,7 @@ class _AccountBodyState extends State<AccountBody> {
             bool isCotain = false;
 
             for (var i = 1; i < snapshot.data.length; i++) {
-              if (inputPaymentId == snapshot.data[i]['payment_id']) {
+              if (inputPaymentId == snapshot.data[i]['paymentId']) {
                 isCotain = true;
                 break;
               }
@@ -509,8 +509,8 @@ class _AccountBodyState extends State<AccountBody> {
                 items:
                     snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
                   return DropdownMenuItem<String>(
-                    value: obj['payment_id'],
-                    child: Text(obj['payment_nm']),
+                    value: obj['paymentId'],
+                    child: Text(obj['paymentNm']),
                   );
                 }).toList());
           }
@@ -519,7 +519,7 @@ class _AccountBodyState extends State<AccountBody> {
 
   Future<List<dynamic>> _getCategoryList(String divisionId) async {
     var url =
-        Uri.parse(Config.API_URL + 'division/' + divisionId + '/category');
+        Uri.parse(Config.V2_API_URL + 'category?divisionId=' + divisionId);
     List<dynamic> resultData = [];
 
     try {
@@ -531,7 +531,7 @@ class _AccountBodyState extends State<AccountBody> {
           resultData = result['result_data'];
         }
       }
-      resultData.insert(0, {'category_id': '', 'category_nm': ''});
+      resultData.insert(0, {'categoryId': '', 'categoryNm': ''});
     } catch (e) {
       print(e);
     }
@@ -559,7 +559,7 @@ class _AccountBodyState extends State<AccountBody> {
             bool isCotain = false;
 
             for (var i = 1; i < snapshot.data.length; i++) {
-              if (inputCategoryId == snapshot.data[i]['category_id']) {
+              if (inputCategoryId == snapshot.data[i]['categoryId']) {
                 isCotain = true;
                 break;
               }
@@ -577,8 +577,8 @@ class _AccountBodyState extends State<AccountBody> {
                 items:
                     snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
                   return DropdownMenuItem<String>(
-                    value: obj['category_id'],
-                    child: Text(obj['category_nm']),
+                    value: obj['categoryId'],
+                    child: Text(obj['categoryNm']),
                   );
                 }).toList());
           }
@@ -586,8 +586,8 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   Future<List<dynamic>> _getCategorySeqList(String categoryId) async {
-    var url =
-        Uri.parse(Config.API_URL + 'category/' + categoryId + '/category_seq');
+    var url = Uri.parse(
+        Config.V2_API_URL + 'category/' + categoryId + '/category-seq');
     List<dynamic> resultData = [];
 
     try {
@@ -596,10 +596,10 @@ class _AccountBodyState extends State<AccountBody> {
         if (response.statusCode == 200) {
           var result = json.decode(utf8.decode(response.bodyBytes));
 
-          resultData = result['result_data'];
+          resultData = result['resultData'];
         }
       }
-      resultData.insert(0, {'category_seq': '', 'category_seq_nm': ''});
+      resultData.insert(0, {'categorySeq': '', 'categorySeqNm': ''});
     } catch (e) {
       print(e);
     }
@@ -627,7 +627,7 @@ class _AccountBodyState extends State<AccountBody> {
             bool isCotain = false;
 
             for (var i = 1; i < snapshot.data.length; i++) {
-              if (inputCategorySeq == snapshot.data[i]['category_seq']) {
+              if (inputCategorySeq == snapshot.data[i]['categorySeq']) {
                 isCotain = true;
                 break;
               }
@@ -645,8 +645,8 @@ class _AccountBodyState extends State<AccountBody> {
                 items:
                     snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
                   return DropdownMenuItem<String>(
-                    value: obj['category_seq'],
-                    child: Text(obj['category_seq_nm']),
+                    value: obj['categorySeq'],
+                    child: Text(obj['categorySeqNm']),
                   );
                 }).toList());
           }
@@ -728,17 +728,17 @@ class _AccountBodyState extends State<AccountBody> {
     }
 
     var requestParam = {
-      'account_id': accountId,
-      'account_dt': inputAccountDt,
-      'member_id': inputMemberId,
-      'division_id': inputDivisionId,
-      'payment_id': inputPaymentId,
-      'category_id': inputCategoryId,
-      'category_seq': inputCategorySeq,
+      'accountId': accountId,
+      'accountDt': inputAccountDt,
+      'memberId': inputMemberId,
+      'divisionId': inputDivisionId,
+      'paymentId': inputPaymentId,
+      'categoryId': inputCategoryId,
+      'categorySeq': inputCategorySeq,
       'price': int.parse(numberUtils.uncomma(priceController.text)),
       'remark': remarkController.text.trim(),
-      'impulse_yn': inputImpulseYn,
-      'point_price': pointPriceController.text == ''
+      'impulseYn': inputImpulseYn,
+      'pointPrice': pointPriceController.text == ''
           ? 0
           : int.parse(numberUtils.uncomma(pointPriceController.text)),
     };
@@ -751,7 +751,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   void _insertAccount(var requestParam) async {
-    var url = Uri.parse(Config.API_URL + 'account');
+    var url = Uri.parse(Config.V2_API_URL + 'account');
 
     try {
       http.Response response = await http.post(
@@ -772,7 +772,7 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   void _updateAccount(var requestParam) async {
-    var url = Uri.parse(Config.API_URL + 'account');
+    var url = Uri.parse(Config.V2_API_URL + 'account' + '/' + accountId);
 
     try {
       http.Response response = await http.put(
@@ -793,21 +793,17 @@ class _AccountBodyState extends State<AccountBody> {
   }
 
   void _delete() {
-    var requestParam = {'account_id': accountId};
+    var requestParam = {'accountId': accountId};
     _deleteAccount(requestParam);
   }
 
   void _deleteAccount(var requestParam) async {
-    var url = Uri.parse(Config.API_URL + 'account');
+    var url = Uri.parse(Config.V2_API_URL + 'account' + '/' + accountId);
 
     try {
-      http.Response response = await http.delete(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(requestParam),
-      );
+      http.Response response = await http.delete(url, headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
 
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));

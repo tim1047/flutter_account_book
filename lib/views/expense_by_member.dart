@@ -97,7 +97,7 @@ class _ExpenseByMemberBodyState extends State<ExpenseByMemberBody> {
     double pricePercent = 0;
 
     if (totalSumPrice > 0) {
-      pricePercent = element['sum_price'] / totalSumPrice;
+      pricePercent = element['sumPrice'] / totalSumPrice;
     }
 
     return Column(
@@ -120,19 +120,19 @@ class _ExpenseByMemberBodyState extends State<ExpenseByMemberBody> {
                         height: 60,
                         child: ClipOval(
                           child: Image.asset(
-                              Config.AVATAR_INFO[element['member_id']]),
+                              Config.AVATAR_INFO[element['memberId']]),
                         ),
                       )),
                   title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(element['member_nm'],
+                        Text(element['memberNm'],
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold)),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Text(numberUtils.comma(element['sum_price']),
+                              Text(numberUtils.comma(element['sumPrice']),
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),
@@ -158,7 +158,7 @@ class _ExpenseByMemberBodyState extends State<ExpenseByMemberBody> {
                         Colors.green,
                         Colors.orange,
                         Colors.pinkAccent
-                      ][int.parse(element['member_id']) - 1],
+                      ][int.parse(element['memberId']) - 1],
                     ),
                   ),
                   onTap: () => _navigate(context, element)),
@@ -172,8 +172,13 @@ class _ExpenseByMemberBodyState extends State<ExpenseByMemberBody> {
 
   Future<List<dynamic>> _getExpenseByMemberList(
       String strtDt, String endDt) async {
-    var url = Uri.parse(
-        Config.API_URL + 'member/sum?strtDt=' + strtDt + '&endDt=' + endDt);
+    var url = Uri.parse(Config.V2_API_URL +
+        'member/sum' +
+        '?divisionId=3' +
+        '&strtDt=' +
+        strtDt +
+        '&endDt=' +
+        endDt);
     List<dynamic> resultData = [];
     totalSumPrice = 0;
 
@@ -182,11 +187,11 @@ class _ExpenseByMemberBodyState extends State<ExpenseByMemberBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
-        resultData.sort((a, b) => b['sum_price'].compareTo(a['sum_price']));
+        resultData = result['resultData'];
+        resultData.sort((a, b) => b['sumPrice'].compareTo(a['sumPrice']));
 
         for (var i = 0; i < resultData.length; i++) {
-          totalSumPrice += resultData[i]['sum_price'];
+          totalSumPrice += resultData[i]['sumPrice'];
         }
       }
     } catch (e) {
@@ -199,7 +204,7 @@ class _ExpenseByMemberBodyState extends State<ExpenseByMemberBody> {
     if (element != null) {
       await Navigator.pushNamed(context, '/accountList',
               arguments: AccountListParameter(
-                  searchDivisionId: '3', searchMemberId: element['member_id']))
+                  searchDivisionId: '3', searchMemberId: element['memberId']))
           .then((value) {
         setState(() {});
       });

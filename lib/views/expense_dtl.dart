@@ -94,9 +94,9 @@ class _ExpenseDtlBodyState extends State<ExpenseDtlBody> {
   }
 
   Widget _makeCard(dynamic element) {
-    double pricePercent = element['sum_price'] == 0
+    double pricePercent = element['sumPrice'] == 0
         ? 0
-        : element['sum_price'] / element['total_sum_price'];
+        : element['sumPrice'] / element['totalSumPrice'];
 
     return Column(
       children: [
@@ -116,17 +116,17 @@ class _ExpenseDtlBodyState extends State<ExpenseDtlBody> {
                     children: [
                       Row(children: [
                         Config.CATEGORY_SEQ_ICON_INFO[
-                            element['category_id'] + element['category_seq']]!,
+                            element['categoryId'] + element['categorySeq']]!,
                         Padding(
                           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                           child: Text(
-                            element['category_seq_nm'],
+                            element['categorySeqNm'],
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
                         Visibility(
-                          visible: element['fixed_price_yn'] == 'Y',
+                          visible: element['fixedPriceYn'] == 'Y',
                           child: Container(
                             margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                             child: badge.Badge(
@@ -144,7 +144,7 @@ class _ExpenseDtlBodyState extends State<ExpenseDtlBody> {
                       Row(
                         children: [
                           Text(
-                            numberUtils.comma(element['sum_price']),
+                            numberUtils.comma(element['sumPrice']),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
@@ -181,8 +181,10 @@ class _ExpenseDtlBodyState extends State<ExpenseDtlBody> {
   }
 
   Future<List<dynamic>> _getExpenseDtlList(String strtDt, String endDt) async {
-    var url = Uri.parse(Config.API_URL +
-        'division/3/category_seq/sum?strtDt=' +
+    var url = Uri.parse(Config.V2_API_URL +
+        'category/category-seq/sum' +
+        '?divisionId=3' +
+        '&strtDt=' +
         strtDt +
         '&endDt=' +
         endDt);
@@ -193,8 +195,8 @@ class _ExpenseDtlBodyState extends State<ExpenseDtlBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
-        resultData.sort((a, b) => b['sum_price'].compareTo(a['sum_price']));
+        resultData = result['resultData'];
+        resultData.sort((a, b) => b['sumPrice'].compareTo(a['sumPrice']));
       }
     } catch (e) {
       print(e);
@@ -206,8 +208,8 @@ class _ExpenseDtlBodyState extends State<ExpenseDtlBody> {
     if (element != null) {
       await Navigator.pushNamed(context, '/accountList',
               arguments: AccountListParameter(
-                  searchCategoryId: element['category_id'],
-                  searchCategorySeq: element['category_seq'],
+                  searchCategoryId: element['categoryId'],
+                  searchCategorySeq: element['categorySeq'],
                   searchDivisionId: '3'))
           .then((value) {
         setState(() {});

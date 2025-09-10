@@ -238,8 +238,8 @@ class ExpenseDailyChartBodyState extends State<ExpenseDailyChartBody> {
     String prevStrtDt = context.read<Date>().getPrevStrtDt(2);
     String endDt = context.read<Date>().getEndDt();
 
-    var url = Uri.parse(Config.API_URL +
-        'expense/sum/daily?strtDt=' +
+    var url = Uri.parse(Config.V2_API_URL +
+        'division/3/sum-daily?strtDt=' +
         prevStrtDt +
         '&endDt=' +
         endDt);
@@ -251,7 +251,7 @@ class ExpenseDailyChartBodyState extends State<ExpenseDailyChartBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
+        resultData = result['resultData'];
       }
     } catch (e) {
       print(e);

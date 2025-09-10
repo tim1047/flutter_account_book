@@ -79,8 +79,7 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
                       borderSide: BorderSide(color: Colors.white)),
                   child: Row(children: [
                     Text('  한달에 평균 '),
-                    Text(
-                        numberUtils.comma(snapshot.data['avg_total_sum_price']),
+                    Text(numberUtils.comma(snapshot.data['avgSumPrice']),
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16)),
                     Text(' 수입이 있어요')
@@ -114,7 +113,8 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
   }
 
   Future<Map<String, dynamic>> _getDivisionSum(String procDt) async {
-    var url = Uri.parse(Config.API_URL + 'division/1/sum?procDt=' + procDt);
+    var url = Uri.parse(
+        Config.V2_API_URL + 'division/1/sum-group-by-month?procDt=' + procDt);
 
     Map<String, dynamic> resultData = {};
 
@@ -123,7 +123,7 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
+        resultData = result['resultData'];
       }
     } catch (e) {
       print(e);
@@ -212,8 +212,7 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
             x: element['data'][i]['month'],
             barRods: [
               BarChartRodData(
-                  toY: element['data'][i]['total_sum_price'],
-                  color: Colors.redAccent)
+                  toY: element['data'][i]['sumPrice'], color: Colors.redAccent)
             ],
             showingTooltipIndicators: [0],
           ),
@@ -224,7 +223,7 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
             x: element['data'][i]['month'],
             barRods: [
               BarChartRodData(
-                toY: element['data'][i]['total_sum_price'],
+                toY: element['data'][i]['sumPrice'],
                 gradient: _barsGradient,
               )
             ],
@@ -233,8 +232,8 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
         );
       }
 
-      if (element['data'][i]['total_sum_price'] >= maxY) {
-        maxY = element['data'][i]['total_sum_price'];
+      if (element['data'][i]['sumPrice'] >= maxY) {
+        maxY = element['data'][i]['sumPrice'];
       }
       maxY *= Config.BARCHART_PADDING;
     }
@@ -244,7 +243,7 @@ class _IncomeChartBodyState extends State<IncomeChartBody> {
         x: 0,
         barRods: [
           BarChartRodData(
-            toY: element['avg_total_sum_price'],
+            toY: element['avgSumPrice'],
             gradient: _barsGradient,
           )
         ],

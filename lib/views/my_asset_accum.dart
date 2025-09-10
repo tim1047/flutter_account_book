@@ -67,25 +67,25 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
     int debt = 0;
 
     for (var i = 1; i < resultList.length; i++) {
-      if (resultList[i]['asset_id'] == '6') {
-        debt = resultList[i]['total_sum_price'];
+      if (resultList[i]['assetId'] == '6') {
+        debt = resultList[i]['sumPrice'];
       }
     }
 
     for (var i = 1; i < resultList.length; i++) {
-      if (resultList[i]['asset_id'] == '5') {
-        toY = toY + resultList[i]['total_sum_price'] - debt;
-      } else if (resultList[i]['asset_id'] == '6') {
+      if (resultList[i]['assetId'] == '5') {
+        toY = toY + resultList[i]['sumPrice'] - debt;
+      } else if (resultList[i]['assetId'] == '6') {
         continue;
       } else {
-        toY = toY + resultList[i]['total_sum_price'];
+        toY = toY + resultList[i]['sumPrice'];
       }
 
       _barRods.add(
         BarChartRodData(
           fromY: fromY,
           toY: toY,
-          color: _legendColorList[int.parse(resultList[i]['asset_id']) - 1],
+          color: _legendColorList[int.parse(resultList[i]['assetId']) - 1],
           width: 5,
         ),
       );
@@ -162,7 +162,7 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
             }
 
             for (var i = 0; i < snapshot.data.length; i++) {
-              _accumDtList.add(snapshot.data[i]['accum_dt']);
+              _accumDtList.add(snapshot.data[i]['accumDt']);
               _groupDataList
                   .add(generateGroupData(i, snapshot.data[i]['data']));
               assetInfo =
@@ -222,8 +222,11 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
   }
 
   Future<List<dynamic>> _getMyAssetAccum(String strtDt, String endDt) async {
-    var url = Uri.parse(
-        Config.API_URL + 'my_asset/accum?strtDt=' + strtDt + '&endDt=' + endDt);
+    var url = Uri.parse(Config.V2_API_URL +
+        'my-asset/sum?strtDt=' +
+        strtDt +
+        '&endDt=' +
+        endDt);
 
     List<dynamic> resultData = [];
 
@@ -232,7 +235,7 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
+        resultData = result['resultData'];
       }
     } catch (e) {
       print(e);
@@ -241,48 +244,48 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
   }
 
   Legend _getLengend(dynamic result, int idx) {
-    return Legend(result['asset_nm'], _legendColorList[idx]);
+    return Legend(result['assetNm'], _legendColorList[idx]);
   }
 
   Map<String, dynamic> _calculateAssetInfo(
       Map<String, dynamic> assetInfo, List<dynamic> element) {
     for (int i = 0; i < element.length; i++) {
-      if (!assetInfo.containsKey(element[i]['asset_id'])) {
-        assetInfo[element[i]['asset_id']] = <String, dynamic>{};
-        assetInfo[element[i]['asset_id']]['data'] = [];
+      if (!assetInfo.containsKey(element[i]['assetId'])) {
+        assetInfo[element[i]['assetId']] = <String, dynamic>{};
+        assetInfo[element[i]['assetId']]['data'] = [];
       }
 
-      assetInfo[element[i]['asset_id']]['asset_nm'] = element[i]['asset_nm'];
+      assetInfo[element[i]['assetId']]['assetNm'] = element[i]['assetNm'];
 
       double totalSumPriceDiff = 0;
       double totalSumPriceDiffPercentage = 0;
-      var dataLength = assetInfo[element[i]['asset_id']]['data'].length;
+      var dataLength = assetInfo[element[i]['assetId']]['data'].length;
 
       if (dataLength > 0) {
-        totalSumPriceDiff = element[i]['total_sum_price'] -
-            assetInfo[element[i]['asset_id']]['data'][dataLength - 1]
-                ['total_sum_price'];
+        totalSumPriceDiff = element[i]['sumPrice'] -
+            assetInfo[element[i]['assetId']]['data'][dataLength - 1]
+                ['sumPrice'];
 
-        if (assetInfo[element[i]['asset_id']]['data'][dataLength - 1]
-                ['total_sum_price'] ==
+        if (assetInfo[element[i]['assetId']]['data'][dataLength - 1]
+                ['sumPrice'] ==
             0) {
           totalSumPriceDiffPercentage = 0;
         } else {
-          totalSumPriceDiffPercentage = (element[i]['total_sum_price'] -
-                  assetInfo[element[i]['asset_id']]['data'][dataLength - 1]
-                      ['total_sum_price']) /
-              assetInfo[element[i]['asset_id']]['data'][dataLength - 1]
-                  ['total_sum_price'] *
+          totalSumPriceDiffPercentage = (element[i]['sumPrice'] -
+                  assetInfo[element[i]['assetId']]['data'][dataLength - 1]
+                      ['sumPrice']) /
+              assetInfo[element[i]['assetId']]['data'][dataLength - 1]
+                  ['sumPrice'] *
               100;
         }
       }
-      assetInfo[element[i]['asset_id']]['data'].add({
-        'accum_dt': element[i]['accum_dt'],
-        'total_sum_price': (element[i]['total_sum_price'] is double)
-            ? element[i]['total_sum_price'].toInt()
-            : element[i]['total_sum_price'],
-        'total_sum_price_diff': totalSumPriceDiff.toInt(),
-        'total_sum_price_diff_percentage': totalSumPriceDiffPercentage
+      assetInfo[element[i]['assetId']]['data'].add({
+        'accumDt': element[i]['accumDt'],
+        'sumPrice': (element[i]['sumPrice'] is double)
+            ? element[i]['sumPrice'].toInt()
+            : element[i]['sumPrice'],
+        'sumPriceDiff': totalSumPriceDiff.toInt(),
+        'sumPriceDiffPercentage': totalSumPriceDiffPercentage
       });
     }
     return assetInfo;
@@ -301,7 +304,7 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
       }
     }
 
-    _listViewList.add(Text(assetInfo['asset_nm'],
+    _listViewList.add(Text(assetInfo['assetNm'],
         style: TextStyle(fontWeight: FontWeight.bold)));
     _listViewList.add(Divider(
       thickness: 1,
@@ -312,30 +315,27 @@ class _MyAssetAccumState extends State<MyAssetAccumBody> {
       _listViewList.add(Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(assetInfo['data'][i]['accum_dt'].substring(0, 4) +
+          Text(assetInfo['data'][i]['accumDt'].substring(0, 4) +
               '년 ' +
-              assetInfo['data'][i]['accum_dt'].substring(4, 6) +
+              assetInfo['data'][i]['accumDt'].substring(4, 6) +
               '월'),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Text(numberUtils.comma(assetInfo['data'][i]['total_sum_price']),
+            Text(numberUtils.comma(assetInfo['data'][i]['sumPrice']),
                 style: TextStyle(
-                    color: getTextColor(
-                        assetInfo['data'][i]['total_sum_price_diff']),
+                    color: getTextColor(assetInfo['data'][i]['sumPriceDiff']),
                     fontWeight: FontWeight.bold,
                     fontSize: 16)),
             Text(
               ' ( ' +
-                  numberUtils
-                      .comma(assetInfo['data'][i]['total_sum_price_diff']) +
+                  numberUtils.comma(assetInfo['data'][i]['sumPriceDiff']) +
                   ' )' +
                   ' ( ' +
-                  assetInfo['data'][i]['total_sum_price_diff_percentage']
+                  assetInfo['data'][i]['sumPriceDiffPercentage']
                       .toStringAsFixed(2) +
                   '%' +
                   ' )',
               style: TextStyle(
-                  color: getTextColor(
-                      assetInfo['data'][i]['total_sum_price_diff']),
+                  color: getTextColor(assetInfo['data'][i]['sumPriceDiff']),
                   fontWeight: FontWeight.bold,
                   fontSize: 12),
             )
