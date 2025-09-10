@@ -528,7 +528,7 @@ class _AccountBodyState extends State<AccountBody> {
         if (response.statusCode == 200) {
           var result = json.decode(utf8.decode(response.bodyBytes));
 
-          resultData = result['result_data'];
+          resultData = result['resultData'];
         }
       }
       resultData.insert(0, {'categoryId': '', 'categoryNm': ''});
