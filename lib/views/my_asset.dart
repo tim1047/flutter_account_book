@@ -305,8 +305,8 @@ class _MyAssetBodyState extends State<MyAssetBody> {
                 items:
                     snapshot.data.map<DropdownMenuItem<String>>((dynamic obj) {
                   return DropdownMenuItem<String>(
-                    value: obj['asset_id'],
-                    child: Text(obj['asset_nm']),
+                    value: obj['assetId'],
+                    child: Text(obj['assetNm']),
                   );
                 }).toList());
           }
@@ -427,15 +427,15 @@ class _MyAssetBodyState extends State<MyAssetBody> {
     }
 
     var requestParam = {
-      'my_asset_id': inputMyAssetId,
-      'my_asset_nm': myAssetNmController.text.trim(),
-      'asset_id': inputAssetId,
+      'myAssetId': inputMyAssetId,
+      'myAssetNm': myAssetNmController.text.trim(),
+      'assetId': inputAssetId,
       'ticker': tickerController.text.trim(),
-      'price_div_cd': inputPriceDivCd,
+      'priceDivCd': inputPriceDivCd,
       'price': double.parse(numberUtils.uncomma(priceController.text)),
       'qty': double.parse(qtyController.text),
-      'exchange_rate_yn': inputExchangeRateYn,
-      'cashable_yn': inputCashableYn
+      'exchangeRateYn': inputExchangeRateYn,
+      'cashableYn': inputCashableYn
     };
 
     if (isInsert) {
@@ -446,7 +446,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
   }
 
   void _insertAccount(var requestParam) async {
-    var url = Uri.parse(Config.API_URL + 'my_asset');
+    var url = Uri.parse(Config.V2_API_URL + 'my-asset');
 
     try {
       http.Response response = await http.post(
@@ -467,7 +467,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
   }
 
   void _updateAccount(var requestParam) async {
-    var url = Uri.parse(Config.API_URL + 'my_asset');
+    var url = Uri.parse(Config.V2_API_URL + 'my-asset' + '/' + inputMyAssetId);
 
     try {
       http.Response response = await http.put(
@@ -493,7 +493,7 @@ class _MyAssetBodyState extends State<MyAssetBody> {
   }
 
   void _deleteAccount(var requestParam) async {
-    var url = Uri.parse(Config.API_URL + 'my_asset');
+    var url = Uri.parse(Config.V2_API_URL + 'my-asset' + '/' + inputMyAssetId);
 
     try {
       http.Response response = await http.delete(
