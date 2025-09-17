@@ -84,7 +84,7 @@ class _MyAssetChartBodyState extends State {
 
             for (var k in snapshot.data['data'].keys) {
               _result.add(_makeCard(
-                  snapshot.data['data'][k], snapshot.data['tot_sum_price']));
+                  snapshot.data['data'][k], snapshot.data['totSumPrice']));
             }
 
             return Expanded(
@@ -97,18 +97,17 @@ class _MyAssetChartBodyState extends State {
   }
 
   Widget _makeCard(dynamic element, int totSumPrice) {
-    double pricePercent = element['asset_tot_sum_price'] == 0
+    double pricePercent = element['assetTotSumPrice'] == 0
         ? 0
-        : element['asset_tot_sum_price'] / totSumPrice;
+        : element['assetTotSumPrice'] / totSumPrice;
 
     List<Widget> _listTiles = [];
-    String assetId = element['data'][0]['asset_id'];
+    String assetId = element['data'][0]['assetId'];
 
     for (var i = 0; i < element['data'].length; i++) {
       var e = element['data'][i];
-      double pricePercent = e['sum_price'] == 0
-          ? 0
-          : e['sum_price'] / element['asset_tot_sum_price'];
+      double pricePercent =
+          e['sumPrice'] == 0 ? 0 : e['sumPrice'] / element['assetTotSumPrice'];
 
       _listTiles.add(Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,9 +122,9 @@ class _MyAssetChartBodyState extends State {
                       Padding(
                         padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: Text(
-                          e['my_asset_group_id'] == '0'
-                              ? e['my_asset_nm']
-                              : e['my_asset_group_nm'],
+                          e['myAssetGroupId'] == '0'
+                              ? e['myAssetNm']
+                              : e['myAssetGroupNm'],
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),
@@ -134,7 +133,7 @@ class _MyAssetChartBodyState extends State {
                     Row(
                       children: [
                         Text(
-                          numberUtils.comma(e['sum_price']),
+                          numberUtils.comma(e['sumPrice']),
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),
@@ -190,7 +189,7 @@ class _MyAssetChartBodyState extends State {
                           Padding(
                             padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                             child: Text(
-                              element['asset_nm'],
+                              element['assetNm'],
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -199,7 +198,7 @@ class _MyAssetChartBodyState extends State {
                         Row(
                           children: [
                             Text(
-                              numberUtils.comma(element['asset_tot_sum_price']),
+                              numberUtils.comma(element['assetTotSumPrice']),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16),
                             ),
@@ -241,7 +240,7 @@ class _MyAssetChartBodyState extends State {
   Future<Map<String, dynamic>> _getMyAssetList(
       String strtDt, String endDt) async {
     var url = Uri.parse(
-        Config.API_URL + 'my_asset?strtDt=' + strtDt + '&endDt=' + endDt);
+        Config.V2_API_URL + 'my-asset?strtDt=' + strtDt + '&endDt=' + endDt);
 
     Map<String, dynamic> resultData = {};
 
@@ -250,7 +249,7 @@ class _MyAssetChartBodyState extends State {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
+        resultData = result['resultData'];
       }
     } catch (e) {
       print(e);
