@@ -117,7 +117,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
     String procDt = dateUtils.DateToYYYYMMDD(DateTime.now());
 
     return FutureBuilder(
-        future: _getMyAssetList(procDt, procDt),
+        future: _initMyAssetList(procDt, procDt),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
           if (snapshot.hasData == false) {
@@ -145,8 +145,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                     Flexible(
                         child: Text(
                             '총 자산 : ' +
-                                numberUtils
-                                    .comma(snapshot.data['tot_sum_price']),
+                                numberUtils.comma(snapshot.data['totSumPrice']),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16))),
                     Padding(
@@ -158,7 +157,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                         child: Text(
                             '순자산 : ' +
                                 numberUtils.comma(
-                                    snapshot.data['tot_net_worth_sum_price']),
+                                    snapshot.data['totNetWorthSumPrice']),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16))),
                     Padding(
@@ -170,7 +169,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                         child: Text(
                             '현금성자산 : ' +
                                 numberUtils.comma(
-                                    snapshot.data['tot_cashable_sum_price']),
+                                    snapshot.data['totCashableSumPrice']),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16))),
                     IconButton(
@@ -187,8 +186,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                     Flexible(
                         child: Text(
                             '환율(\$): ' +
-                                numberUtils
-                                    .comma(snapshot.data['usd_krw_rate']),
+                                numberUtils.comma(snapshot.data['usdKrwRate']),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16))),
                     Padding(
@@ -200,7 +198,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                         child: Text(
                             '환율(￥): ' +
                                 numberUtils.comma(
-                                    (snapshot.data['jpy_krw_rate'] * 100)
+                                    (snapshot.data['jpyKrwRate'] * 100)
                                         .toInt()),
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16))),
@@ -210,7 +208,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16))),
                     Flexible(
-                        child: Text(snapshot.data['my_asset_accum_dts'] + ' 기준',
+                        child: Text(snapshot.data['myAssetAccumDts'] + ' 기준',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16)))
                   ])),
@@ -234,19 +232,19 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
     return Expanded(
       child: GroupedListView<dynamic, String>(
         elements: _result, // 리스트에 사용할 데이터 리스트
-        groupBy: (element) => element['asset_nm'], // 데이터 리스트 중 그룹을 지정할 항목
+        groupBy: (element) => element['assetNm'], // 데이터 리스트 중 그룹을 지정할 항목
         //order: GroupedListOrder.DESC, //정렬(오름차순)
         useStickyGroupSeparators: false, //가장 위에 그룹 이름을 고정시킬 것인지
         itemComparator: (item1, item2) =>
-            item1['sum_price'] < item2['sum_price'] ? 1 : -1,
+            item1['sumPrice'] < item2['sumPrice'] ? 1 : -1,
         groupHeaderBuilder: (dynamic element) => Padding(
           //그룹 타이틀 모양
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            element['asset_nm'] +
+            element['assetNm'] +
                 ' ( ' +
                 numberUtils.comma(
-                    (assetInfo[element['asset_id']]['asset_tot_sum_price'])) +
+                    (assetInfo[element['assetId']]['assetTotSumPrice'])) +
                 ' )',
             textAlign: TextAlign.left,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -280,7 +278,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
         children: [
           Flexible(
             child: ListTile(
-              title: Text(numberUtils.comma(element['sum_price']),
+              title: Text(numberUtils.comma(element['sumPrice']),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -297,7 +295,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
       for (var i = 0; i < element['data'].length; i++) {
         dynamic e = element['data'][i];
         _listTiles.add(ListTile(
-          title: Text(numberUtils.comma(e['sum_price']),
+          title: Text(numberUtils.comma(e['sumPrice']),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           subtitle: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -311,12 +309,12 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
         children: [
           Flexible(
             child: ExpansionTile(
-              title: Text(numberUtils.comma(element['sum_price']),
+              title: Text(numberUtils.comma(element['sumPrice']),
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(element['my_asset_group_nm'],
+                  Text(element['myAssetGroupNm'],
                       style: TextStyle(fontSize: 12)),
                 ],
               ),
@@ -332,9 +330,9 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
   List<Widget> _makeListTileChildren(var element) {
     List<Widget> listTileChildren;
 
-    if (element['cashable_yn'] == 'Y') {
+    if (element['cashableYn'] == 'Y') {
       listTileChildren = [
-        Text(element['my_asset_nm'] + ' | ' + element['qty'].toString() + '개',
+        Text(element['myAssetNm'] + ' | ' + element['qty'].toString() + '개',
             style: TextStyle(fontSize: 12)),
         badge.Badge(
             toAnimate: false,
@@ -347,7 +345,7 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
       ];
     } else {
       listTileChildren = [
-        Text(element['my_asset_nm'] + ' | ' + element['qty'].toString() + '개',
+        Text(element['myAssetNm'] + ' | ' + element['qty'].toString() + '개',
             style: TextStyle(fontSize: 12)),
       ];
     }
@@ -357,16 +355,16 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
   void _navigateAndToast(BuildContext context, var element) async {
     final result = await Navigator.pushNamed(context, '/myAsset',
             arguments: MyAssetParameter(
-                assetId: element['asset_id'],
-                myAssetNm: element['my_asset_nm'],
+                assetId: element['assetId'],
+                myAssetNm: element['myAssetNm'],
                 ticker: element['ticker'],
-                priceDivCd: element['price_div_cd'],
+                priceDivCd: element['priceDivCd'],
                 price: element['price'],
                 qty: element['qty'],
-                exchangeRateYn: element['exchange_rate_yn'],
+                exchangeRateYn: element['exchangeRateYn'],
                 isInsert: false,
-                cashableYn: element['cashable_yn'],
-                myAssetId: element['my_asset_id']))
+                cashableYn: element['cashableYn'],
+                myAssetId: element['myAssetId']))
         .then((value) {
       setState(() {});
 
@@ -402,14 +400,22 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
     );
   }
 
+  Future<Map<String, dynamic>> _initMyAssetList(
+      String strtDt, String endDt) async {
+    Map<String, dynamic> resultData = {};
+
+    if (isDelayed) {
+      resultData = await _getMyAssetList(strtDt, endDt);
+    } else {
+      resultData = await _refreshMyAssetList(strtDt, endDt);
+    }
+    return resultData;
+  }
+
   Future<Map<String, dynamic>> _getMyAssetList(
       String strtDt, String endDt) async {
     var urlString =
-        Config.API_URL + 'my_asset?strtDt=' + strtDt + '&endDt=' + endDt;
-    if (!isDelayed) {
-      urlString = urlString + '&type=realtime';
-      isDelayed = true;
-    }
+        Config.V2_API_URL + 'my-asset?strtDt=' + strtDt + '&endDt=' + endDt;
 
     var url = Uri.parse(urlString);
 
@@ -420,7 +426,35 @@ class _MyAssetListBodyState extends State<MyAssetListBody> {
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
 
-        resultData = result['result_data'];
+        resultData = result['resultData'];
+      }
+    } catch (e) {
+      print(e);
+    }
+    return resultData;
+  }
+
+  Future<Map<String, dynamic>> _refreshMyAssetList(
+      String strtDt, String endDt) async {
+    isDelayed = true;
+
+    var urlString = Config.V2_API_URL + 'my-asset/refresh';
+    var url = Uri.parse(urlString);
+
+    Map<String, dynamic> resultData = {};
+
+    try {
+      http.Response response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({"procDt": strtDt}),
+      );
+      if (response.statusCode == 200) {
+        var result = json.decode(utf8.decode(response.bodyBytes));
+
+        resultData = result['resultData'];
       }
     } catch (e) {
       print(e);
