@@ -743,6 +743,8 @@ class _AccountBodyState extends State<AccountBody> {
           : int.parse(numberUtils.uncomma(pointPriceController.text)),
     };
 
+    _showLoadingDialog();
+
     if (isInsert) {
       _insertAccount(requestParam);
     } else {
@@ -764,6 +766,7 @@ class _AccountBodyState extends State<AccountBody> {
 
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
+        Navigator.pop(context);
         Navigator.pop(context, '등록 완료!!!');
       }
     } catch (e) {
@@ -785,6 +788,7 @@ class _AccountBodyState extends State<AccountBody> {
 
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
+        Navigator.pop(context);
         Navigator.pop(context, '수정 완료!!!');
       }
     } catch (e) {
@@ -794,6 +798,7 @@ class _AccountBodyState extends State<AccountBody> {
 
   void _delete() {
     var requestParam = {'accountId': accountId};
+    _showLoadingDialog();
     _deleteAccount(requestParam);
   }
 
@@ -807,11 +812,20 @@ class _AccountBodyState extends State<AccountBody> {
 
       if (response.statusCode == 200) {
         var result = json.decode(utf8.decode(response.bodyBytes));
+        Navigator.pop(context);
         Navigator.pop(context, '샥제 완료!!!');
       }
     } catch (e) {
       print(e);
     }
+  }
+
+  void _showLoadingDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
   }
 }
 
