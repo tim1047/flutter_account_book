@@ -212,8 +212,7 @@ class _AccountListBodyState extends State<AccountListBody> {
                                     Expanded(
                                         child: Text(
                                             element['categoryNm'] +
-                                                (element['categorySeqNm'] !=
-                                                        null
+                                                (element['categorySeqNm'] != ''
                                                     ? (' | ' +
                                                         element[
                                                             'categorySeqNm'])
